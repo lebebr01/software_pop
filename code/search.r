@@ -1,5 +1,8 @@
 library(pdfsearch)
 
+# -------------------------
+# Setup
+
 soft_keywords <- c('SPSS Statistics', ' R ', 'SAS', 'STATA', 'MATLAB', 
                    'Statistica ', 'Statsoft', 'Java', 'Hadoop',
                    'Python', 'Minitab', 'Systat', 'JMP', 'SPSS Modeler', 
@@ -17,13 +20,49 @@ soft_ignore <- c(FALSE, FALSE, FALSE, FALSE, FALSE,
                  TRUE, TRUE, FALSE, TRUE, 
                  FALSE)
 
-keyword_results <- keyword_directory(directory = 'C:/Users/bleb/Documents/Master.Data/PDF',
-                  keyword = soft_keywords, 
-                  surround_lines = FALSE,
-                  ignore.case = soft_ignore,
-                  full_names = TRUE,
-                  recursive = TRUE,
-                  max_search = NULL)
+# -------------------------
+# AERJ
 
-save(keyword_results, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/initial_keyword.rda')
+keyword_results_aerj <- keyword_directory(directory = 'C:/Users/bleb/Documents/AERJ.Data/PDF',
+                                          keyword = soft_keywords, 
+                                          surround_lines = FALSE,
+                                          ignore_case = soft_ignore,
+                                          full_names = TRUE,
+                                          recursive = TRUE,
+                                          max_search = NULL)
+
+keyword_results_aerj$journal <- 'AERJ'
+
+save(keyword_results_aerj, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/keyword_aerj.rda')
+
+# -------------------------
+# EEPA
+
+keyword_results_eepa <- keyword_directory(directory = 'C:/Users/bleb/Documents/EEPA.Data/PDF',
+                                          keyword = soft_keywords, 
+                                          surround_lines = FALSE,
+                                          ignore_case = soft_ignore,
+                                          full_names = TRUE,
+                                          recursive = TRUE,
+                                          max_search = NULL)
+
+keyword_results_eepa$journal <- 'EEPA'
+
+save(keyword_results_eepa, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/keyword_eepa.rda')
+
+
+# -------------------------
+# JEE
+
+keyword_results_jee <- keyword_directory(directory = 'C:/Users/bleb/Documents/JEE.Data/PDF',
+                                          keyword = soft_keywords, 
+                                          surround_lines = FALSE,
+                                          ignore_case = soft_ignore,
+                                          full_names = TRUE,
+                                          recursive = TRUE,
+                                          max_search = NULL)
+
+keyword_results_jee$journal <- 'JEE'
+
+save(keyword_results_jee, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/keyword_jee.rda')
 
