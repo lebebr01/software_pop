@@ -33,7 +33,7 @@ keyword_results_aerj <- keyword_directory(directory = 'C:/Users/bleb/Documents/A
 
 keyword_results_aerj$journal <- 'AERJ'
 
-save(keyword_results_aerj, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/keyword_aerj.rda')
+save(keyword_results_aerj, file = 'C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop/data/keyword_aerj.rda')
 
 # -------------------------
 # EEPA
@@ -48,7 +48,7 @@ keyword_results_eepa <- keyword_directory(directory = 'C:/Users/bleb/Documents/E
 
 keyword_results_eepa$journal <- 'EEPA'
 
-save(keyword_results_eepa, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/keyword_eepa.rda')
+save(keyword_results_eepa, file = 'C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop/data/keyword_eepa.rda')
 
 
 # -------------------------
@@ -64,5 +64,5 @@ keyword_results_jee <- keyword_directory(directory = 'C:/Users/bleb/Documents/JE
 
 keyword_results_jee$journal <- 'JEE'
 
-save(keyword_results_jee, file = 'C:/Users/bleb/OneDrive for Business/JournalArticlesInProgress/software_pop/data/keyword_jee.rda')
+save(keyword_results_jee, file = 'C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop/data/keyword_jee.rda')
 
