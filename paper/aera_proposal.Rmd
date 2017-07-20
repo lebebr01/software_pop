@@ -15,7 +15,7 @@ affiliation       :
     institution   : "University of Iowa"
 
 abstract: > 
-  Statistical software is the cornerstone of quantitative research studies and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g. R), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. In addition, the idea of reproducible analyses has grown significantly within the statistics and medicine disciplines. This paper aims to explore the evolution of statistical software within educational research using a research synthesis to establish the state of affairs.
+  Statistical software is the enabling tool of quantitative research studies and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g. R), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. In addition, the idea of reproducible analyses has grown significantly within the statistics and medicine disciplines. This paper aims to explore the evolution of statistical software within educational research using a research synthesis to establish the state of affairs.
 
 keywords: "Research Synthesis, Statistical Software, Quantitative Methods"
 wordcount: 
@@ -34,10 +34,21 @@ class             : "man"
 output            : papaja::apa6_pdf
 ---
 
+```{r rootdir, echo = FALSE}
+knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
+```
+
 # Objectives
-The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage over time. As this usage is likely tied closely to the methods they are employing, the interaction between software usage quantitative research methods will also be explored. Research synthesis methods will be used to explore these trends over time in published educational research journals. 
+The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage over time in education. As this usage is likely tied closely to the methods they are employed, the interaction between software usage and quantitative research methods will also be explored. Research synthesis methods will be used to explore these trends over time in published educational research journals. 
 
 # Theoretical Framework
+Statistical software is the enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. However, the user-friendly nature of software (i.e. point and click graphical interfaces, ability to manipulate data by hand) also can severely limit the ability for research to be reproducible; a recent topic of intense discussion in biostatistics, medicine, and pyschology [@asendorpf2013; @ioannidis2014; @iqbal2016; @peng2009; @peng2011; @stodden2012]. The reproducibility crisis has pointed the finger at statistical software more directly with a strong push in some disciplines for analyses to be script based and posted with the published journal article, often described as the gold standard.
+
+This idea of reproducibility has not seemed to fully enter the educational research domain. SPSS is likely the most common statistical software program used in educational research. Although SPSS has many common and advanced statistical techniques and it is possible to have a reproducible analysis, the default behavior within this program is often not script based and can create bad habits (i.e. editing raw data directly in the gui interface, running analyses without saving a script, etc.). Statistical software that is primarily command line, programs such as R, Python, or SAS, offer easier reproducible frameworks as all data manipulations or analyses are saved in scripts that can be re-ran in the future. A data script can be thought of as a cockpit flight recorder in which every single step that was done to the original data going from data collection to final tables and figures was script based. Under a reproducible framework, the raw data are never altered directly, they should always be altered programmatically through a script. This keeps a log of the data manipulations that happened in the data analysis cycle. For example, R has packages that aid in the ability to create living data documents that contain text and analysis code within a single document [see @rmarkdown; @knitr; @knitrmanual].
+
+The reproducible analysis framework has many advantages, including a transparent analysis process that could be validated by others or even simply the ability to investigate the data analysis completed months or years previously. Unfortunately, the current academic research framework has many barriers that limit the reproducibility. First, applied researchers may not be users of primarily command line or script based statistical software. This limits the ability to create a reproducible framework from the start. Secondly, researchers are not incentivized to conduct an analysis in a reproducible framework. Namely, the publish or perish aspect of academic research limits the sharing of statistical code partly due to the increased chance of criticism upon evaluation of the code used for the analysis. Finally, many journals and even the American Psychological Association (APA) publication manual [@apa] states that common software or programming languages need not be cited. This could even be interpretted by some as not needing to mention. Unfortunately, if the software used for a data analysis is not reported, the ability to recreate the analysis drops even more due to differences in estimation, handling of missing data, or other software specific settings. 
+
+This paper aims to explore the state of affairs in statistical software usage in education. Particular attention will be made to which software is currently being used in published educational research as well as how this has changed over the last twenty years. Secondly, this paper also aims to explore how frequently open-source software tools are used and to explore evidence of reproducible analysis framework being implemented. These aims will be explored using research synthesis methods.
 
 ## Research Questions
 1. To what extent has the statistical software usage shifted over time in published analyses?
@@ -48,22 +59,22 @@ The purpose of this paper is to explore the evolution (or lack thereof) of stati
     + Is there evidence of reproducible analyses being employed?
 
 # Methods
-Research synthesis methods will be used to explore the evolution of statistical software and quantitative methods in educational research. More specifically, the statistical software used for the analysis will be coded in additional to the specific quantitative methods (i.e. linear regression, hierarchical linear model, etc.). Additional meta data will also be coded including, journal, article title, author information, article keywords, and year published. This information will be used to explore descriptive trends in the data over time, by journals, and methods.
+Research synthesis methods [@cooper2016] will be used to explore the evolution of statistical software and quantitative methods in educational research. More specifically, the statistical software used for the analysis will be coded in additional to the specific quantitative methods (i.e. linear regression, hierarchical linear model, etc.). Additional meta data will also be coded including, journal, article title, author information, article keywords, year published, and any mention of supplementary materials. This information will be used to explore descriptive trends in the data over time, by journals, and methods.
 
-The research synthesis will gather data from a handful of education journals that primarily publish empirical data analysis research. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population. Therefore the following journals were selected to be searched from 1995 onward:
+The research synthesis will gather data from a handful of education journals that primarily publish empirical data analysis. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Therefore the following journals were selected to be searched from 1995 onward:
 
-* American Educational Research Journal
-* Educational Researcher
-* Educational Evaluation and Policy Analysis
-* Higher Education
-* Journal of Educational Psychology
-* Journal of Experimental Education
-* Journal of Teacher Education
-* Journal for Research in Mathematics Education
-* Sociology of Education
+* American Educational Research Journal (AERJ)
+* Educational Researcher (ER)
+* Educational Evaluation and Policy Analysis (EEPA)
+* Higher Education (HE)
+* Journal of Educational Psychology (JEP)
+* Journal of Experimental Education (JEE)
+* Journal of Teacher Education (JTE)
+* Journal for Research in Mathematics Education (JRME)
+* Sociology of Education (SE)
 
 # Data and Software
-All journal articles published between 1995 through 2016 will be organized into EndNote. Within EndNote, the find pdf feature will be used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch, @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords).
+All journal articles published between 1995 through 2016 will be organized into EndNote. Within EndNote, the find pdf feature will be used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch, @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords). Table \@ref(tab:searchwords) also shows keywords to be used to search for statistical models and estimation methods.
 
 Table: (#tab:searchwords) Search keywords used in search of published journal documents 
 
@@ -75,12 +86,13 @@ Table: (#tab:searchwords) Search keywords used in search of published journal do
 |               | "STATA", "MATLAB", "Statistica ", "Statsoft", "Java",                   |
 |               | "Hadoop", "Python" , "Minitab", "Systat", "Tableau",                |
 |               | "Scala", "Julia", "Azure Machine Learning", "Mplus", "LISREL",   |
-|               | "AMOS", "BILOG", "BILOG-MG", "Multilog", "PARSCALE",               |
-|               | "IRT PRO", "HLM[0-9]", "HLM [0-9]"              |
+|               | "AMOS", "HLM[0-9]", "HLM [0-9]"              |
 |               |                            |
 +---------------+----------------------------+
-| Quantitative  | Still formulating this list |
-| Methods       |                            |
+| Statistical   | Regression, Hierarchical Linear Model (HLM), Linear Mixed Model (LMM), |
+| Models        | Multilevel Model, Analysis of Variance (ANOVA), Structural Equation Modeling (SEM) |
++---------------+----------------------------+
+| Estimation    | Maximum Likelihood, bayesian, |
 +---------------+----------------------------+
 
 
@@ -89,8 +101,129 @@ A handful of articles will be randomly selected to be coded manually by reading 
 
 # Initial Results
 
-# Scholarly Significance
+Currently, published journal articles between the year 2000 and 2014 for AERJ, EEPA, and JEE have been obtained and the software keyword search has been performed with the *pdfsearch* package. Table \@ref(tab:setup) reports the number of unique published articles for each journal that contained at least one software match. The table shows that many published journal articles do not list the software used for the analysis. Some of this may be due to the APA publication manual stating that "reference entries are not necessary for standrad software and programming languages... and even SAS and SPSS" [@apa, p. 210]. If the goal of analyses are to be transparent and reproducible, this is bad practice. The larger percentage of articles returning a match for JEE may be due to this journal serving a dual role, part methodological part applied analysis. Methodological articles may be more likely to state which statistical program was used to perform the simulation or which language a new algorithm was implemented in.
 
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, results='asis'}
+# load in journal keyword data
+
+# Names are: keyword_results_* where * is journal abbreviation
+
+load('data/keyword_aerj.rda')
+load('data/keyword_eepa.rda')
+load('data/keyword_jee.rda')
+
+# combine
+library(dplyr)
+library(forcats)
+
+software_keywords <- bind_rows(
+  keyword_results_aerj, 
+  keyword_results_eepa, 
+  keyword_results_jee
+)
+
+# extract year from pdf_name
+mat <- regexpr("-[0-9]{4}-", software_keywords$pdf_name)
+
+software_keywords <- software_keywords %>%
+  mutate(year2 = regmatches(software_keywords$pdf_name, mat), 
+         year = gsub("-", "", year2))
+
+software_keywords <- software_keywords %>%
+  mutate(keyword2 = fct_recode(keyword,
+            "R" = " R ",
+            "R" = "R-project" ,
+            "R" = "R project",
+            "SAS" = "SAS Institute",
+            'SPSS' = "SPSS Statistics",
+            'HLM' = 'HLM[0-9]',
+            'HLM' = 'HLM [0-9]',
+            NULL = '[:alpha:] package',
+            NULL = 'BILOG',
+            NULL = 'IRT PRO',
+            'Other' = 'Java',
+            'Other' = 'MATLAB', 
+            NULL = 'Multilog',
+            NULL = 'PARSCALE',
+            'Other' = 'Scala',
+            'Other' = 'Statistica '
+                               ))
+
+# explore number of articles with a match for each journal
+# AERJ: 443 Articles
+# EEPA: 188 Articles
+# JEE: 208 Articles
+library(knitr)
+
+software_keywords %>%
+  na.omit() %>%
+  select(ID, journal) %>%
+  distinct(ID, journal) %>%
+  group_by(journal) %>%
+  count() %>%
+  rename(Journal = journal, Count = n) %>%
+  mutate(citations = c(443, 188, 208), 
+         Percentage = round((Count/citations) * 100, 2)) %>% 
+  rename('Number of Citations Obtained' = citations) %>%
+  kable(booktabs = TRUE, caption = 'Number of citations with mention of software by journal')
+```
+
+Figure \@ref(fig:count-software) shows the statistical software matches across all articles in the current sample. This figure shows that R had the most matches followed by SAS and SPSS. Other more specialized software follows these general statistical languages.
+
+```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software count overall"}
+# plot unique keyword counts by journal
+library(ggplot2)
+software_keywords %>%
+  na.omit() %>%
+  select(ID, journal, keyword2) %>%
+  distinct() %>%
+  mutate(keyword2 = keyword2 %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = keyword2)) + 
+  geom_bar() +
+  theme_bw() + 
+  coord_flip() + 
+  ylab("Count") + 
+  xlab("Keyword")
+```
+
+When exploring the differences across the three journals in the current sample, some notable differences appear (see Figure \@ref(fig:software-journal)). SAS, SPSS, LISREL, and Mplus are more common in JEE compared to other software programs. EEPA is more likely to use Python, Julia, or STATA and AERJ has a more consistent distribution across the sofware programs. 
+
+```{r software-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by journal"}
+# plot unique keyword counts by journal
+software_keywords %>%
+  na.omit() %>%
+  select(ID, journal, keyword2) %>%
+  distinct() %>%
+  mutate(keyword2 = keyword2 %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = keyword2)) + 
+  geom_bar(aes(fill = journal), position = 'fill') +
+  theme_bw() + 
+  xlab("Keyword") + 
+  scale_y_continuous("Percentage", labels = scales::percent) + 
+  coord_flip()
+```
+
+```{r software-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year", eval = FALSE}
+# look at trends by year
+software_keywords %>%
+  na.omit() %>%
+  select(ID, journal, keyword2, year) %>%
+  distinct() %>%
+  mutate(keyword2 = keyword2 %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = keyword2)) + 
+  geom_bar() +
+  theme_bw() + 
+  coord_flip() + 
+  xlab("Count") + 
+  ylab("Keyword") + 
+  facet_wrap(~ year)
+```
+
+Prior to AERA, more search terms, more journals, and gathering more article meta data will be included in the research synthesis. These additional data sources will allow a better understanding of the current state of affairs in software usage, reproducible analysis, and software citation/mention within educational journals. 
+
+# Scholarly Significance
+Understanding the state of affairs in software usage in education is important to help disentangle and highlight the importance of citing statistical software and a reproducible research framework. Much more attention has been given in other content areas such as biostatistics, medicine, and psychology and the same standards should apply in education. Recommendations will be given as to which information regarding statistical software should accompany journal articles. This study also aims to go a step further than others [see @muenchen] in that the software usage will be explored with respect to journals and also quantitative methodology. This will allow for a deeper exploration of potential interactions between software usage and citations across different journals and methodologies over time.
 
 # References
-
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}

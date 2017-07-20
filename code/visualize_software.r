@@ -45,32 +45,64 @@ ggplot(count_keyword, aes(x = keyword, y = n)) +
   geom_bar(stat = 'identity') +
   theme_bw() + 
   coord_flip() + 
-  xlab("Count") + 
-  ylab("Keyword")
+  ylab("Count") + 
+  xlab("Keyword")
 
-ggplot(count_keyword, aes(x = keyword, y = n)) + 
+# ------------------------------
+# combine common keywords
+
+library(forcats)
+software_keywords <- software_keywords %>%
+  mutate(keyword2 = fct_recode(keyword,
+            "R" = " R ",
+            "R" = "R-project" ,
+            "R" = "R project",
+            "SAS" = "SAS Institute",
+            'SPSS' = "SPSS Statistics",
+            'HLM' = 'HLM[0-9]',
+            'HLM' = 'HLM [0-9]',
+            'Other' = '[:alpha:] package',
+            'Other' = 'BILOG',
+            'Other' = 'IRT PRO',
+            'Other' = 'Java',
+            'Other' = 'MATLAB', 
+            'Other' = 'Multilog',
+            'Other' = 'PARSCALE',
+            'Other' = 'Scala',
+            'Other' = 'Statistica '
+                               ))
+
+# plot unique keyword counts by journal
+count_keyword <- software_keywords %>%
+  select(ID, journal, keyword2) %>%
+  distinct() %>%
+  group_by(journal, keyword2) %>%
+  count()
+
+
+ggplot(count_keyword, aes(x = keyword2, y = n)) + 
   geom_bar(stat = 'identity') +
   theme_bw() + 
+  xlab("Keyword") + 
+  ylab("Count") + 
   coord_flip() + 
-  xlab("Count") + 
-  ylab("Keyword") + 
   facet_wrap(~ journal)
 
 # look at trends by year
 count_year <- software_keywords %>%
-  select(ID, journal, keyword, year) %>%
+  select(ID, journal, keyword2, year) %>%
   distinct() %>%
-  group_by(year, keyword) %>%
+  group_by(year, keyword2) %>%
   count()
 
-ggplot(count_year, aes(x = keyword, y = n)) + 
+ggplot(count_year, aes(x = keyword2, y = n)) + 
   geom_bar(stat = 'identity') +
   theme_bw() + 
   coord_flip() + 
-  xlab("Count") + 
-  ylab("Keyword")
+  ylab("Count") + 
+  xlab("Keyword")
 
-ggplot(count_year, aes(x = keyword, y = n)) + 
+ggplot(count_year, aes(x = keyword2, y = n)) + 
   geom_bar(stat = 'identity') +
   theme_bw() + 
   coord_flip() + 

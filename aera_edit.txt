@@ -1,0 +1,29 @@
+AERA Software
+-------------------------
+Motivation Ideas:
+* disentangle the idea that the limitation is a limitation of the software
+* Analyses that are reproducible
+* Look for what APA manual says regarding reporting software
+* 
+
+Pull IRT programs
+
+Future Additions
+* Add in bayesian search terms for software.
+* Include details about what will be included by AERA.
+
+
+Future  Papers
+----------------------
+Measurement proposal to NCME
+- IRT programs
+- DIF programs/methods (logistic, raju, ...)
+- Scaling/Equating
+
+
+Methodological Papers
+- Data generation
+- Design
+- Software
+- Inferential vs descriptive
+
