@@ -125,6 +125,12 @@ jour_art %>%
                 full_width = F)
 ```
 
+```{r pdf_time, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of PDFs obtained by journal and year."}
+source("code/bibtex_processing.r")
+```
+
+
+
 Figure \@ref(fig:count-software) shows the statistical software matches across all articles in the preliminary sample. SAS and SPSS had the most matches across these three journals. Other more specialized software for structural equation modeling or HLM follow SAS and SPSS. Surprisingly, R was toward the bottom of the list based on the preliminary sample of three journals.
 
 ```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of articles with at least one model or software keyword by journals."}
@@ -339,16 +345,24 @@ ggplot(dplyr::filter(count_keyword, group == 'model'),
 
 ```{r software_year_at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year"}}
 num_articles <- keywords_nor %>%
-  group_by(group, year, journal) %>%
+  group_by(group, year, journal, keyword2) %>%
   summarise(num_ids = length(unique(ID))) %>%
-  left_join(jour_art, by = 'journal') %>%
-  mutate(percent_keyword = num_ids / num_pdfs) %>%
-  spread()
+  ungroup() %>%
+  mutate(year = as.numeric(year)) %>%
+  left_join(filter(num_year, pdf == 'yes'), by = c('journal', 'year' = 'YEAR')) %>%
+  mutate(prop_keyword = num_ids / num,
+         perc_keyword = round(prop_keyword * 100, 1)) %>%
+  select(group, year, keyword2, perc_keyword) %>%
+  group_by(group, year, keyword2) %>%
+  summarise(perc_keyword = mean(perc_keyword))
+  
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-library(slopegraph)
-ggslopegraph()
+ggplot(num_articles, aes(x = year, y = perc_keyword)) + 
+  geom_line() + 
+  theme_bw() + 
+  geom_text(aes(x = year, y = perc_keyword, label = perc_keyword))
 ```
 
 
