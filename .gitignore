@@ -258,5 +258,14 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# do not track output files
+*.pdf
+*.docx
+*.html
+
+# do not track reveal.js
+reveal.js/*
+
+
 # End of https://www.gitignore.io/api/r,latex
 .Rproj.user

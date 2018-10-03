@@ -1,0 +1,531 @@
+---
+title: "Evolution of Statistical Software and Quantitative Methods"
+author: "Brandon LeBeau & Ariel M. Aloe"
+date: "July 31, 2018"
+output:
+  revealjs::revealjs_presentation:
+    theme: simple
+    highlight: pygments
+    transition: fade
+    mathjax: null
+    slide_level: 1
+    includes:
+      in_header: custom.css
+    reveal_options:
+      slideNumber: true
+      conrols: false
+---
+
+```{r setup_chunks, echo = FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.cap = NULL) 
+```
+
+# Rationale
+
+- Extension of work done by Robert Muenchen (http://r4stats.com/articles/popularity/). 
+    + Focus is on statistical software
+    + Addition of quantitative methods
+    + Particularly interested in the interaction.
+- Questions of Interest:
+    + Exploring which software is popular in published research. 
+    + How many empirical analyses cite software?
+    + Any patterns in software use with quantitative methods?
+
+# Methods
+- Research synthesis methods were used
+- Web of Knowledge was used to pull in citations for 12 social science journals
+    - 1995 to 2018
+- EndNote's "Find Text" feature was used to pull in PDFs of all articles from the journals
+- `pdfsearch` R package was used to perform keyword searching.
+
+# Software Keywords
+
+| Keyword Group | Keywords | 
+|---------------|----------|
+| AMOS          | AMOS     |
+| IRT           | BILOG; BILOG-MG; IRT PRO; MULTILOG; PARSCALE | 
+| R             | CRAN; R-project; R Project; R Core Team; R software; RStudio | 
+| HLM           | HLM [0-9]; HLM[0-9] | 
+| Java          | Java  |
+| SAS           | SAS; SAS Institute; JMP |
+| LISREL        | LISREL |
+| Mplus         | Mplus; M-Plus |
+| Python        | Python |
+| SPSS          | SPSS; SPSS Statistics | 
+| STATA         | STATA |
+| Other         | Matlab; Scala; Systat; Statistica; Tableau; Minitab |
+
+# Method Keywords 
+
+| Keyword Group | Keywords | 
+|---------------|----------|
+| ANOVA         | Analysis of Variance; ANOVA; Analysis of Covariance; ANCOVA; MANOVA; Multivariate Analysis of Variance; Repeated Measures Analysis of Variance; RM-ANOVA | 
+| IRT           | IRT; Item Response Theory |
+| CFA           | CFA; Confirmatory Factor Analysis |
+| Chi-Square    | Chi-square( analysis)?; Nonparametric Analysis | 
+| Cluster Analysis | Cluster Analysis; Hierarchical Cluster Analysis | 
+| t-test        | Dependent Samples t-test; one-sample t-test; two-sample t-test | 
+| EFA           | EFA; Exploratory Factor Analysis | 
+| GAM           | GAM; Generalized additive models | 
+
+
+# Method Keywords Continued
+
+| Keyword Group | Keywords | 
+|---------------|----------|
+| Linear Mixed Model | LMM; HLM; Multilevel Model; Multi-level Model; Hierarchical Linear Model; General(ized)? Linear Mixed Model | 
+| Linear Model | Linear Regression; Multiple Linear Regression; Multiple Regression; General(ized)? Linear Model |
+| Growth       | Growth Model; Latent Growth Model; LGM | 
+| SEM          | Latent Variable Modeling; SEM; Structural Equation Modeling | 
+| Logistic Regression | Logistic Regression; Multinomial Regression; Multinomial Logistic Regression; Ordinal Regression | 
+| meta-analysis | meta-analysis; meta analysis |
+| Non-Linear Regression | Non-Linear Regression; Nonlinear Regression |
+| Propensity Score | Propensity Score Analysis; Propensity score matching |
+
+```{r setup, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE}
+# load in journal keyword data
+
+# Names are: keyword_results_* where * is journal abbreviation
+
+load('data/keyword_aej_ae.rda')
+load('data/keyword_aerj.rda')
+load('data/keyword_am_j_pol_sci.rda')
+load('data/keyword_eepa.rda')
+load('data/keyword_ej.rda')
+load('data/keyword_er.rda')
+load('data/keyword_he.rda')
+load('data/keyword_jee.rda')
+load('data/keyword_pol_sci_quar.rda')
+load('data/keyword_pub_policy_admin.rda')
+load('data/keyword_public_policy.rda')
+load('data/keyword_SE.rda')
+# combine
+library(dplyr)
+
+software_keywords <- bind_rows(
+  keyword_results_aej_ae,
+  keyword_results_aerj, 
+  keyword_results_am_j_pol_sci,
+  keyword_results_eepa, 
+  keyword_results_ej,
+  keyword_results_er,
+  keyword_results_he,
+  keyword_results_jee,
+  keyword_results_pol_sci_quar,
+  keyword_results_pub_policy_admin,
+  keyword_results_public_policy,
+  keyword_results_SE
+) %>%
+  mutate(group = 'software')
+
+# Model Keywords ----
+load('data/keyword_aej_ae_model.rda')
+load('data/keyword_aerj_model.rda')
+load('data/keyword_am_j_pol_sci_model.rda')
+load('data/keyword_eepa_model.rda')
+load('data/keyword_ej_model.rda')
+load('data/keyword_er_model.rda')
+load('data/keyword_he_model.rda')
+load('data/keyword_jee_model.rda')
+load('data/keyword_pol_sci_quar_model.rda')
+load('data/keyword_pub_policy_admin_model.rda')
+load('data/keyword_public_policy_model.rda')
+load('data/keyword_SE_model.rda')
+
+# combine
+model_keywords <- bind_rows(
+  keyword_results_aej_ae,
+  keyword_results_aerj, 
+  keyword_results_am_j_pol_sci,
+  keyword_results_eepa, 
+  keyword_results_ej,
+  keyword_results_er,
+  keyword_results_he,
+  keyword_results_jee,
+  keyword_results_pol_sci_quar,
+  keyword_results_pub_policy_admin,
+  keyword_results_public_policy,
+  keyword_results_SE
+) %>%
+  mutate(group = 'model')
+
+# bind rows together ----
+keywords <- bind_rows(software_keywords, model_keywords) %>%
+  select(journal, everything()) %>%
+  arrange(journal, pdf_name)
+
+# extract year from pdf_name
+mat <- regexpr("-[0-9]{4}-", keywords$pdf_name)
+
+keywords <- keywords %>%
+  mutate(year2 = regmatches(keywords$pdf_name, mat), 
+         year = gsub("-", "", year2))
+
+# number of articles gathered by journal -----
+jour_art <- data.frame(
+  journal = c('aej_ae', 'AERJ', 'am_j_pol_sci', 'EEPA',
+              'ej', 'er', 'he', 'JEE', 'pol_sci_quar',
+              'pub_policy_admin', 'public_policy',
+              'SE'),
+  num_pdfs = c(234, 444, 922, 188, 
+               1829, 742, 1914, 517, 2722,
+               83, 27, 261),
+  total_articles = c(364, 444, 1436, 405,
+                     3376, 794, 1914, 525, 3589,
+                     83, 180, 453),
+  journal2 = c('Am. Econ', 'AERJ', 'Am. J. Pol Sci', 'EEPA',
+               'Econ. J.', 'Educ. Researcher', 'Higher Educ.',
+               'J. Exp. Educ.', 'Pol. Sci. Quar', 
+               'Pub. Policy Admin', 'J. Pub. Policy', 
+               'Soc. of Educ.')
+) %>% 
+  mutate(perc_pdf = num_pdfs / total_articles)
+```
+
+# Journals and Number of Articles
+
+```{r num_journals, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(forcats)
+ggplot(jour_art, aes(x = fct_reorder(journal2, perc_pdf), 
+                     y = I(perc_pdf*100))) + 
+  geom_bar(stat = 'identity') + 
+  geom_text(aes(label = num_pdfs), size = 7, 
+            hjust = 2, color = 'white') + 
+  theme_bw(base_size = 18) + 
+  coord_flip() + 
+  xlab("Journals") + 
+  ylab("Percent of PDFs found")
+```
+
+# Articles with at least one match
+
+```{r output, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE}
+# merge back into data
+keywords <- keywords %>%
+  left_join(jour_art, by =)
+
+# Remove ' R ' keyword ----
+keywords_nor <- keywords %>%
+  filter(keyword != ' R ', keyword != '[:alpha:] package',
+         keyword != 'Julia', keyword != 'eta-analysis', keyword != 'Regression')
+  
+# Descriptive statistics ----
+# number of artcles with software/model mentioned
+num_articles <- keywords_nor %>%
+  group_by(group, journal) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+
+ggplot(num_articles, aes(x = fct_reorder(journal2, percent_keyword), 
+                         y = I(percent_keyword * 100))) + 
+  geom_bar(stat = 'identity') + 
+  theme_bw(base_size = 18) + 
+  coord_flip() + 
+  xlab("Journals") + 
+  ylab("Percent with a keyword match") + 
+  facet_wrap(~ group)
+```
+
+# Software Keywords
+
+```{r software_keywords, echo = FALSE, error = FALSE, warning = FALSE, message = FALSE}
+
+# plot unique keyword counts by journal
+count_keyword <- keywords_nor %>%
+  group_by(group, journal, keyword) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+# 
+# library(ggplot2)
+# ggplot(count_keyword, aes(x = keyword, y = n)) + 
+#   geom_bar(stat = 'identity') +
+#   theme_bw() + 
+#   coord_flip() + 
+#   ylab("Count") + 
+#   xlab("Keyword")
+
+# ------------------------------
+# combine common keywords
+
+library(forcats)
+keywords_nor <- keywords_nor %>%
+  mutate(keyword2 = fct_recode(keyword,
+                               "R" = "R-project" ,
+                               "R" = "R project",
+                               "R" = "CRAN",
+                               "R" = "R core team",
+                               "R" = "R software",
+                               "R" = "RStudio",
+                               "SAS" = "SAS Institute",
+                               "SAS" = "JMP",
+                               'SPSS' = "SPSS Statistics",
+                               'HLM' = 'HLM[0-9]',
+                               'HLM' = 'HLM [0-9]',
+                               'IRT' = 'BILOG',
+                               'IRT' = 'BILOG-MG',
+                               'IRT' = 'IRT PRO',
+                               'Other' = 'MATLAB',
+                               'Mplus' = 'M-Plus',
+                               'IRT' = 'Multilog',
+                               'IRT' = 'PARSCALE',
+                               'Other' = 'Scala',
+                               'Other' = 'Statistica ',
+                               'Other' = 'Systat',
+                               'Other' = 'Minitab',
+                               'Other' = 'Tableau',
+                               # Model recode
+                               'ANOVA' = 'Analysis of Covariance',
+                               'ANOVA' = 'Analysis of Variance',
+                               'ANOVA' = 'ANCOVA',
+                               'ANOVA' = 'repeated measures analysis of variance',
+                               'ANOVA' = 'MANOVA',
+                               'ANOVA' = 'RM-ANOVA',
+                               'ANOVA' = 'multivariate analysis of variance',
+                               'CFA' = 'confirmatory factor analysis',
+                               'EFA' = 'exploratory factor analysis',
+                               'GAM' = 'generalized additive models',
+                               'Cluster Analysis' = 'hierarchical cluster analysis',
+                               'Cluster Analysis' = 'cluster analysis',
+                               'Chi-Square' = 'chi-square( analysis)?',
+                               'Chi-Square' = 'nonparametric analysis',
+                               't-test' = 'dependent samples t-test',
+                               't-test' = 'one-sample t-test',
+                               't-test' = 'two-sample t-test',
+                               't-test' = 'two sample t-test',
+                               'SEM' = 'structural equation modeling',
+                               'SEM' = 'latent variable modeling',
+                               'Meta-Analysis' = 'meta analysis',
+                               'Meta-Analysis' = 'meta-analysis',
+                               'Growth' = 'growth model',
+                               'Growth' = 'latent growth model',
+                               'Growth' = 'LGM',
+                               'Linear Mixed Model' = 'HLM',
+                               'Linear Mixed Model' = 'Hierarchical Linear Model',
+                               'Linear Mixed Model' = 'LMM',
+                               'Linear Mixed Model' = 'Multi-level Model',
+                               'Linear Mixed Model' = 'Multilevel Model',
+                               'Linear Mixed Model' = 'general(ized)? linear mixed model',                               'Linear Model' = 'general(ized)? linear model',
+                               'Linear Model' = 'linear regression',
+                               'Linear Model' = 'multiple regression',
+                               'Linear Model' = 'multiple linear regression',
+                               'IRT' = 'item response theory',
+                               'Propensity Score' = 'propensity score analysis',
+                               'Propensity Score' = 'propensity score matching',
+                               'Logistic Regression' = 'multinomial logistic regression',
+                               'Logistic Regression' = 'multinomial regression',
+                               'Logistic Regression' = 'logistic regression',
+                               'Logistic Regression' = 'ordinal regression',
+                               'Non-Linear Regression' = 'nonlinear regression',
+                               'Non-Linear Regression' = 'non-linear regression'
+  ))
+
+# plot unique keyword counts by journal
+count_keyword <- keywords_nor %>%
+  group_by(group, journal2, keyword2) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+
+ggplot(dplyr::filter(count_keyword, group == 'software'), 
+       aes(x = fct_reorder(keyword2, percent_keyword), 
+           y = I(percent_keyword*100))) + 
+  geom_bar(stat = 'identity') +
+  theme_bw(base_size = 18) + 
+  xlab("Keyword") + 
+  ylab("Percentage") + 
+  coord_flip() + 
+  facet_wrap(~ journal2)
+```
+
+# Method Keywords
+
+```{r model_keywords, echo = FALSE, error = FALSE, warning = FALSE, message = FALSE}
+ggplot(dplyr::filter(count_keyword, group == 'model', 
+                     keyword2 != 'Cluster Analysis', keyword2 != 'GAM',
+                     keyword2 != 'Non-Linear Regression',
+                     keyword2 != 't-test'), 
+       aes(x = fct_reorder(keyword2, percent_keyword), 
+           y = I(percent_keyword*100))) + 
+  geom_bar(stat = 'identity') +
+  theme_bw(base_size = 18) + 
+  xlab("Keyword") + 
+  ylab("Percentage") + 
+  coord_flip() + 
+  facet_wrap(~ journal2)
+```
+
+```{r setup2, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE}
+# spread data to wide for tile plot
+keyword_fj <- full_join(software_keywords,
+                        model_keywords,
+                        by = c('pdf_name', 'journal')) %>%
+  left_join(jour_art) %>%
+  filter(keyword.x != ' R ', keyword.x != '[:alpha:] package',
+         keyword.x != 'Julia', keyword.x != 'eta-analysis', 
+         keyword.y != 'Regression') %>%
+  mutate(keyword2.x = fct_recode(keyword.x,
+                               "R" = "R-project" ,
+                               "R" = "R project",
+                               "R" = "CRAN",
+                               "R" = "R core team",
+                               "R" = "R software",
+                               "R" = "RStudio",
+                               "SAS" = "SAS Institute",
+                               "SAS" = "JMP",
+                               'SPSS' = "SPSS Statistics",
+                               'HLM' = 'HLM[0-9]',
+                               'HLM' = 'HLM [0-9]',
+                               'IRT' = 'BILOG',
+                               'IRT' = 'BILOG-MG',
+                               'IRT' = 'IRT PRO',
+                               'Other' = 'MATLAB',
+                                'Other' = 'Minitab',
+                               'Other' = 'Tableau',
+                               'Mplus' = 'M-Plus',
+                               'IRT' = 'Multilog',
+                               'IRT' = 'PARSCALE',
+                               'Other' = 'Scala',
+                               'Other' = 'Statistica ',
+                               'Other' = 'Systat'),
+         keyword2.y = fct_recode(keyword.y,
+                               # Model recode
+                               'ANOVA' = 'Analysis of Covariance',
+                               'ANOVA' = 'Analysis of Variance',
+                               'ANOVA' = 'ANCOVA',
+                               'ANOVA' = 'repeated measures analysis of variance',
+                               'ANOVA' = 'MANOVA',
+                               'ANOVA' = 'RM-ANOVA',
+                               'ANOVA' = 'multivariate analysis of variance',
+                               'CFA' = 'confirmatory factor analysis',
+                               'EFA' = 'exploratory factor analysis',
+                               'GAM' = 'generalized additive models',
+                               'Cluster Analysis' = 'hierarchical cluster analysis',
+                               'Cluster Analysis' = 'cluster analysis',
+                               'Chi-Square' = 'chi-square( analysis)?',
+                               'Chi-Square' = 'nonparametric analysis',
+                               't-test' = 'dependent samples t-test',
+                               't-test' = 'one-sample t-test',
+                               't-test' = 'two-sample t-test',
+                               't-test' = 'two sample t-test',
+                               'SEM' = 'structural equation modeling',
+                               'SEM' = 'latent variable modeling',
+                               'Meta-Analysis' = 'meta analysis',
+                               'Meta-Analysis' = 'meta-analysis',
+                               'Growth' = 'growth model',
+                               'Growth' = 'latent growth model',
+                               'Growth' = 'LGM',
+                               'Linear Mixed Model' = 'HLM',
+                               'Linear Mixed Model' = 'Hierarchical Linear Model',
+                               'Linear Mixed Model' = 'LMM',
+                               'Linear Mixed Model' = 'Multi-level Model',
+                               'Linear Mixed Model' = 'Multilevel Model',
+                               'Linear Mixed Model' = 'general(ized)? linear mixed model',                               'Linear Model' = 'general(ized)? linear model',
+                               'Linear Model' = 'linear regression',
+                               'Linear Model' = 'multiple regression',
+                               'Linear Model' = 'multiple linear regression',
+                               'IRT' = 'item response theory',
+                               'Propensity Score' = 'propensity score analysis',
+                               'Propensity Score' = 'propensity score matching',
+                               'Logistic Regression' = 'multinomial logistic regression',
+                               'Logistic Regression' = 'multinomial regression',
+                               'Logistic Regression' = 'logistic regression',
+                               'Logistic Regression' = 'ordinal regression',
+                               'Non-Linear Regression' = 'nonlinear regression',
+                               'Non-Linear Regression' = 'non-linear regression'
+  ))
+
+# extract year from pdf_name
+mat <- regexpr("-[0-9]{4}-", keyword_fj$pdf_name)
+
+keyword_fj <- keyword_fj %>%
+  mutate(year2 = regmatches(keyword_fj$pdf_name, mat), 
+         year = gsub("-", "", year2))
+```
+
+# Software and Methods
+
+```{r output3, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE}
+count_keyword <- keyword_fj %>%
+  group_by(journal2, keyword2.x, keyword2.y) %>%
+  summarise(num_ids = length(unique(pdf_name))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+
+# library(gganimate)
+library(viridis)
+# library(d3heatmap)
+ggplot(count_keyword, aes(x = keyword2.x, y = keyword2.y)) + 
+  geom_raster(aes(fill = percent_keyword)) + 
+  xlab("Software") +
+  ylab("Models") +
+  theme_bw(base_size = 18) + 
+  scale_fill_viridis('Prop')
+# plotly::ggplotly(p)
+  # scale_fill_gradient('Percent')
+  # labs(title = 'Journal: {frame_states}', x = 'Software', 
+  #      y = 'Models') +
+  # transition_states(journal2,
+  #                   transition_length = 2,
+  #                   state_length = 1)
+```
+
+# Software over Time
+
+```{r software_time, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
+# look at trends by year
+# plot unique keyword counts by journal
+# plot unique keyword counts by journal
+count_keyword <- keywords_nor %>%
+  group_by(group, year, journal2, keyword2) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(percent_keyword = num_ids / num_pdfs) %>%
+  group_by(group, year, keyword2) %>%
+  summarise(Proportion = mean(percent_keyword))
+
+count_software <- filter(count_keyword, group == 'software')
+count_software$keyword2 <- fct_drop(count_software$keyword2) 
+count_software <- count_software %>%
+  tidyr::complete(year, keyword2) %>%
+  mutate(Proportion = ifelse(is.na(Proportion), 0, Proportion))
+
+library(highcharter)
+
+hchart(count_software, "line", hcaes(x = year, y = Proportion, group = keyword2))
+  # hc_yaxis(title = list(text = "Proportion"),
+  #          showLastLabel = FALSE) %>%
+  # hc_legend(align = "right", verticalAlign = "top",
+  #           layout = "vertical", x = 0, y = 100)
+
+
+# ggplot(count_model, 
+#        aes(y = keyword2, 
+#            x = percent_keyword)) + 
+#   geom_point(size = 4) +
+#   theme_bw() + 
+#   xlab("Journal") + 
+#   ylab("Keyword") +
+#   labs(title = 'Year: {frame_time}') +
+#   transition_time(year2) + 
+#   ease_aes('linear')
+```
+
+# Model over Time
+
+
+```{r model_time, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE, results = 'asis'}
+count_model <- filter(count_keyword, group == 'model')
+count_model$keyword2 <- fct_drop(count_model$keyword2) 
+count_model <- count_model %>%
+  tidyr::complete(year, keyword2) %>%
+  mutate(Proportion = ifelse(is.na(Proportion), 0, Proportion))
+
+library(highcharter)
+
+hchart(count_model, "line", hcaes(x = year, y = Proportion, group = keyword2))
+
+```
+

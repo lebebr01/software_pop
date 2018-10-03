@@ -36,7 +36,6 @@ output            : papaja::apa6_pdf
 
 ```{r rootdir, echo = FALSE}
 knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
-knitr::opts_knit$set(root.dir = "C:/Users/lebeb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
 ```
 
 # Objectives
@@ -64,20 +63,23 @@ Research synthesis methods [@cooper2016] will be used to explore the evolution o
 
 The research synthesis will gather data from a handful of education journals that primarily publish empirical data analysis. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Therefore the following journals were selected to be searched from 1995 onward:
 
+* American Economic Journal (AEJ)
 * American Educational Research Journal (AERJ)
-* Educational Researcher (ER)
+* American Journal of Political Science (AJPS)
+* Economic Journal (EJ)
 * Educational Evaluation and Policy Analysis (EEPA)
+* Educational Researcher (ER)
 * Higher Education (HE)
-* Journal of Educational Psychology (JEP)
 * Journal of Experimental Education (JEE)
-* Journal of Teacher Education (JTE)
-* Journal for Research in Mathematics Education (JRME)
+* Journal of Public Policy (JPP)
+* Political Science Quarterly (PSQ)
+* Public Policy Administration (PPA)
 * Sociology of Education (SE)
 
 # Data and Software
-All journal articles published between 1995 through 2016 will be organized into EndNote. Within EndNote, the find pdf feature will be used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch; @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords). Table \@ref(tab:searchwords) also shows keywords to be used to search for statistical models and estimation methods.
+All journal articles published between 1995 through the middle of 2018 will be organized into EndNote. Within EndNote, the find pdf feature will be used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch; @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords). Table \@ref(tab:searchwords) also shows keywords to be used to search for statistical models and estimation methods.
 
-A handful of articles will be randomly selected to be coded manually by reading the document to evaluate the accuracy of coding from the *pdfsearch* package. 
+A handful of articles will be randomly selected to be coded manually by reading the document to evaluate the accuracy of coding using the *pdfsearch* package. 
 
 # Initial Results
 

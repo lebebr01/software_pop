@@ -1,0 +1,499 @@
+---
+title         : "Evolution of Statistical Software and Quantitative Methods"
+shorttitle    : "Evolution Software and Methods"
+
+author: 
+  - name      : "Brandon LeBeau"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Psychological and Quantitative Foundations, University of Iowa, Iowa City, IA 52245"
+    email         : "brandon-lebeau@uiowa.edu"
+  - name      : "Ariel M. Aloe"
+    affiliation   : "1"
+affiliation       :
+  - id            : "1"
+    institution   : "University of Iowa"
+
+abstract: > 
+  Statistical software is the enabling tool of quantitative research studies and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g. R), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. This paper aims to explore the evolution of statistical software within social science research using a research synthesis to establish the state of affairs.
+
+keywords: "Research Synthesis, Statistical Software, Quantitative Methods"
+wordcount: 
+  
+bibliography      : ["master.bib"]
+
+figsintext        : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : no
+linkcolor         : "blue"
+
+lang              : "english"
+class             : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r rootdir, echo = FALSE}
+knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
+```
+
+# Objectives
+The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage over time in education. As this usage is likely tied closely to the methods they are employed, the interaction between software usage and quantitative research methods will also be explored. Research synthesis methods [@cooper2016] will be used to explore these trends over time in published social science research journals. 
+
+# Theoretical Framework
+Statistical software is the enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. Moreover, casual users of statistics software may not distinguish between the limitations of the models and the limitations of the software. In addition, the user-friendly nature of software (i.e., point and click graphical interfaces, ability to manipulate data by hand) also can severely limit the ability for research to be reproducible; a recent topic of intense discussion in biostatistics, medicine, and pyschology [@asendorpf2013; @ioannidis2014; @iqbal2016; @peng2009; @peng2011; @stodden2012]. The reproducibility crisis has pointed the finger at statistical software more directly with a strong push in some disciplines for analyses to be script (i.e., source code) based and posted with the published journal article, often described as the gold standard.
+
+This idea of reproducibility has not seemed to fully enter the social science research domain. SPSS is likely the most common statistical software program used in many social science research domains, particularly education. Although SPSS has many common and advanced statistical techniques and it is possible to have a reproducible analysis, the default behavior within this program is often not script based and can create bad habits (i.e., editing raw data directly in the gui interface, running analyses without saving a script, etc.). Statistical software that is primarily command line, programs such as R or Python, offer easier reproducible frameworks as all data manipulations or analyses are saved in scripts that can be re-ran in the future. A data script can be thought of as a cockpit flight recorder in which every single step that was done to the original data going from data collection to final tables and figures was script based. Under a reproducible framework, the raw data are never altered directly, they should always be altered programmatically through a script. This keeps a log of the data manipulations that happened in the data analysis cycle. For example, R has packages that aid in the ability to create living data documents that contain text and analysis code within a single document [see @rmarkdown; @knitr; @knitrmanual].
+
+The reproducible analysis framework has many advantages, including a transparent analysis process that could be validated by others or even simply the ability to investigate the data analysis completed months or years previously. Unfortunately, the current academic research framework has many barriers that limit the reproducibility. First, applied researchers may not be users of primarily command line or script based statistical software. This limits the ability to create a reproducible framework from the start. Secondly, researchers are not incentivized to conduct an analysis in a reproducible framework. Namely, the publish or perish aspect of academic research limits the sharing of statistical code partly due to the increased chance of criticism upon evaluation of the code used for the analysis. Finally, many journals and even the American Psychological Association (APA) publication manual [@apa] states that common software or programming languages need not be cited. This could even be interpretted by some as not needing to mention. Unfortunately, if the software used for a data analysis is not reported, the ability to recreate the analysis drops even more due to differences in estimation, handling of missing data, or other software specific settings. 
+
+This paper aims to explore the state of affairs in statistical software usage in education. Particular attention will be made to which software is currently being used in published social science research as well as how this has changed over the last twenty years. Secondly, this paper also aims to explore how frequently open-source software tools are used and to explore evidence of reproducible analysis framework being implemented. These aims will be explored using research synthesis methods.
+
+## Research Questions
+1. To what extent has the statistical software usage shifted over time in published analyses?
+    + If there is evidence of a shift, is there evidence this shift differs based on quantitative method or journal?
+2. To what extent are published analyses citing statistical software?
+    + Has this changed over time and across journals?
+3. To what extent are open-source software tools used?
+    + Is there evidence of reproducible analyses being employed?
+
+# Methods
+Research synthesis methods [@cooper2016] will be used to explore the evolution of statistical software and quantitative methods in social science research. More specifically, the statistical software used for the analysis will be coded in additional to the specific quantitative methods (i.e. linear regression, hierarchical linear model, etc.). Additional meta data will also be coded including, journal, article title, author information, article keywords, year published, and any mention of supplementary materials. This information will be used to explore descriptive trends in the data over time, by journals, and methods.
+
+The research synthesis will gather data from a handful of education journals that primarily publish empirical data analysis. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Therefore the following journals were selected to be searched from 1995 onward:
+
+* American Economic Journal (AEJ)
+* American Educational Research Journal (AERJ)
+* American Journal of Political Science (AJPS)
+* Economic Journal (EJ)
+* Educational Evaluation and Policy Analysis (EEPA)
+* Educational Researcher (ER)
+* Higher Education (HE)
+* Journal of Experimental Education (JEE)
+* Journal of Public Policy (JPP)
+* Political Science Quarterly (PSQ)
+* Public Policy Administration (PPA)
+* Sociology of Education (SE)
+
+## Data and Software
+All journal articles published between 1995 through the middle of 2018 will be organized into EndNote. Within EndNote, the find pdf feature will be used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch; @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords). Table \@ref(tab:searchwords) also shows keywords to be used to search for statistical models and estimation methods. A handful of articles will be randomly selected to be coded manually by reading the document to evaluate the accuracy of coding using the *pdfsearch* package. 
+
+Additional metadata obtained from journal articles will be obtained and combined with the keyword searching data. This metadata will contain information such as, year of publication, publication keywords, author information, and other article metadata obtained from EndNote. These data will be used to further enhance the keyword search data obtained from the *pdfsearch* package and the subsequent analyses discussed in the next section.
+
+## Analysis
+Descriptive analyses will be performed on the research synthesis data obtained from keyword searching performed with the *pdfsearch* package. Initial exploration will focus on software and statistical models and estimation methods separately. Subsequent descriptive analyses will be performed to explore the if there are any intereactions between software and statistical models used in published research. All of these analyses will be performed over time to explore trends in software and statistical model usage and citation rates. 
+
+# Results
+
+To illustrate preliminary results, published journal articles between the year 2000 and 2014 for AERJ, EEPA, and JEE were obtained and the software keyword search was performed with the *pdfsearch* package. Table \@ref(tab:setup) reports the number of unique published articles for each journal that contained at least one software match. The table shows that many published journal articles do not list the software used for the analysis. Some of this may be due to the APA publication manual stating that "reference entries are not necessary for standrad software and programming languages... and even SAS and SPSS" [@apa, p. 210]. If the goal of analyses are to be transparent and reproducible, this practice should be improved upon. The larger percentage of articles returning a match for JEE may be due to this journal serving a dual role, part methodological part applied analysis. Methodological articles may be more likely to state which statistical program was used to perform the simulation or which language a new algorithm was implemented in.
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, results='asis'}
+# number of articles gathered by journal -----
+library(dplyr)
+
+jour_art <- data.frame(
+  journal = c('aej_ae', 'AERJ', 'am_j_pol_sci', 'EEPA',
+              'ej', 'er', 'he', 'JEE', 'pol_sci_quar',
+              'pub_policy_admin', 'public_policy',
+              'SE'),
+  num_pdfs = c(363, 444, 922, 188, 
+               1829, 742, 1914, 517, 2722,
+               83, 27, 261),
+  total_articles = c(364, 444, 1436, 405,
+                     3376, 794, 1914, 525, 3589,
+                     83, 180, 453),
+  journal2 = c('AEJ', 'AERJ', 'AJPS', 'EEPA',
+               'EJ', 'ER', 'HE',
+               'JEE', 'PSQ', 
+               'PPA', 'JPP', 
+               'SE')
+) %>% 
+  mutate(perc_pdf = round((num_pdfs / total_articles)*100, 1))
+
+# explore number of articles with a match for each journal
+# AERJ: 443 Articles
+# EEPA: 188 Articles
+# JEE: 208 Articles
+library(knitr)
+library(kableExtra)
+
+jour_art %>%
+  select(Journal = journal2, 'Number of PDFs' = num_pdfs, 'Total Possible Articles' = total_articles, 'Percent PDFs Obtained' = perc_pdf) %>%
+  kable(booktabs = TRUE, caption = 'EndNote success rate of obtaining article PDf by journal.') %>%
+  kable_styling(latex_options = c("hold_position"),
+                full_width = F)
+```
+
+Figure \@ref(fig:count-software) shows the statistical software matches across all articles in the preliminary sample. SAS and SPSS had the most matches across these three journals. Other more specialized software for structural equation modeling or HLM follow SAS and SPSS. Surprisingly, R was toward the bottom of the list based on the preliminary sample of three journals.
+
+```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of articles with at least one model or software keyword by journals."}
+# load in journal keyword data
+
+# Names are: keyword_results_* where * is journal abbreviation
+
+load('data/keyword_aej_ae_v2.rda')
+load('data/keyword_aerj_v2.rda')
+load('data/keyword_am_j_pol_sci_v2.rda')
+load('data/keyword_eepa_v2.rda')
+load('data/keyword_ej_v2.rda')
+load('data/keyword_er_v2.rda')
+load('data/keyword_he_v2.rda')
+load('data/keyword_jee_v2.rda')
+load('data/keyword_pol_sci_quar_v2.rda')
+load('data/keyword_pub_policy_admin_v2.rda')
+load('data/keyword_public_policy_v2.rda')
+load('data/keyword_SE_v2.rda')
+# combine
+library(dplyr)
+
+software_keywords <- bind_rows(
+  keyword_results_aej_ae,
+  keyword_results_aerj, 
+  keyword_results_am_j_pol_sci,
+  keyword_results_eepa, 
+  keyword_results_ej,
+  keyword_results_er,
+  keyword_results_he,
+  keyword_results_jee,
+  keyword_results_pol_sci_quar,
+  keyword_results_pub_policy_admin,
+  keyword_results_public_policy,
+  keyword_results_SE
+) %>%
+  mutate(group = 'software')
+
+# Model Keywords ----
+load('data/keyword_aej_ae_model_v2.rda')
+load('data/keyword_aerj_model_v2.rda')
+load('data/keyword_am_j_pol_sci_model_v2.rda')
+load('data/keyword_eepa_model_v2.rda')
+load('data/keyword_ej_model_v2.rda')
+load('data/keyword_er_model_v2.rda')
+load('data/keyword_he_model_v2.rda')
+load('data/keyword_jee_model_v2.rda')
+load('data/keyword_pol_sci_quar_model_v2.rda')
+load('data/keyword_pub_policy_admin_model_v2.rda')
+load('data/keyword_public_policy_model_v2.rda')
+load('data/keyword_SE_model_v2.rda')
+
+# combine
+model_keywords <- bind_rows(
+  keyword_results_aej_ae,
+  keyword_results_aerj, 
+  keyword_results_am_j_pol_sci,
+  keyword_results_eepa, 
+  keyword_results_ej,
+  keyword_results_er,
+  keyword_results_he,
+  keyword_results_jee,
+  keyword_results_pol_sci_quar,
+  keyword_results_pub_policy_admin,
+  keyword_results_public_policy,
+  keyword_results_SE
+) %>%
+  mutate(group = 'model')
+
+# bind rows together ----
+keywords <- bind_rows(software_keywords, model_keywords) %>%
+  select(journal, everything()) %>%
+  arrange(journal, pdf_name)
+
+# extract year from pdf_name
+mat <- regexpr("-[0-9]{4}-", keywords$pdf_name)
+
+keywords <- keywords %>%
+  mutate(year2 = regmatches(keywords$pdf_name, mat), 
+         year = gsub("-", "", year2))
+
+keywords <- keywords %>%
+  left_join(jour_art, by =)
+
+# Remove ' R ' keyword ----
+keywords_nor <- keywords %>%
+  filter(keyword != ' R ', keyword != '[:alpha:] package',
+         keyword != 'Julia', keyword != 'eta-analysis')
+  
+# Descriptive statistics ----
+# number of artcles with software/model mentioned
+num_articles <- keywords_nor %>%
+  group_by(group, journal) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+
+library(ggplot2)
+library(forcats)
+
+ggplot(num_articles, aes(x = fct_reorder(journal2, percent_keyword), 
+                         y = I(percent_keyword * 100))) + 
+  geom_bar(stat = 'identity') + 
+  theme_bw(base_size = 18) + 
+  coord_flip() + 
+  xlab("Journals") + 
+  ylab("Percent with a keyword match") + 
+  facet_wrap(~ group)
+```
+
+When exploring the differences across the three journals in the current sample, some notable differences appear (see Figure \@ref(fig:software-journal)). SAS, SPSS, LISREL, Mplus, and R are more common in JEE compared to other software programs. In the preliminary sample, R only is only mentioned in JEE articles. EEPA is more likely to use Python, Julia, or STATA and AERJ has a more consistent distribution across the sofware programs with the notable exception of R. 
+
+```{r software-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by journal", fig.height = 10}
+
+library(forcats)
+keywords_nor <- keywords_nor %>%
+  mutate(keyword2 = fct_recode(keyword,
+            "R" = "R-project" ,
+            "R" = "R project",
+            "R" = "CRAN",
+            "R" = "R core team",
+            "R" = "R software",
+            "R" = "RStudio",
+            "SAS" = "SAS Institute",
+            "SAS" = "JMP",
+            'SPSS' = "SPSS Statistics",
+            'HLM' = 'HLM[0-9]',
+            'HLM' = 'HLM [0-9]',
+            'IRT' = 'BILOG',
+            'IRT' = 'BILOG-MG',
+            'IRT' = 'IRT PRO',
+            'Other' = 'MATLAB',
+            'Mplus' = 'M-Plus',
+            'IRT' = 'Multilog',
+            'IRT' = 'PARSCALE',
+            'Other' = 'Scala',
+            'Other' = 'Statistica ',
+            'Other' = 'Systat',
+            # Model recode
+            'ANOVA' = 'Analysis of Covariance',
+            'ANOVA' = 'Analysis of Variance',
+            'ANOVA' = 'ANCOVA',
+            'ANOVA' = 'repeated measures analysis of variance',
+            'ANOVA' = 'MANOVA',
+            'ANOVA' = 'RM-ANOVA',
+            'ANOVA' = 'multivariate analysis of variance',
+            'CFA' = 'confirmatory factor analysis',
+            'EFA' = 'exploratory factor analysis',
+            'GAM' = 'generalized additive models',
+            'cluster analysis' = 'hierarchical cluster analysis',
+            'Chi-Square' = 'chi-square( analysis)?',
+            'Chi-Square' = 'nonparametric analysis',
+            't-test' = 'dependent samples t-test',
+            't-test' = 'one-sample t-test',
+            't-test' = 'two-sample t-test',
+            't-test' = 'two sample t-test',
+            'SEM' = 'structural equation modeling',
+            'SEM' = 'latent variable modeling',
+            'eta-analysis' = 'meta analysis',
+            'Growth' = 'growth model',
+            'Growth' = 'latent growth model',
+            'Growth' = 'LGM',
+            'Linear Mixed Model' = 'HLM',
+            'Linear Mixed Model' = 'Hierarchical Linear Model',
+            'Linear Mixed Model' = 'LMM',
+            'Linear Mixed Model' = 'Multi-level Model',
+            'Linear Mixed Model' = 'Multilevel Model',
+            'Linear Mixed Model' = 'general(ized)? linear mixed model',
+            'Linear Model' = 'general(ized)? linear model',
+            'Linear Model' = 'linear regression',
+            'Linear Model' = 'Regression',
+            'Linear Model' = 'multiple regression',
+            'Linear Model' = 'multiple linear regression',
+            'IRT' = 'item response theory',
+            'propensity score' = 'propensity score analysis',
+            'propensity score' = 'propensity score matching',
+            'logistic regression' = 'multinomial logistic regression',
+            'logistic regression' = 'multinomial regression',
+            'logistic regression' = 'ordinal regression',
+            'non-linear regression' = 'nonlinear regression'
+                               ))
+
+# plot unique keyword counts by journal
+count_keyword <- keywords_nor %>%
+  group_by(group, journal2, keyword2) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+
+ggplot(dplyr::filter(count_keyword, group == 'software', (keyword2 != 'Tableau' | keyword2 != 'Minitab')), 
+       aes(x = fct_reorder(keyword2, percent_keyword), 
+           y = I(percent_keyword*100))) + 
+  geom_bar(stat = 'identity') +
+  theme_bw() + 
+  xlab("Keyword") + 
+  ylab("Percentage") + 
+  coord_flip() + 
+  facet_wrap(~ journal2)
+```
+
+```{r model-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Statistical Model counts by journal", fig.height = 10}
+ggplot(dplyr::filter(count_keyword, group == 'model'), 
+       aes(x = fct_reorder(keyword2, percent_keyword), 
+           y = I(percent_keyword*100))) + 
+  geom_bar(stat = 'identity') +
+  theme_bw() + 
+  xlab("Keyword") + 
+  ylab("Percentage") + 
+  coord_flip() + 
+  facet_wrap(~ journal2)
+```
+
+```{r software_year_at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year"}}
+num_articles <- keywords_nor %>%
+  group_by(group, year, journal) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal') %>%
+  mutate(percent_keyword = num_ids / num_pdfs) %>%
+  spread()
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+library(slopegraph)
+ggslopegraph()
+```
+
+
+
+```{r software-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year"}
+count_keyword <- keywords_nor %>%
+  group_by(group, journal2, year, keyword2) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(percent_keyword = num_ids / num_pdfs,
+         year2 = as.integer(year)) %>%
+  group_by(group, year2, keyword2) %>%
+  summarise(percent_keyword = mean(percent_keyword))
+
+count_model <- dplyr::filter(count_keyword, group == 'software')
+
+```
+
+
+```{r model-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year"}
+count_model <- dplyr::filter(count_keyword, group == 'model')
+
+```
+
+
+## Interaction between software and statistical methods
+
+```{r software_statmethods, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Tile plot showing interaction between software and statistical methods.", eval = FALSE}
+# spread data to wide for tile plot
+keyword_fj <- full_join(software_keywords,
+                        model_keywords,
+                        by = c('pdf_name', 'journal')) %>%
+  left_join(jour_art) %>%
+  filter(keyword.x != ' R ', keyword.x != '[:alpha:] package',
+         keyword.x != 'Julia', keyword.x != 'eta-analysis') %>%
+  mutate(keyword2.x = fct_recode(keyword.x,
+                               "R" = "R-project" ,
+                               "R" = "R project",
+                               "R" = "CRAN",
+                               "R" = "R core team",
+                               "R" = "R software",
+                               "R" = "RStudio",
+                               "SAS" = "SAS Institute",
+                               "SAS" = "JMP",
+                               'SPSS' = "SPSS Statistics",
+                               'HLM' = 'HLM[0-9]',
+                               'HLM' = 'HLM [0-9]',
+                               'IRT' = 'BILOG',
+                               'IRT' = 'BILOG-MG',
+                               'IRT' = 'IRT PRO',
+                               'Other' = 'MATLAB',
+                               'Mplus' = 'M-Plus',
+                               'IRT' = 'Multilog',
+                               'IRT' = 'PARSCALE',
+                               'Other' = 'Scala',
+                               'Other' = 'Statistica ',
+                               'Other' = 'Systat'),
+         keyword2.y = fct_recode(keyword.y,
+                               # Model recode
+                               'ANOVA' = 'Analysis of Covariance',
+                               'ANOVA' = 'Analysis of Variance',
+                               'ANOVA' = 'ANCOVA',
+                               'ANOVA' = 'repeated measures analysis of variance',
+                               'ANOVA' = 'MANOVA',
+                               'ANOVA' = 'RM-ANOVA',
+                               'ANOVA' = 'multivariate analysis of variance',
+                               'CFA' = 'confirmatory factor analysis',
+                               'EFA' = 'exploratory factor analysis',
+                               'GAM' = 'generalized additive models',
+                               'cluster analysis' = 'hierarchical cluster analysis',
+                               'Chi-Square' = 'chi-square( analysis)?',
+                               'Chi-Square' = 'nonparametric analysis',
+                               't-test' = 'dependent samples t-test',
+                               't-test' = 'one-sample t-test',
+                               't-test' = 'two-sample t-test',
+                               't-test' = 'two sample t-test',
+                               'SEM' = 'structural equation modeling',
+                               'SEM' = 'latent variable modeling',
+                               'eta-analysis' = 'meta analysis',
+                               'Growth' = 'growth model',
+                               'Growth' = 'latent growth model',
+                               'Growth' = 'LGM',
+                               'Linear Mixed Model' = 'HLM',
+                               'Linear Mixed Model' = 'Hierarchical Linear Model',
+                               'Linear Mixed Model' = 'LMM',
+                               'Linear Mixed Model' = 'Multi-level Model',
+                               'Linear Mixed Model' = 'Multilevel Model',
+                               'Linear Mixed Model' = 'general(ized)? linear mixed model',
+                               'Linear Model' = 'general(ized)? linear model',
+                               'Linear Model' = 'linear regression',
+                               'Linear Model' = 'Regression',
+                               'Linear Model' = 'multiple regression',
+                               'Linear Model' = 'multiple linear regression',
+                               'IRT' = 'item response theory',
+                               'propensity score' = 'propensity score analysis',
+                               'propensity score' = 'propensity score matching',
+                               'logistic regression' = 'multinomial logistic regression',
+                               'logistic regression' = 'multinomial regression',
+                               'logistic regression' = 'ordinal regression',
+                               'non-linear regression' = 'nonlinear regression'
+  ))
+
+count_keyword <- keyword_fj %>%
+  group_by(journal2, keyword2.x, keyword2.y) %>%
+  summarise(num_ids = length(unique(pdf_name))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(prop_keyword = num_ids / num_pdf,
+         percent_keyword = prop_keyword * 100)
+
+# library(gganimate)
+library(viridis)
+ggplot(count_keyword, aes(x = keyword2.x, y = keyword2.y)) + 
+  geom_raster(aes(fill = percent_keyword)) + 
+  xlab("Software") +
+  ylab("Models") +
+  theme_bw() + 
+  scale_fill_viridis('Percent')
+```
+
+
+Prior to AERA, more search terms, more journals, and gathering more article meta data will be included in the research synthesis. These additional data sources will allow a better understanding of the current state of affairs in software usage, reproducible analysis, and software citation/mention within educational journals. 
+
+# Scholarly Significance
+Understanding the state of affairs in software usage in education is important to help disentangle and highlight the importance of citing statistical software and a reproducible research framework. Much more attention has been given in other content areas such as biostatistics, medicine, and psychology and the same standards should apply in education. Recommendations will be given as to which information regarding statistical software should accompany journal articles. This study also aims to go a step further than others [see @muenchen] in that the software usage will be explored with respect to journals and also quantitative methodology. This will allow for a deeper exploration of potential interactions between software usage and citations across different journals and methodologies over time.
+
+# References
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+
+Table: (#tab:searchwords) Search keywords used in search of published journal documents 
+
++---------------+----------------------------+
+| Search        | Keywords                   |
++===============+============================+
+| Software      | "SPSS Statistics", "SPSS Modeler", "SPSS",                   |
+|               | "R-project", "SAS", "JMP",                    |
+|               | "STATA", "MATLAB", "Statistica ", "Statsoft", "Java",                   |
+|               | "Hadoop", "Python" , "Minitab", "Systat", "Tableau",                |
+|               | "Scala", "Julia", "Azure Machine Learning", "Mplus", "LISREL",   |
+|               | "AMOS", "HLM[0-9]", "HLM [0-9]"              |
+|               |                            |
++---------------+----------------------------+
+| Statistical   | Regression, Hierarchical Linear Model (HLM), Linear Mixed Model (LMM), |
+| Models        | Multilevel Model, Analysis of Variance (ANOVA), Structural Equation Modeling (SEM) |
++---------------+----------------------------+
+| Estimation    | Maximum Likelihood, bayesian, |
++---------------+----------------------------+
