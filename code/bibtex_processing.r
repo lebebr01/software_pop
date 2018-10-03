@@ -30,3 +30,37 @@ bib2 <- bib2 %>%
   ),
   pdf = grepl('internal-pdf', bib$NOTE)
   )
+
+jour_art <- data.frame(
+  journal = c('aej_ae', 'AERJ', 'am_j_pol_sci', 'EEPA',
+              'ej', 'er', 'he', 'JEE', 'pol_sci_quar',
+              'pub_policy_admin', 'public_policy',
+              'SE'),
+  num_pdfs = c(363, 444, 922, 188, 
+               1829, 742, 1914, 517, 2722,
+               83, 27, 261),
+  total_articles = c(364, 444, 1436, 405,
+                     3376, 794, 1914, 525, 3589,
+                     83, 180, 453),
+  journal2 = c('AEJ', 'AERJ', 'AJPS', 'EEPA',
+               'EJ', 'ER', 'HE',
+               'JEE', 'PSQ', 
+               'PPA', 'JPP', 
+               'SE')
+) %>% 
+  mutate(perc_pdf = round((num_pdfs / total_articles)*100, 1))
+
+num_year <- bib2 %>%
+  group_by(journal, YEAR, pdf) %>%
+  summarise(num = n()) %>%
+  mutate(num_year = sum(num),
+         prop_year = num / num_year,
+         pdf = ifelse(pdf, 'yes', 'no')) %>%
+  na.omit() %>%
+  left_join(jour_art)
+
+ggplot(num_year, aes(x = YEAR, y = prop_year, color = pdf)) + 
+  geom_line(size = 2) + 
+  theme_bw() + 
+  facet_wrap(~ journal2) + 
+  ylab("Proportion of PDFs Obtained by Journal and Year")
