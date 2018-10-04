@@ -435,6 +435,11 @@ ggplot(model_keywords, aes(x = year, y = perc_keyword)) +
   ggtitle('Latent variable model citation percentages across all journals over time')
 ```
 
+```{r area_plot_model}
+ggplot(model_keywords, aes(x = year, y = perc_keyword, fill = keyword2)) + 
+  geom_area(position = 'fill', color = 'black') + 
+  viridis::scale_fill_viridis(discrete = TRUE)
+```
 
 
 ```{r software-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year"}
