@@ -343,7 +343,7 @@ ggplot(dplyr::filter(count_keyword, group == 'model'),
   facet_wrap(~ journal2)
 ```
 
-```{r software_year_at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by year"}}
+```{r software_year_at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Primary software counts by year"}
 num_articles <- keywords_nor %>%
   group_by(group, year, journal, keyword2) %>%
   summarise(num_ids = length(unique(ID))) %>%
@@ -355,14 +355,84 @@ num_articles <- keywords_nor %>%
   select(group, year, keyword2, perc_keyword) %>%
   group_by(group, year, keyword2) %>%
   summarise(perc_keyword = mean(perc_keyword))
-  
+
+software_keywords <- filter(num_articles, group == 'software', 
+                            keyword2 %in% c('R', 'SAS', 'SPSS', 'STATA')) 
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-ggplot(num_articles, aes(x = year, y = perc_keyword)) + 
-  geom_line() + 
-  theme_bw() + 
-  geom_text(aes(x = year, y = perc_keyword, label = perc_keyword))
+ggplot(software_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
+    theme_minimal() + 
+    geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('', labels = NULL) + 
+    scale_x_continuous("Year", breaks = seq(1995, 2015, 5)) +
+    viridis::scale_color_viridis('', guide = FALSE, discrete = TRUE) + 
+    geom_text(data = filter(software_keywords, year == 1995), 
+              aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
+    geom_text(data = filter(software_keywords, year == 2018), 
+              aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
+  ggtitle('Software citation percentages across all journals over time')
+```
+
+```{r spec_software_year_at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Specialty software counts by year"}
+software_keywords <- filter(num_articles, group == 'software', 
+                            keyword2 %in% c('AMOS', 'HLM', 'LISREL', 'Mplus')) 
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+ggplot(software_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
+    theme_minimal() + 
+    geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('', labels = NULL) + 
+    scale_x_continuous("Year", breaks = seq(1995, 2015, 5)) +
+    viridis::scale_color_viridis('', guide = FALSE, discrete = TRUE) + 
+    geom_text(data = filter(software_keywords, year == 1995), 
+              aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
+    geom_text(data = filter(software_keywords, year == 2018), 
+              aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
+  ggtitle('Specialty software citation percentages across all journals over time')
+```
+
+```{r model_year_at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model counts by year"}
+model_keywords <- filter(num_articles, group == 'model', 
+                         keyword2 %in% c('ANOVA', 'Linear Model', 'Linear Mixed Model', 'logistic regression', 't-test')) 
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
+    theme_minimal() + 
+    geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('', labels = NULL) + 
+    scale_x_continuous("Year", limits = c(1990, 2020), breaks = seq(1995, 2015, 5)) +
+    viridis::scale_color_viridis('', guide = FALSE, discrete = TRUE) + 
+    geom_text(data = filter(model_keywords, year == 1995), 
+              aes(x = year - 2, y = perc_keyword, label = keyword2))  + 
+    geom_text(data = filter(model_keywords, year == 2018), 
+              aes(x = year + 2, y = perc_keyword, label = keyword2)) + 
+  ggtitle('Model citation percentages across all journals over time')
+```
+
+```{r model_year_latent, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model counts by year"}
+model_keywords <- filter(num_articles, group == 'model', 
+                         keyword2 %in% c('IRT', 'CFA', 'EFA', 'SEM')) 
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
+    theme_minimal() + 
+    geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('', labels = NULL) + 
+    scale_x_continuous("Year",  breaks = seq(1995, 2015, 5)) +
+    viridis::scale_color_viridis('', guide = FALSE, discrete = TRUE) + 
+    geom_text(data = filter(model_keywords, year == 1995), 
+              aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
+    geom_text(data = filter(model_keywords, year == 2018), 
+              aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
+  ggtitle('Latent variable model citation percentages across all journals over time')
 ```
 
 
