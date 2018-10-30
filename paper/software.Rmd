@@ -275,10 +275,6 @@ ggplot(num_articles, aes(x = fct_reorder(journal2, percent_keyword),
   facet_wrap(~ group2)
 ```
 
-Expanding on the software keywords found within the PDFs, Figure \@ref(fig:software-journal) explores which software keywords were found in each journal. In general, mirroring results from Figure \@ref(fig:count-software), the percetage of articles reporting software keywords was relatively small, most often less than 5\%. R, SAS, SPSS, and STATA were the most commonly found software keywords, with R being the most common in most journals. The one exception to this was in JEE, where SAS was more common (about 20\% of articles) and R and SPSS had a similar percentage (about 15\%) of articles reporting their usage. One interpretation note, articles may mention more than one software keyword and those duplicate results will show up in each category. On average, 
-
-
-
 ```{r software-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by journal", fig.height = 10}
 
 library(forcats)
@@ -316,7 +312,7 @@ keywords_nor <- keywords_nor %>%
             'CFA' = 'confirmatory factor analysis',
             'EFA' = 'exploratory factor analysis',
             'GAM' = 'generalized additive models',
-            'cluster analysis' = 'hierarchical cluster analysis',
+            'Cluster Analysis' = 'hierarchical cluster analysis',
             'Chi-Square' = 'chi-square( analysis)?',
             'Chi-Square' = 'nonparametric analysis',
             't-test' = 'dependent samples t-test',
@@ -325,7 +321,7 @@ keywords_nor <- keywords_nor %>%
             't-test' = 'two sample t-test',
             'SEM' = 'structural equation modeling',
             'SEM' = 'latent variable modeling',
-            'eta-analysis' = 'meta analysis',
+            'Meta-analysis' = 'meta analysis',
             'Growth' = 'growth model',
             'Growth' = 'latent growth model',
             'Growth' = 'LGM',
@@ -341,12 +337,12 @@ keywords_nor <- keywords_nor %>%
             'Linear Model' = 'multiple regression',
             'Linear Model' = 'multiple linear regression',
             'IRT' = 'item response theory',
-            'propensity score' = 'propensity score analysis',
-            'propensity score' = 'propensity score matching',
+            'Propensity Score' = 'propensity score analysis',
+            'Propensity Score' = 'propensity score matching',
             'Logistic Regression' = 'multinomial logistic regression',
             'Logistic Regression' = 'multinomial regression',
             'Logistic Regression' = 'ordinal regression',
-            'non-linear regression' = 'nonlinear regression'
+            'Non-linear Regression' = 'nonlinear regression'
                                ))
 
 # plot unique keyword counts by journal
@@ -365,7 +361,23 @@ ggplot(dplyr::filter(count_keyword, group == 'software', (keyword2 != 'Tableau' 
   ylab("Percentage") + 
   coord_flip() + 
   facet_wrap(~ journal2)
+
+
+num_keywords <- keywords_nor %>%
+  select(group, journal2, ID, keyword2) %>%
+  distinct() %>%
+  group_by(group, journal2, ID) %>%
+  summarise(num = n()) %>%
+  summarise(avg_num = mean(num),
+            min_num = min(num),
+            max_num = max(num))
+
 ```
+
+
+Expanding on the software keywords found within the PDFs, Figure \@ref(fig:software-journal) explores which software keywords were found in each journal. In general, mirroring results from Figure \@ref(fig:count-software), the percetage of articles reporting software keywords was relatively small, most often less than 5\%. R, SAS, SPSS, and STATA were the most commonly found software keywords, with R being the most common in most journals. The one exception to this was in JEE, where SAS was more common (about 20\% of articles) and R and SPSS had a similar percentage (about 15\%) of articles reporting their usage. One interpretation note, articles may mention more than one software keyword and those duplicate results will show up in each category. On average, the average number of software keywords identified in each article was highest for JEE at 1.71 (range: 1 to 5) and a lowest of 1 for PPA (range: 1 to 1).
+
+A similar figure for model keywords can be seen in Figure \@ref(fig:model-journal). The x-axis scale here is wider compared to the software keywords showing that the methods are more commonly reported. However, there are still a sizeable number of articles appearing in these journals that do not list one of the model keywords searched. The most commonly used methods are linear model, analysis of variance, meta-analysis, or linear mixed model (i.e. HLM) models. The journals EEPA, JEE, and SE have the widest array of models being picked up through the keyword search. On the opposite side, AEJ, AJPS, and EJ are dominated by linear models. Finally, journals such as AERJ, ER, HE, PPA, and PSQ all have a low prevalence of articles that are using the model keywords.
 
 ```{r model-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Statistical Model counts by journal", fig.height = 10}
 ggplot(dplyr::filter(count_keyword, group == 'model'), 
@@ -396,13 +408,13 @@ ggplot(dplyr::filter(count_keyword, group == 'model'),
 
 
 
-```{r software-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software percentages by year"}
+```{r software-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software percentages by year", fig.height = 10}
 num_articles <- keywords_nor %>%
   group_by(group, year, journal, keyword2) %>%
   summarise(num_ids = length(unique(ID))) %>%
   ungroup() %>%
   mutate(year = as.numeric(year)) %>%
-  left_join(filter(num_year, pdf == 'yes'), by = c('journal', 'year' = 'YEAR')) %>%
+  left_join(filter(num_year, pdf == 'Yes'), by = c('journal', 'year' = 'YEAR')) %>%
   mutate(prop_keyword = num_ids / num,
          perc_keyword = round(prop_keyword * 100, 1)) %>%
   select(group, year, keyword2, perc_keyword) %>%
@@ -416,13 +428,13 @@ software_keywords <- filter(num_articles, group == 'software',
 library(patchwork)
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-prim <- ggplot(software_keywords, aes(x = year, y = prop_keyword)) + 
-    geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
+prim <- ggplot(software_keywords, aes(x = year, y = perc_keyword, color = keyword2)) + 
+    geom_line(aes(group = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('Percentage', breaks = seq(0, .30, .03), limits = c(0, .28), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 30, 3), limits = c(0, 28), expand = c(0,0)) +
     scale_x_continuous("Year", breaks = c(seq(1995, 2018, 5), 2018)) +
-    scale_color_grey('') + 
+    scale_color_grey('', start = 0, end = 0.7) + 
     # geom_text(data = filter(software_keywords, year == 1995), 
     #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
     # geom_text(data = filter(software_keywords, year == 2018), 
@@ -435,13 +447,13 @@ software_keywords <- filter(num_articles, group == 'software',
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-spec <- ggplot(software_keywords, aes(x = year, y = prop_keyword)) + 
+spec <- ggplot(software_keywords, aes(x = year, y = perc_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('Percentage', breaks = seq(0, .20, .02), limits = c(0, .20), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 20, 2), limits = c(0, 20), expand = c(0,0)) +
     scale_x_continuous("Year", breaks = c(seq(1995, 2018, 5), 2018)) +
-    scale_color_grey('') + 
+    scale_color_grey('', start = 0, end = 0.7) + 
     # geom_text(data = filter(software_keywords, year == 1995), 
     #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
     # geom_text(data = filter(software_keywords, year == 2018), 
@@ -452,21 +464,21 @@ prim / spec
 ```
 
 
-```{r model-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model percentages by year"}
+```{r model-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model percentages by year", fig.height = 10}
 model_keywords <- filter(num_articles, group == 'model', 
-                         keyword2 %in% c('ANOVA', 'Linear Model', 'Linear Mixed Model', 'Logistic Regression', 't-test')) %>%
-  mutate(keyword3 = ifelse(keyword2 == 'Linear Model', 'LM', ifelse(keyword2 == 'Linear Mixed Model', "LMM", ifelse(keyword2 == 'logistic regression', 'LR', keyword2)))) %>%
-  mutate(prop_keyword = perc_keyword / 100)
+                         keyword2 %in% c('ANOVA', 'Linear Model', 'Linear Mixed Model', 'Logistic Regression', 't-test')) #%>%
+  # mutate(keyword3 = ifelse(keyword2 == 'Linear Model', 'LM', ifelse(keyword2 == 'Linear Mixed Model', "LMM", ifelse(keyword2 == 'Logistic Regression', 'LR', keyword2)))) %>%
+  # mutate(prop_keyword = perc_keyword / 100)
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-mod1 <- ggplot(model_keywords, aes(x = year, y = prop_keyword)) + 
+mod1 <- ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('Percentage', breaks = seq(0, .60, .05), limits = c(0, .60), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 60, 5), limits = c(0, 60), expand = c(0,0)) +
     scale_x_continuous("Year", c(seq(1995, 2018, 5), 2018)) +
-    scale_color_grey('') + 
+    scale_color_grey('', start = 0, end = 0.7) + 
     # geom_text(data = filter(model_keywords, year == 1995), 
     #           aes(x = year - 2, y = perc_keyword, label = keyword3))  + 
     # geom_text(data = filter(model_keywords, year == 2018), 
@@ -479,13 +491,13 @@ model_keywords <- filter(num_articles, group == 'model',
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-mod2 <- ggplot(model_keywords, aes(x = year, y = prop_keyword)) + 
+mod2 <- ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('Percentage', breaks = seq(0, .20, .02), limits = c(0, .18), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 20, 2), limits = c(0, 18), expand = c(0,0)) +
     scale_x_continuous("Year",  breaks = c(seq(1995, 2018, 5), 2018)) +
-    scale_color_grey('') + 
+    scale_color_grey('', start = 0, end = 0.7) + 
     # geom_text(data = filter(model_keywords, year == 1995), 
     #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
     # geom_text(data = filter(model_keywords, year == 2018), 
@@ -565,7 +577,7 @@ keyword_fj <- full_join(software_keywords,
                                'CFA' = 'confirmatory factor analysis',
                                'EFA' = 'exploratory factor analysis',
                                'GAM' = 'generalized additive models',
-                               'cluster analysis' = 'hierarchical cluster analysis',
+                               'Cluster Analysis' = 'hierarchical cluster analysis',
                                'Chi-Square' = 'chi-square( analysis)?',
                                'Chi-Square' = 'nonparametric analysis',
                                't-test' = 'dependent samples t-test',
@@ -574,7 +586,7 @@ keyword_fj <- full_join(software_keywords,
                                't-test' = 'two sample t-test',
                                'SEM' = 'structural equation modeling',
                                'SEM' = 'latent variable modeling',
-                               'eta-analysis' = 'meta analysis',
+                               'Meta-analysis' = 'meta analysis',
                                'Growth' = 'growth model',
                                'Growth' = 'latent growth model',
                                'Growth' = 'LGM',
@@ -590,12 +602,12 @@ keyword_fj <- full_join(software_keywords,
                                'Linear Model' = 'multiple regression',
                                'Linear Model' = 'multiple linear regression',
                                'IRT' = 'item response theory',
-                               'propensity score' = 'propensity score analysis',
-                               'propensity score' = 'propensity score matching',
-                               'logistic regression' = 'multinomial logistic regression',
-                               'logistic regression' = 'multinomial regression',
-                               'logistic regression' = 'ordinal regression',
-                               'non-linear regression' = 'nonlinear regression'
+                               'Propensity Score' = 'propensity score analysis',
+                               'Propensity Score' = 'propensity score matching',
+                               'Logistic Regression' = 'multinomial logistic regression',
+                               'Logistic Regression' = 'multinomial regression',
+                               'Logistic Regression' = 'ordinal regression',
+                               'Non-linear Regression' = 'nonlinear regression'
   ))
 
 count_keyword <- keyword_fj %>%
