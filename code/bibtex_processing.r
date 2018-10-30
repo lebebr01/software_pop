@@ -59,8 +59,4 @@ num_year <- bib2 %>%
   na.omit() %>%
   left_join(jour_art)
 
-ggplot(num_year, aes(x = YEAR, y = prop_year, color = pdf)) + 
-  geom_line(size = 2) + 
-  theme_bw() + 
-  facet_wrap(~ journal2) + 
-  ylab("Proportion of PDFs Obtained by Journal and Year")
+

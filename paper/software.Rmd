@@ -81,12 +81,36 @@ All journal articles published between 1995 through the middle of 2018 will be o
 
 Additional metadata obtained from journal articles will be obtained and combined with the keyword searching data. This metadata will contain information such as, year of publication, publication keywords, author information, and other article metadata obtained from EndNote. These data will be used to further enhance the keyword search data obtained from the *pdfsearch* package and the subsequent analyses discussed in the next section.
 
+Table: (#tab:searchwords) Search keywords used in search of published journal documents 
+
++---------------+-------+----------------------------+
+| Search        | Group | Keywords                   |
++===============+=======+============================+
+| Software      | SPSS  | SPSS Statistics, SPSS Modeler, SPSS                   |
+|               | R     | R-project, R Project, CRAN, R core team, R software, RStudio |
+|               | SAS   | SAS Insitute, SAS, JMP                    |
+|               | STATA | STATA |
+|               | Python | Python |
+|               | Other | MATLAB, Statistica , Statsoft, Java, Hadoop, Minitab, Systat, Tableau, Scala, Julia, Azure Machine Learning |
+|               | HLM   | HLM[0-9], HLM [0-9] |
+|               | IRT   | BILOG, BILOG-MG, Multilog, PARSCALE, IRT Pro |
+|               | Latent Variable |  Mplus, LISREL, AMOS|
++---------------+-------+----------------------------+
+| Statistical   | ANOVA | Analysis of Variance, ANOVA, ANCOVA, Analysis of Covariance, multivariate analysis of variance, MANOVA, repeated measures analysis of variance, RMANOVA, RM-ANOVA |
+| Models        | HLM | HLM, Hierarchical Linear Model, Linear Mixed Model, LMM, Multilevel Model, Multi-level Model |
+|               | Latent Variable | item response theory, IRT, confirmatory factor analysis, CFA, exploratory factor analysis, EFA, latent variable modeling, structural equation modeling, SEM |
+|               | t-test | one sample t-test, one-sample t-test, two sample t-test, two-sample t-test, dependent samples t-test, dependent-sample t-test | 
+|               | Regression | Regression, multiple regression, linear regression, multiple linear regression, nonlinear regression, non-linear regression, logistic regression, ordinal regression, multinomial logistic regression, multinomial regression, generalized additive models, GAM, general(ized)? linear model, general(ized)? linear mixed model |
+|               | Growth | growth model, latent growth model, LGM |
+|               | Other | cluster analysis, hierarchical cluster analysis, propensity score matching, propensity score analysis, meta analysis, meta-analysis, nonparametric analysis, chi-square( analysis)? |
++---------------+----------------------------+
+
 ## Analysis
-Descriptive analyses will be performed on the research synthesis data obtained from keyword searching performed with the *pdfsearch* package. Initial exploration will focus on software and statistical models and estimation methods separately. Subsequent descriptive analyses will be performed to explore the if there are any intereactions between software and statistical models used in published research. All of these analyses will be performed over time to explore trends in software and statistical model usage and citation rates. 
+Descriptive analyses will be performed on the research synthesis data obtained from keyword searching performed with the *pdfsearch* package. Initial exploration will focus on software and statistical models separately. Subsequent descriptive analyses will be performed to explore the if there are any intereactions between software and statistical models used in published research. All of these analyses will be performed over time to explore trends in software and statistical model usage and citation rates. Figures will be the primary analysis methods and will be created in R using the ggplot2 package [@ggplot2].
 
 # Results
+The number and percentage of PDFs able to be obtained from EndNote is shown in Table \@ref(tab:setup). Many of the journals had a high success rate of obtaining the PDF for the published studies, however some were problematic. For example, JPP and EEPA were both under 50\% of PDFs obtained and AJPS, EJ, and SE were all just over 50\%. The PDFs that were not obtained were attempted to be obtained over multiple occasions over a six month period, with no additional PDFs obtained between the last two attempts. Figure \@ref(fig:pdf-time) shows the percentage of PDFs obtained by year and journal and highlights some noticeable trends. There are periods of time for specific journals that all the PDFs are obtained compared to not obtained. For example, AJPS, EEPA, EJ, and SE have periods from 1995 to just after 2000 where most of the PDFs were not obtained. These ranges are portions of time in which our University does not have digital access to these journals. 
 
-To illustrate preliminary results, published journal articles between the year 2000 and 2014 for AERJ, EEPA, and JEE were obtained and the software keyword search was performed with the *pdfsearch* package. Table \@ref(tab:setup) reports the number of unique published articles for each journal that contained at least one software match. The table shows that many published journal articles do not list the software used for the analysis. Some of this may be due to the APA publication manual stating that "reference entries are not necessary for standrad software and programming languages... and even SAS and SPSS" [@apa, p. 210]. If the goal of analyses are to be transparent and reproducible, this practice should be improved upon. The larger percentage of articles returning a match for JEE may be due to this journal serving a dual role, part methodological part applied analysis. Methodological articles may be more likely to state which statistical program was used to perform the simulation or which language a new algorithm was implemented in.
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, results='asis'}
 # number of articles gathered by journal -----
@@ -125,15 +149,24 @@ jour_art %>%
                 full_width = F)
 ```
 
-```{r pdf_time, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of PDFs obtained by journal and year."}
+```{r pdf-time, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of PDFs obtained by journal and year."}
 source("code/bibtex_processing.r")
+
+num_year$pdf <- ifelse(num_year$pdf == 'no', 'No', 'Yes')
+
+ggplot(num_year, aes(x = YEAR, y = I(prop_year * 100), color = pdf)) + 
+  geom_line(size = 2) + 
+  theme_bw() + 
+  facet_wrap(~ journal2) + 
+  ylab("Percentage") + 
+  scale_x_continuous("Year", breaks = seq(1995, 2018, 10)) + 
+  scale_color_grey("PDF?")
 ```
 
+Using the obtained PDFs, keyword searching was performed for the software and model keywords. Figure \@ref(fig:count-software) shows the percentage of articles from each journal with at least one match for software and model keywords. A few trends emerge from this figure. First, software keywords are much less likely to be found within the obtained PDFs. The largest percentage was in JEE with about 50\% of obtained articles reporting at least one of the searched software keywords. Most of the other journals only had 25\% or less of the articles mentioning one of the software keywords, with none of the obtained articles in JPP mentioning a software keyword. Model keywords on the other hand were much better more prevalent and the journals fall into two broad groups. One group, JEE, EEPA, AEJ, AJPS, SE, and EJ have more than 50\% of the obtained articles mentioning at least one of the model keywords and the remaining journals being less than 50\%. The articles in the latter group, with the exception of AERJ, were closer to 25\% of less. 
 
 
-Figure \@ref(fig:count-software) shows the statistical software matches across all articles in the preliminary sample. SAS and SPSS had the most matches across these three journals. Other more specialized software for structural equation modeling or HLM follow SAS and SPSS. Surprisingly, R was toward the bottom of the list based on the preliminary sample of three journals.
-
-```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of articles with at least one model or software keyword by journals."}
+```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of articles with at least one model or software keyword match by journals."}
 # load in journal keyword data
 
 # Names are: keyword_results_* where * is journal abbreviation
@@ -238,11 +271,13 @@ ggplot(num_articles, aes(x = fct_reorder(journal2, percent_keyword),
   theme_bw() + 
   coord_flip() + 
   xlab("Journals") + 
-  ylab("Percent with a keyword match") + 
+  ylab("Percentage") + 
   facet_wrap(~ group2)
 ```
 
-When exploring the differences across the three journals in the current sample, some notable differences appear (see Figure \@ref(fig:software-journal)). SAS, SPSS, LISREL, Mplus, and R are more common in JEE compared to other software programs. In the preliminary sample, R only is only mentioned in JEE articles. EEPA is more likely to use Python, Julia, or STATA and AERJ has a more consistent distribution across the sofware programs with the notable exception of R. 
+Expanding on the software keywords found within the PDFs, Figure \@ref(fig:software-journal) explores which software keywords were found in each journal. In general, mirroring results from Figure \@ref(fig:count-software), the percetage of articles reporting software keywords was relatively small, most often less than 5\%. R, SAS, SPSS, and STATA were the most commonly found software keywords, with R being the most common in most journals. The one exception to this was in JEE, where SAS was more common (about 20\% of articles) and R and SPSS had a similar percentage (about 15\%) of articles reporting their usage. One interpretation note, articles may mention more than one software keyword and those duplicate results will show up in each category. On average, 
+
+
 
 ```{r software-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software counts by journal", fig.height = 10}
 
@@ -344,7 +379,24 @@ ggplot(dplyr::filter(count_keyword, group == 'model'),
   facet_wrap(~ journal2)
 ```
 
-```{r software-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Primary software counts by year"}
+
+
+## Interaction between software and statistical methods
+
+
+
+
+
+# Discussion
+
+
+# References
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+
+
+```{r software-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Software percentages by year"}
 num_articles <- keywords_nor %>%
   group_by(group, year, journal, keyword2) %>%
   summarise(num_ids = length(unique(ID))) %>%
@@ -358,84 +410,91 @@ num_articles <- keywords_nor %>%
   summarise(perc_keyword = mean(perc_keyword))
 
 software_keywords <- filter(num_articles, group == 'software', 
-                            keyword2 %in% c('R', 'SAS', 'SPSS', 'STATA')) 
+                            keyword2 %in% c('R', 'SAS', 'SPSS', 'STATA')) %>%
+  mutate(prop_keyword = perc_keyword / 100)
 
+library(patchwork)
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-ggplot(software_keywords, aes(x = year, y = perc_keyword)) + 
+prim <- ggplot(software_keywords, aes(x = year, y = prop_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('', breaks = seq(0, 30, 3), limits = c(0, 28), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, .30, .03), limits = c(0, .28), expand = c(0,0)) + 
     scale_x_continuous("Year", breaks = c(seq(1995, 2018, 5), 2018)) +
-    viridis::scale_color_viridis('', discrete = TRUE) + 
+    scale_color_grey('') + 
     # geom_text(data = filter(software_keywords, year == 1995), 
     #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
     # geom_text(data = filter(software_keywords, year == 2018), 
     #           aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
   NULL #ggtitle('Software citation percentages across all journals over time')
-```
 
-```{r spec-software-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Specialty software counts by year"}
 software_keywords <- filter(num_articles, group == 'software', 
-                            keyword2 %in% c('AMOS', 'HLM', 'LISREL', 'Mplus')) 
+                            keyword2 %in% c('AMOS', 'HLM', 'LISREL', 'Mplus')) %>%
+  mutate(prop_keyword = perc_keyword / 100)
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-ggplot(software_keywords, aes(x = year, y = perc_keyword)) + 
+spec <- ggplot(software_keywords, aes(x = year, y = prop_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('', breaks = seq(0, 20, 2), limits = c(0, 20), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, .20, .02), limits = c(0, .20), expand = c(0,0)) + 
     scale_x_continuous("Year", breaks = c(seq(1995, 2018, 5), 2018)) +
-    viridis::scale_color_viridis('', discrete = TRUE) + 
+    scale_color_grey('') + 
     # geom_text(data = filter(software_keywords, year == 1995), 
     #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
     # geom_text(data = filter(software_keywords, year == 2018), 
     #           aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
   NULL #ggtitle('Specialty software citation percentages across all journals over time')
+
+prim / spec
 ```
 
-```{r model-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model counts by year"}
+
+```{r model-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model percentages by year"}
 model_keywords <- filter(num_articles, group == 'model', 
                          keyword2 %in% c('ANOVA', 'Linear Model', 'Linear Mixed Model', 'Logistic Regression', 't-test')) %>%
-  mutate(keyword3 = ifelse(keyword2 == 'Linear Model', 'LM', ifelse(keyword2 == 'Linear Mixed Model', "LMM", ifelse(keyword2 == 'logistic regression', 'LR', keyword2))))
+  mutate(keyword3 = ifelse(keyword2 == 'Linear Model', 'LM', ifelse(keyword2 == 'Linear Mixed Model', "LMM", ifelse(keyword2 == 'logistic regression', 'LR', keyword2)))) %>%
+  mutate(prop_keyword = perc_keyword / 100)
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
+mod1 <- ggplot(model_keywords, aes(x = year, y = prop_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('', breaks = seq(0, 60, 5), limits = c(0, 60), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, .60, .05), limits = c(0, .60), expand = c(0,0)) + 
     scale_x_continuous("Year", c(seq(1995, 2018, 5), 2018)) +
-    viridis::scale_color_viridis('', discrete = TRUE) + 
+    scale_color_grey('') + 
     # geom_text(data = filter(model_keywords, year == 1995), 
     #           aes(x = year - 2, y = perc_keyword, label = keyword3))  + 
     # geom_text(data = filter(model_keywords, year == 2018), 
     #           aes(x = year + 2, y = perc_keyword, label = keyword3)) + 
   NULL #ggtitle('Model citation percentages across all journals over time')
-```
 
-```{r model-year-latent, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Model counts by year"}
 model_keywords <- filter(num_articles, group == 'model', 
-                         keyword2 %in% c('IRT', 'CFA', 'EFA', 'SEM')) 
+                         keyword2 %in% c('IRT', 'CFA', 'EFA', 'SEM'))  %>%
+  mutate(prop_keyword = perc_keyword / 100)
 
 # The years need to be represented as columns.
 # Need to also find the total number of articles by year for each journal.
-ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
+mod2 <- ggplot(model_keywords, aes(x = year, y = prop_keyword)) + 
     geom_line(aes(group = keyword2, color = keyword2), size = 1.25, alpha = 0.6) + 
     theme_bw() + 
     #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
-    scale_y_continuous('', breaks = seq(0, 20, 2), limits = c(0, 18), expand = c(0,0)) + 
+    scale_y_continuous('Percentage', breaks = seq(0, .20, .02), limits = c(0, .18), expand = c(0,0)) + 
     scale_x_continuous("Year",  breaks = c(seq(1995, 2018, 5), 2018)) +
-    viridis::scale_color_viridis('', discrete = TRUE) + 
+    scale_color_grey('') + 
     # geom_text(data = filter(model_keywords, year == 1995), 
     #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
     # geom_text(data = filter(model_keywords, year == 2018), 
     #           aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
   NULL #ggtitle('Latent variable model citation percentages across all journals over time')
+
+mod1 / mod2
 ```
+
 
 ```{r area-plot-model, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Area plot", eval = FALSE}
 ggplot(model_keywords, aes(x = year, y = perc_keyword, fill = keyword2)) + 
@@ -463,9 +522,6 @@ count_model <- dplyr::filter(count_keyword, group == 'software')
 count_model <- dplyr::filter(count_keyword, group == 'model')
 
 ```
-
-
-## Interaction between software and statistical methods
 
 ```{r software_statmethods, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Tile plot showing interaction between software and statistical methods.", eval = FALSE}
 # spread data to wide for tile plot
@@ -558,33 +614,3 @@ ggplot(count_keyword, aes(x = keyword2.x, y = keyword2.y)) +
   theme_bw() + 
   scale_fill_viridis('Percent')
 ```
-
-
-Prior to AERA, more search terms, more journals, and gathering more article meta data will be included in the research synthesis. These additional data sources will allow a better understanding of the current state of affairs in software usage, reproducible analysis, and software citation/mention within educational journals. 
-
-# Scholarly Significance
-Understanding the state of affairs in software usage in education is important to help disentangle and highlight the importance of citing statistical software and a reproducible research framework. Much more attention has been given in other content areas such as biostatistics, medicine, and psychology and the same standards should apply in education. Recommendations will be given as to which information regarding statistical software should accompany journal articles. This study also aims to go a step further than others [see @muenchen] in that the software usage will be explored with respect to journals and also quantitative methodology. This will allow for a deeper exploration of potential interactions between software usage and citations across different journals and methodologies over time.
-
-# References
-\setlength{\parindent}{-0.5in}
-\setlength{\leftskip}{0.5in}
-
-
-Table: (#tab:searchwords) Search keywords used in search of published journal documents 
-
-+---------------+----------------------------+
-| Search        | Keywords                   |
-+===============+============================+
-| Software      | "SPSS Statistics", "SPSS Modeler", "SPSS",                   |
-|               | "R-project", "SAS", "JMP",                    |
-|               | "STATA", "MATLAB", "Statistica ", "Statsoft", "Java",                   |
-|               | "Hadoop", "Python" , "Minitab", "Systat", "Tableau",                |
-|               | "Scala", "Julia", "Azure Machine Learning", "Mplus", "LISREL",   |
-|               | "AMOS", "HLM[0-9]", "HLM [0-9]"              |
-|               |                            |
-+---------------+----------------------------+
-| Statistical   | Regression, Hierarchical Linear Model (HLM), Linear Mixed Model (LMM), |
-| Models        | Multilevel Model, Analysis of Variance (ANOVA), Structural Equation Modeling (SEM) |
-+---------------+----------------------------+
-| Estimation    | Maximum Likelihood, bayesian, |
-+---------------+----------------------------+
