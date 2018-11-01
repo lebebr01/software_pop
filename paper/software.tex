@@ -478,7 +478,7 @@ into two broad groups. One group, JEE, EEPA, AEJ, AJPS, SE, and EJ have
 more than 50\% of the obtained articles mentioning at least one of the
 model keywords and the remaining journals being less than 50\%. The
 articles in the latter group, with the exception of AERJ, were closer to
-25\% of less.
+25\% or less.
 
 \begin{figure}
 \centering
@@ -527,9 +527,46 @@ keywords.
 \caption{\label{fig:model-journal}Statistical Model counts by journal}
 \end{figure}
 
+\hypertarget{impact-of-publication-year-on-keyword-rates}{%
+\subsection{Impact of publication year on keyword
+rates}\label{impact-of-publication-year-on-keyword-rates}}
+
+The impact of publication year on prevalence of software and model
+keywords was explored in Figures \ref{fig:software-year-at1} and
+\ref{fig:model-year-at1} for common software and model keywords
+respectively. In general, publication year does not have a strong impact
+on the software keyword rates with most trajectories being flat across
+the publication years. The one exception to this is with SAS which on
+average has declined across the publication years. R has consistently
+been the most cited software across these publication years for these
+journals, but overall software was infrequently cited (see Figure
+\ref{fig:software-journal}). More discussion on this in the future.
+
+The usage of model keywords occurs more frequently and shows evidence of
+trends across publication years as shown in Figure
+\ref{fig:model-year-at1}. For example, the top figure shows a large
+increase in the prevalence of terms related to linear models
+(i.e.~regression models) or linear mixed models and shows a decline in
+analysis of variance methods. Logistic regression and the variety of
+t-tests are rarely mentioned in the articles included. The bottom figure
+also shows general increases in the four models depicted, particularly
+the mention of IRT and SEM methods. These gains are more modest compared
+to the increase in the mention of linear models from the top figure, but
+the increase has now put IRT and SEM methods about the same percentage
+as ANOVA from the top figure.
+
 \hypertarget{interaction-between-software-and-statistical-methods}{%
 \subsection{Interaction between software and statistical
 methods}\label{interaction-between-software-and-statistical-methods}}
+
+Figure \ref{fig:software-statmethods} shows a tile plot of the
+interaction between software (x-axis) and model (y-axis) keywords. In
+this figure, the publication year is ignored to identify which methods
+are most closely paired with specific software. One note, there is a
+change there are duplicates in the data, for example, an article may
+cite both R and SAS within the document and mentioned using a linear
+model. In this case, this article will show up in the R/linear model
+cell as well as the SAS/linear model cell.
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
@@ -550,6 +587,21 @@ methods}\label{interaction-between-software-and-statistical-methods}}
 \centering
 \includegraphics{software_files/figure-latex/model-year-at1-1.pdf}
 \caption{\label{fig:model-year-at1}Model percentages by year}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{software_files/figure-latex/software-statmethods-1.pdf}
+\caption{\label{fig:software-statmethods}Tile plot showing interaction
+between software and statistical methods.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{software_files/figure-latex/software-statmethods-year-1.pdf}
+\caption{\label{fig:software-statmethods-year}Tile plot showing interaction
+between software and statistical methods by publication year for primary
+software.}
 \end{figure}
 
 \hypertarget{refs}{}
