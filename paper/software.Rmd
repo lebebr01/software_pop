@@ -28,10 +28,14 @@ tablelist         : no
 footnotelist      : no
 lineno            : no
 linkcolor         : "blue"
+tables            : yes
 
 lang              : "english"
 class             : "man"
 output            : papaja::apa6_pdf
+header-includes: 
+- \usepackage{tabularx}
+- \usepackage{pdflscape}
 ---
 
 ```{r rootdir, echo = FALSE}
@@ -41,14 +45,25 @@ knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/Jou
 # Objectives
 The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage over time in education. As this usage is likely tied closely to the methods they are employed, the interaction between software usage and quantitative research methods will also be explored. Research synthesis methods [@cooper2016] will be used to explore these trends over time in published social science research journals. 
 
-# Theoretical Framework
-Statistical software is the enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. Moreover, casual users of statistics software may not distinguish between the limitations of the models and the limitations of the software. In addition, the user-friendly nature of software (i.e., point and click graphical interfaces, ability to manipulate data by hand) also can severely limit the ability for research to be reproducible; a recent topic of intense discussion in biostatistics, medicine, and pyschology [@asendorpf2013; @ioannidis2014; @iqbal2016; @peng2009; @peng2011; @stodden2012]. The reproducibility crisis has pointed the finger at statistical software more directly with a strong push in some disciplines for analyses to be script (i.e., source code) based and posted with the published journal article, often described as the gold standard.
+# Statistical Software and Reproducibility
+Statistical software is an enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. Moreover, casual users of statistics software may not distinguish between the limitations of the models and the limitations of the software. However, the user-friendly nature of software (i.e., point and click graphical interfaces, ability to manipulate data by hand) also can severely limit the ability for research to be reproducible; a recent topic of intense discussion in biostatistics, medicine, and pyschology [@asendorpf2013; @ioannidis2014; @iqbal2016; @peng2009; @peng2011; @stodden2012]. The replicability and reproducibility crisis has pointed the finger at statistical software more directly with a strong emphasis in some disciplines for analyses to be script (i.e., source code) based and posted with the published journal article, often described as the gold standard.
 
-This idea of reproducibility has not seemed to fully enter the social science research domain. SPSS is likely the most common statistical software program used in many social science research domains, particularly education. Although SPSS has many common and advanced statistical techniques and it is possible to have a reproducible analysis, the default behavior within this program is often not script based and can create bad habits (i.e., editing raw data directly in the gui interface, running analyses without saving a script, etc.). Statistical software that is primarily command line, programs such as R or Python, offer easier reproducible frameworks as all data manipulations or analyses are saved in scripts that can be re-ran in the future. A data script can be thought of as a cockpit flight recorder in which every single step that was done to the original data going from data collection to final tables and figures was script based. Under a reproducible framework, the raw data are never altered directly, they should always be altered programmatically through a script. This keeps a log of the data manipulations that happened in the data analysis cycle. For example, R has packages that aid in the ability to create living data documents that contain text and analysis code within a single document [see @rmarkdown; @knitr; @knitrmanual].
+This idea of reproducibility has not seemed to fully enter the social science research domain. SPSS is likely the most common statistical software program used in many social science research domains, particularly education. Although SPSS has many common and advanced statistical techniques and it is possible to have a reproducible analysis, the default behavior within SPSS is not script based and can create bad habits. For example, editing raw data directly in the graphical user interface, running analyses without saving a script, creation of variables without syntax, or marking values as missing or not possible. Statistical software that is primarily command line, programs such as R, Python, SAS, or STATA, offer easier reproducible frameworks as all data manipulations or analyses are saved in scripts that can be re-ran in the future. A data script can be thought of as a cockpit flight recorder in which every single step that was done to the original data going from data collection to final tables and figures was script based. Under a reproducible framework, the raw data are never altered directly, they should always be altered programmatically through a script. This keeps a log of the data manipulations that happened in the data analysis cycle. For example, R has packages that aid in the ability to create living data documents that contain text and analysis code within a single document [see @rmarkdown; @knitr; @knitrmanual].
 
 The reproducible analysis framework has many advantages, including a transparent analysis process that could be validated by others or even simply the ability to investigate the data analysis completed months or years previously. Unfortunately, the current academic research framework has many barriers that limit the reproducibility. First, applied researchers may not be users of primarily command line or script based statistical software. This limits the ability to create a reproducible framework from the start. Secondly, researchers are not incentivized to conduct an analysis in a reproducible framework. Namely, the publish or perish aspect of academic research limits the sharing of statistical code partly due to the increased chance of criticism upon evaluation of the code used for the analysis. Finally, many journals and even the American Psychological Association (APA) publication manual [@apa] states that common software or programming languages need not be cited. This could even be interpretted by some as not needing to mention. Unfortunately, if the software used for a data analysis is not reported, the ability to recreate the analysis drops even more due to differences in estimation, handling of missing data, or other software specific settings. 
 
 This paper aims to explore the state of affairs in statistical software usage in education. Particular attention will be made to which software is currently being used in published social science research as well as how this has changed over the last twenty years. Secondly, this paper also aims to explore how frequently open-source software tools are used and to explore evidence of reproducible analysis framework being implemented. These aims will be explored using research synthesis methods.
+
+# Statistical Software Usage
+Research on the usage of statistical software has rarely been undertaken. @muenchen has explored the popularity of data science software through job advertisements, scholoarly articles, and other metrics. This exploration has shown that job advertisements for R and Python have increased between 2012 and 2017, but job advertisements for SAS have stayed relatively steady over this time frame based on data using Indeed's job trends tool. The number of scholarly articles, tracked through a Google Scholar search, mentioning research software was also explored between 1995 and 2016. The data show that SPSS has dominated between the years 2000 and 2010, but since 2010 has steadily decreased although still remains the most popular mentioned software tool. SAS has been second for most of this time frame and has followed a similar trajectory as SPSS. Recently, R has passed SAS in how often it is used in 2016. STATA has also shown strong increases as well, but not quite as steep an increase as R has shown. 
+
+The current study differs and expands from those conducted by @muenchen. The current analysis focuses on social science research exclusively, which is narrowed compared to the analysis conducted by @muenchen. Secondly, the current study also aims to explore statistical methods used and the interaction between statstical methods and software usage. Finally, through the methodology by @muenchen, it is not directly possible to explore how many studies are not mentioning statistical software usage, but still mentioning the usage of statistical methods. Statistical software implementation has implications for the reproducibility and replicability of the analysis. 
+
+
+# Statistical Methods Usage
+Research by @tatman2015 on the usage of statistical methods usage in linguistics. A total of 348 articles from the most recent issue of a variety of linguistics journals were explored. Of these 348 articles, about 65\% of the articles listed at least one of the statistical methods coded. Most of the articles that listed a statsitical method only listed a single method, but a few articles had up to 10 methods listed. The most popular inferential methods found were analysis of variance, t-tests, correlations, and Chi-Square.
+
+To our knowledge, no other study has undertaken the synthesis of software usage, statistical methods usage, or the interaction between the two. This study aims to explore the following research questions.
 
 ## Research Questions
 1. To what extent has the statistical software usage shifted over time in published analyses?
@@ -77,33 +92,45 @@ The research synthesis will gather data from a handful of education journals tha
 * Sociology of Education (SE)
 
 ## Data and Software
-All journal articles published between 1995 through the middle of 2018 will be organized into EndNote. Within EndNote, the find pdf feature will be used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch; @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords). Table \@ref(tab:searchwords) also shows keywords to be used to search for statistical models and estimation methods. A handful of articles will be randomly selected to be coded manually by reading the document to evaluate the accuracy of coding using the *pdfsearch* package. 
+All journal articles published between 1995 through the middle of 2018 were organized into EndNote. The citation information was obtained using the Web of Knowledge online tool. Once the citations were added to EndNote, the find pdf feature was used to gather the published documents from each journal. This pdf database will then be searched using the *pdfsearch* R package [@pdfsearch; @rpro]. This package allows for keyword searching directly within pdf documents. This will be the primary data collection method. The software keywords searched for can be seen in Table \@ref(tab:searchwords). Table \@ref(tab:searchwords) also shows keywords to be used to search for statistical models and estimation methods. A handful of articles will be randomly selected to be coded manually by reading the document to evaluate the accuracy of coding using the *pdfsearch* package. 
 
-Additional metadata obtained from journal articles will be obtained and combined with the keyword searching data. This metadata will contain information such as, year of publication, publication keywords, author information, and other article metadata obtained from EndNote. These data will be used to further enhance the keyword search data obtained from the *pdfsearch* package and the subsequent analyses discussed in the next section.
+Additional metadata obtained from journal articles will be obtained and combined with the keyword searching data. This metadata will contain information such as, year of publication, publication keywords, author information, and other article metadata obtained from EndNote. The citation information was converted to a bibtex file and the *bib2df* package was used to parse the bibtex fields to collect the metadata [@bib2df]. These data will be used to further enhance the keyword search data obtained from the *pdfsearch* package and the subsequent analyses discussed in the next section.
 
-Table: (#tab:searchwords) Search keywords used in search of published journal documents 
+\begin{landscape}
 
-+---------------+-------+----------------------------+
-| Search        | Group | Keywords                   |
-+===============+=======+============================+
-| Software      | SPSS  | SPSS Statistics, SPSS Modeler, SPSS                   |
-|               | R     | R-project, R Project, CRAN, R core team, R software, RStudio |
-|               | SAS   | SAS Insitute, SAS, JMP                    |
-|               | STATA | STATA |
-|               | Python | Python |
-|               | Other | MATLAB, Statistica , Statsoft, Java, Hadoop, Minitab, Systat, Tableau, Scala, Julia, Azure Machine Learning |
-|               | HLM   | HLM[0-9], HLM [0-9] |
-|               | IRT   | BILOG, BILOG-MG, Multilog, PARSCALE, IRT Pro |
-|               | Latent Variable |  Mplus, LISREL, AMOS|
-+---------------+-------+----------------------------+
-| Statistical   | ANOVA | Analysis of Variance, ANOVA, ANCOVA, Analysis of Covariance, multivariate analysis of variance, MANOVA, repeated measures analysis of variance, RMANOVA, RM-ANOVA |
-| Models        | HLM | HLM, Hierarchical Linear Model, Linear Mixed Model, LMM, Multilevel Model, Multi-level Model |
-|               | Latent Variable | item response theory, IRT, confirmatory factor analysis, CFA, exploratory factor analysis, EFA, latent variable modeling, structural equation modeling, SEM |
-|               | t-test | one sample t-test, one-sample t-test, two sample t-test, two-sample t-test, dependent samples t-test, dependent-sample t-test | 
-|               | Regression | Regression, multiple regression, linear regression, multiple linear regression, nonlinear regression, non-linear regression, logistic regression, ordinal regression, multinomial logistic regression, multinomial regression, generalized additive models, GAM, general(ized)? linear model, general(ized)? linear mixed model |
-|               | Growth | growth model, latent growth model, LGM |
-|               | Other | cluster analysis, hierarchical cluster analysis, propensity score matching, propensity score analysis, meta analysis, meta-analysis, nonparametric analysis, chi-square( analysis)? |
-+---------------+----------------------------+
+\begin{table}
+\captionof{table}{Search keywords used in search of published journal documents.}
+\label{tab:searchwords}
+\begin{tabularx}{\linewidth}{llX}
+
+\toprule
+Search & Group & Keywords \\
+\midrule 
+
+\multirow{9}{*}{Software} & SPSS            & SPSS Statistics, SPSS Modeler, SPSS \\
+                          & R               & R-project, R Project, CRAN, R core team, R software, RStudio \\
+                          & SAS             & SAS Insitute, SAS, JMP  \\
+                          & STATA           & STATA          \\
+                          & Python          & Python                  \\
+                          & Other           & MATLAB, Statistica , Statsoft, Java, Hadoop, Minitab, Systat, Tableau, Scala, Julia, Azure Machine Learning \\
+                          & HLM             & HLM[0-9], HLM [0-9]                            \\
+                          & IRT             & BILOG, BILOG-MG, Multilog, PARSCALE, IRT Pro        \\
+                          & Latent Variable & Mplus, LISREL, AMOS   \\
+\midrule
+
+\multirow{7}{*}{Statistical Models} & ANOVA           & Analysis of Variance, ANOVA, ANCOVA, Analysis of Covariance, multivariate analysis of variance, MANOVA, repeated measures analysis of variance, RMANOVA, RM-ANOVA                                                                                                                                                               \\
+                                    & HLM             & HLM, Hierarchical Linear Model, Linear Mixed Model, LMM, Multilevel Model, Multi-level Model                                                                                                                                                                                                                                    \\
+                                    & Latent Variable & item response theory, IRT, confirmatory factor analysis, CFA, exploratory factor analysis, EFA, latent variable modeling, structural equation modeling, SEM                                                                                                                                                                     \\
+                                    & t-test          & one sample t-test, one-sample t-test, two sample t-test, two-sample t-test, dependent samples t-test, dependent-sample t-test                                                                                                                                                                                                   \\
+                                    & Regression      & Regression, multiple regression, linear regression, multiple linear regression, nonlinear regression, non-linear regression, logistic regression, ordinal regression, multinomial logistic regression, multinomial regression, generalized additive models, GAM, general(ized)? linear model, general(ized)? linear mixed model \\
+                                    & Growth          & growth model, latent growth model, LGM                                                                                                                                                                                                                                                                                          \\
+                                    & Other           & cluster analysis, hierarchical cluster analysis, propensity score matching, propensity score analysis, meta analysis, meta-analysis, nonparametric analysis, chi-square( analysis)?                                                                                                                                             \\
+\bottomrule
+
+\end{tabularx}
+\end{table}
+
+\end{landscape}
 
 ## Analysis
 Descriptive analyses will be performed on the research synthesis data obtained from keyword searching performed with the *pdfsearch* package. Initial exploration will focus on software and statistical models separately. Subsequent descriptive analyses will be performed to explore the if there are any intereactions between software and statistical models used in published research. All of these analyses will be performed over time to explore trends in software and statistical model usage and citation rates. Figures will be the primary analysis methods and will be created in R using the ggplot2 package [@ggplot2].

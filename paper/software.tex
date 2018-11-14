@@ -109,6 +109,8 @@
 \makeatletter
 \renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
 \makeatother
+\usepackage{tabularx}
+\usepackage{pdflscape}
 
 \authornote{
 
@@ -175,11 +177,11 @@ interfaces, ability to manipulate data by hand) also can severely limit
 the ability for research to be reproducible; a recent topic of intense
 discussion in biostatistics, medicine, and pyschology (Asendorpf et al.,
 2013; Ioannidis, 2014; Iqbal, Wallach, Khoury, Schully, \& Ioannidis,
-2016; Peng, 2009, 2011; Stodden, 2012). The reproducibility crisis has
-pointed the finger at statistical software more directly with a strong
-push in some disciplines for analyses to be script (i.e., source code)
-based and posted with the published journal article, often described as
-the gold standard.
+2016; Peng, 2009, 2011; Stodden, 2012). The replicability and
+reproducibility crisis has pointed the finger at statistical software
+more directly with a strong emphasis in some disciplines for analyses to
+be script (i.e., source code) based and posted with the published
+journal article, often described as the gold standard.
 
 This idea of reproducibility has not seemed to fully enter the social
 science research domain. SPSS is likely the most common statistical
@@ -189,8 +191,8 @@ statistical techniques and it is possible to have a reproducible
 analysis, the default behavior within this program is often not script
 based and can create bad habits (i.e., editing raw data directly in the
 gui interface, running analyses without saving a script, etc.).
-Statistical software that is primarily command line, programs such as R
-or Python, offer easier reproducible frameworks as all data
+Statistical software that is primarily command line, programs such as R,
+Python, SAS, or STATA, offer easier reproducible frameworks as all data
 manipulations or analyses are saved in scripts that can be re-ran in the
 future. A data script can be thought of as a cockpit flight recorder in
 which every single step that was done to the original data going from
@@ -318,86 +320,64 @@ journals were selected to be searched from 1995 onward:
 \subsection{Data and Software}\label{data-and-software}}
 
 All journal articles published between 1995 through the middle of 2018
-will be organized into EndNote. Within EndNote, the find pdf feature
-will be used to gather the published documents from each journal. This
-pdf database will then be searched using the \emph{pdfsearch} R package
-(LeBeau, 2018; R Core Team, 2017). This package allows for keyword
-searching directly within pdf documents. This will be the primary data
-collection method. The software keywords searched for can be seen in
-Table \ref{tab:searchwords}. Table \ref{tab:searchwords} also shows
-keywords to be used to search for statistical models and estimation
-methods. A handful of articles will be randomly selected to be coded
-manually by reading the document to evaluate the accuracy of coding
-using the \emph{pdfsearch} package.
+were organized into EndNote. The citation information was obtained using
+the Web of Knowledge online tool. Once the citations were added to
+EndNote, the find pdf feature was used to gather the published documents
+from each journal. This pdf database will then be searched using the
+\emph{pdfsearch} R package (LeBeau, 2018; R Core Team, 2017). This
+package allows for keyword searching directly within pdf documents. This
+will be the primary data collection method. The software keywords
+searched for can be seen in Table \ref{tab:searchwords}. Table
+\ref{tab:searchwords} also shows keywords to be used to search for
+statistical models and estimation methods. A handful of articles will be
+randomly selected to be coded manually by reading the document to
+evaluate the accuracy of coding using the \emph{pdfsearch} package.
 
 Additional metadata obtained from journal articles will be obtained and
 combined with the keyword searching data. This metadata will contain
 information such as, year of publication, publication keywords, author
-information, and other article metadata obtained from EndNote. These
-data will be used to further enhance the keyword search data obtained
-from the \emph{pdfsearch} package and the subsequent analyses discussed
-in the next section.
+information, and other article metadata obtained from EndNote. The
+citation information was converted to a bibtex file and the
+\emph{bib2df} package was used to parse the bibtex fields to collect the
+metadata (Ottolinger, 2018). These data will be used to further enhance
+the keyword search data obtained from the \emph{pdfsearch} package and
+the subsequent analyses discussed in the next section.
 
-\begin{longtable}[]{@{}lll@{}}
-\caption{\label{tab:searchwords} Search keywords used in search of published
-journal documents}\tabularnewline
+\begin{landscape}
+
+\begin{table}
+\captionof{table}{Search keywords used in search of published journal documents.}
+\label{tab:searchwords}
+\begin{tabularx}{\linewidth}{llX}
+
 \toprule
-\begin{minipage}[b]{0.20\columnwidth}\raggedright
-Search\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright
-Group\strut
-\end{minipage} & \begin{minipage}[b]{0.37\columnwidth}\raggedright
-Keywords\strut
-\end{minipage}\tabularnewline
+Search & Group & Keywords \\
+\midrule 
+
+\multirow{9}{*}{Software} & SPSS            & SPSS Statistics, SPSS Modeler, SPSS \\
+                          & R               & R-project, R Project, CRAN, R core team, R software, RStudio \\
+                          & SAS             & SAS Insitute, SAS, JMP  \\
+                          & STATA           & STATA          \\
+                          & Python          & Python                  \\
+                          & Other           & MATLAB, Statistica , Statsoft, Java, Hadoop, Minitab, Systat, Tableau, Scala, Julia, Azure Machine Learning \\
+                          & HLM             & HLM[0-9], HLM [0-9]                            \\
+                          & IRT             & BILOG, BILOG-MG, Multilog, PARSCALE, IRT Pro        \\
+                          & Latent Variable & Mplus, LISREL, AMOS   \\
 \midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.20\columnwidth}\raggedright
-Search\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright
-Group\strut
-\end{minipage} & \begin{minipage}[b]{0.37\columnwidth}\raggedright
-Keywords\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.20\columnwidth}\raggedright
-Software\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
-SPSS R SAS STATA Python Other HLM IRT Latent\strut
-\end{minipage} & \begin{minipage}[t]{0.37\columnwidth}\raggedright
-SPSS Statistics, SPSS Modeler, SPSS R-project, R Project, CRAN, R core
-team, R software, RStudio SAS Insitute, SAS, JMP STATA \textbar{} Python
-MATLAB, Statistica , Statsoft, Java, Hadoop, Minitab, Systat, Tableau,
-Scala, Julia, Azure Machine Learning HLM{[}0-9{]}, HLM {[}0-9{]} BILOG,
-BILOG-MG, Multilog, PARSCALE, IRT Pro Variable \textbar{} Mplus, LISREL,
-AMOS\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.20\columnwidth}\raggedright
-Statistical Models\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
-ANOVA HLM \textbar{} H Latent t-test Regress Growth Other\strut
-\end{minipage} & \begin{minipage}[t]{0.37\columnwidth}\raggedright
-Analysis of Variance, ANOVA, ANCOVA, Analysis of Covariance,
-multivariate analysis of variance, MANOVA, repeated measures analysis of
-variance, RMANOVA, RM-ANOVA LM, Hierarchical Linear Model, Linear Mixed
-Model, LMM, Multilevel Model, Multi-level Model Variable \textbar{} item
-response theory, IRT, confirmatory factor analysis, CFA, exploratory
-factor analysis, EFA, latent variable modeling, structural equation
-modeling, SEM \textbar{} one sample t-test, one-sample t-test, two
-sample t-test, two-sample t-test, dependent samples t-test,
-dependent-sample t-test ion \textbar{} Regression, multiple regression,
-linear regression, multiple linear regression, nonlinear regression,
-non-linear regression, logistic regression, ordinal regression,
-multinomial logistic regression, multinomial regression, generalized
-additive models, GAM, general(ized)? linear model, general(ized)? linear
-mixed model \textbar{} growth model, latent growth model, LGM cluster
-analysis, hierarchical cluster analysis, propensity score matching,
-propensity score analysis, meta analysis, meta-analysis, nonparametric
-analysis, chi-square( analysis)?\strut
-\end{minipage}\tabularnewline
+
+\multirow{7}{*}{Statistical Models} & ANOVA           & Analysis of Variance, ANOVA, ANCOVA, Analysis of Covariance, multivariate analysis of variance, MANOVA, repeated measures analysis of variance, RMANOVA, RM-ANOVA                                                                                                                                                               \\
+                                    & HLM             & HLM, Hierarchical Linear Model, Linear Mixed Model, LMM, Multilevel Model, Multi-level Model                                                                                                                                                                                                                                    \\
+                                    & Latent Variable & item response theory, IRT, confirmatory factor analysis, CFA, exploratory factor analysis, EFA, latent variable modeling, structural equation modeling, SEM                                                                                                                                                                     \\
+                                    & t-test          & one sample t-test, one-sample t-test, two sample t-test, two-sample t-test, dependent samples t-test, dependent-sample t-test                                                                                                                                                                                                   \\
+                                    & Regression      & Regression, multiple regression, linear regression, multiple linear regression, nonlinear regression, non-linear regression, logistic regression, ordinal regression, multinomial logistic regression, multinomial regression, generalized additive models, GAM, general(ized)? linear model, general(ized)? linear mixed model \\
+                                    & Growth          & growth model, latent growth model, LGM                                                                                                                                                                                                                                                                                          \\
+                                    & Other           & cluster analysis, hierarchical cluster analysis, propensity score matching, propensity score analysis, meta analysis, meta-analysis, nonparametric analysis, chi-square( analysis)?                                                                                                                                             \\
 \bottomrule
-\end{longtable}
+
+\end{tabularx}
+\end{table}
+
+\end{landscape}
 
 \hypertarget{analysis}{%
 \subsection{Analysis}\label{analysis}}
@@ -608,6 +588,8 @@ of the software across a variety of model situations.
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
+\newpage
+
 \hypertarget{references}{%
 \section{References}\label{references}}
 
@@ -676,6 +658,11 @@ transparency across the biomedical literature. \emph{PLoS Biology},
 LeBeau, B. (2018). pdfsearch: Search tools for pdf files. \emph{Journal
 of Open Source Software}, \emph{3}(27), 668.
 doi:\href{https://doi.org/10.21105/joss.00668}{10.21105/joss.00668}
+
+\leavevmode\hypertarget{ref-bib2df}{}%
+Ottolinger, P. (2018). \emph{Bib2df: Parse a bibtex file to a
+data.frame}. Retrieved from
+\url{https://CRAN.R-project.org/package=bib2df}
 
 \leavevmode\hypertarget{ref-peng2009}{}%
 Peng, R. D. (2009). Reproducible research and biostatistics.
