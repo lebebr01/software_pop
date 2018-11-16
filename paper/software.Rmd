@@ -39,11 +39,15 @@ header-includes:
 ---
 
 ```{r rootdir, echo = FALSE}
-knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
+# knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
+knitr::opts_knit$set(root.dir = "C:/Users/lebeb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
 ```
 
-# Objectives
-The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage over time in education. As this usage is likely tied closely to the methods they are employed, the interaction between software usage and quantitative research methods will also be explored. Research synthesis methods [@cooper2016] will be used to explore these trends over time in published social science research journals. 
+How statitical software is used in primary research studies has important implications for the reproducibility and replicability of the research. Without knowledge of which software and version is used in the analysis, differences in results could be due to different software implementations. However, in the social sciences, to date no research has actively explored which software are commonly used in published research or how often research papers cite the software they use.
+
+Software usage is only a part of the puzzle to be able to reproduce or replicate study results. The statistical method(s) used are also important to have a clear distinction about how they are used. Without clear, transparent, and open statistical methods, data processing, and other data management tasks, the ability to reproduce or replicate the study results likely drops significantly. 
+
+The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage, statistical methods usage, and the interaction between the two over time in the social sciences. Research synthesis methods [@cooper2016] will be used to explore these trends over time in published articles found in twelve social science research journals. Social science journals spanning economics, education, political science, psychology, public policy, and sociology that had strong impact factors were targeted for inclusion.
 
 # Statistical Software and Reproducibility
 Statistical software is an enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. Moreover, casual users of statistics software may not distinguish between the limitations of the models and the limitations of the software. However, the user-friendly nature of software (i.e., point and click graphical interfaces, ability to manipulate data by hand) also can severely limit the ability for research to be reproducible; a recent topic of intense discussion in biostatistics, medicine, and pyschology [@asendorpf2013; @ioannidis2014; @iqbal2016; @peng2009; @peng2011; @stodden2012]. The replicability and reproducibility crisis has pointed the finger at statistical software more directly with a strong emphasis in some disciplines for analyses to be script (i.e., source code) based and posted with the published journal article, often described as the gold standard.

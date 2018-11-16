@@ -151,58 +151,74 @@ state of affairs.
 \begin{document}
 \maketitle
 
-\hypertarget{objectives}{%
-\section{Objectives}\label{objectives}}
+How statitical software is used in primary research studies has
+important implications for the reproducibility and replicability of the
+research. Without knowledge of which software and version is used in the
+analysis, differences in results could be due to different software
+implementations. However, in the social sciences, to date no research
+has actively explored which software are commonly used in published
+research or how often research papers cite the software they use.
+
+Software usage is only a part of the puzzle to be able to reproduce or
+replicate study results. The statistical method(s) used are also
+important to have a clear distinction about how they are used. Without
+clear, transparent, and open statistical methods, data processing, and
+other data management tasks, the ability to reproduce or replicate the
+study results likely drops significantly.
 
 The purpose of this paper is to explore the evolution (or lack thereof)
-of statistical software usage over time in education. As this usage is
-likely tied closely to the methods they are employed, the interaction
-between software usage and quantitative research methods will also be
-explored. Research synthesis methods (Cooper, 2016) will be used to
-explore these trends over time in published social science research
-journals.
+of statistical software usage, statistical methods usage, and the
+interaction between the two over time in the social sciences. Research
+synthesis methods (Cooper, 2016) will be used to explore these trends
+over time in published articles found in twelve social science research
+journals. Social science journals spanning economics, education,
+political science, psychology, public policy, and sociology that had
+strong impact factors were targeted for inclusion.
 
-\hypertarget{theoretical-framework}{%
-\section{Theoretical Framework}\label{theoretical-framework}}
+\hypertarget{statistical-software-and-reproducibility}{%
+\section{Statistical Software and
+Reproducibility}\label{statistical-software-and-reproducibility}}
 
-Statistical software is the enabling tool to performing applied data
+Statistical software is an enabling tool to performing applied data
 analysis. Statistical methods that are implemented within software will
 increase their usage (particularly if the software is also
 user-friendly) by applied analysts and are likely taught more frequently
 in methodology courses at universities. Moreover, casual users of
 statistics software may not distinguish between the limitations of the
-models and the limitations of the software. In addition, the
-user-friendly nature of software (i.e., point and click graphical
-interfaces, ability to manipulate data by hand) also can severely limit
-the ability for research to be reproducible; a recent topic of intense
-discussion in biostatistics, medicine, and pyschology (Asendorpf et al.,
-2013; Ioannidis, 2014; Iqbal, Wallach, Khoury, Schully, \& Ioannidis,
-2016; Peng, 2009, 2011; Stodden, 2012). The replicability and
-reproducibility crisis has pointed the finger at statistical software
-more directly with a strong emphasis in some disciplines for analyses to
-be script (i.e., source code) based and posted with the published
-journal article, often described as the gold standard.
+models and the limitations of the software. However, the user-friendly
+nature of software (i.e., point and click graphical interfaces, ability
+to manipulate data by hand) also can severely limit the ability for
+research to be reproducible; a recent topic of intense discussion in
+biostatistics, medicine, and pyschology (Asendorpf et al., 2013;
+Ioannidis, 2014; Iqbal, Wallach, Khoury, Schully, \& Ioannidis, 2016;
+Peng, 2009, 2011; Stodden, 2012). The replicability and reproducibility
+crisis has pointed the finger at statistical software more directly with
+a strong emphasis in some disciplines for analyses to be script (i.e.,
+source code) based and posted with the published journal article, often
+described as the gold standard.
 
 This idea of reproducibility has not seemed to fully enter the social
 science research domain. SPSS is likely the most common statistical
 software program used in many social science research domains,
 particularly education. Although SPSS has many common and advanced
 statistical techniques and it is possible to have a reproducible
-analysis, the default behavior within this program is often not script
-based and can create bad habits (i.e., editing raw data directly in the
-gui interface, running analyses without saving a script, etc.).
-Statistical software that is primarily command line, programs such as R,
-Python, SAS, or STATA, offer easier reproducible frameworks as all data
-manipulations or analyses are saved in scripts that can be re-ran in the
-future. A data script can be thought of as a cockpit flight recorder in
-which every single step that was done to the original data going from
-data collection to final tables and figures was script based. Under a
-reproducible framework, the raw data are never altered directly, they
-should always be altered programmatically through a script. This keeps a
-log of the data manipulations that happened in the data analysis cycle.
-For example, R has packages that aid in the ability to create living
-data documents that contain text and analysis code within a single
-document (see Allaire et al., 2017; Xie, 2015, 2017).
+analysis, the default behavior within SPSS is not script based and can
+create bad habits. For example, editing raw data directly in the
+graphical user interface, running analyses without saving a script,
+creation of variables without syntax, or marking values as missing or
+not possible. Statistical software that is primarily command line,
+programs such as R, Python, SAS, or STATA, offer easier reproducible
+frameworks as all data manipulations or analyses are saved in scripts
+that can be re-ran in the future. A data script can be thought of as a
+cockpit flight recorder in which every single step that was done to the
+original data going from data collection to final tables and figures was
+script based. Under a reproducible framework, the raw data are never
+altered directly, they should always be altered programmatically through
+a script. This keeps a log of the data manipulations that happened in
+the data analysis cycle. For example, R has packages that aid in the
+ability to create living data documents that contain text and analysis
+code within a single document (see Allaire et al., 2017; Xie, 2015,
+2017).
 
 The reproducible analysis framework has many advantages, including a
 transparent analysis process that could be validated by others or even
@@ -232,6 +248,52 @@ also aims to explore how frequently open-source software tools are used
 and to explore evidence of reproducible analysis framework being
 implemented. These aims will be explored using research synthesis
 methods.
+
+\hypertarget{statistical-software-usage}{%
+\section{Statistical Software Usage}\label{statistical-software-usage}}
+
+Research on the usage of statistical software has rarely been
+undertaken. Muenchen (2017) has explored the popularity of data science
+software through job advertisements, scholoarly articles, and other
+metrics. This exploration has shown that job advertisements for R and
+Python have increased between 2012 and 2017, but job advertisements for
+SAS have stayed relatively steady over this time frame based on data
+using Indeed's job trends tool. The number of scholarly articles,
+tracked through a Google Scholar search, mentioning research software
+was also explored between 1995 and 2016. The data show that SPSS has
+dominated between the years 2000 and 2010, but since 2010 has steadily
+decreased although still remains the most popular mentioned software
+tool. SAS has been second for most of this time frame and has followed a
+similar trajectory as SPSS. Recently, R has passed SAS in how often it
+is used in 2016. STATA has also shown strong increases as well, but not
+quite as steep an increase as R has shown.
+
+The current study differs and expands from those conducted by Muenchen
+(2017). The current analysis focuses on social science research
+exclusively, which is narrowed compared to the analysis conducted by
+Muenchen (2017). Secondly, the current study also aims to explore
+statistical methods used and the interaction between statstical methods
+and software usage. Finally, through the methodology by Muenchen (2017),
+it is not directly possible to explore how many studies are not
+mentioning statistical software usage, but still mentioning the usage of
+statistical methods. Statistical software implementation has
+implications for the reproducibility and replicability of the analysis.
+
+\hypertarget{statistical-methods-usage}{%
+\section{Statistical Methods Usage}\label{statistical-methods-usage}}
+
+Research by Tatman (2015) on the usage of statistical methods usage in
+linguistics. A total of 348 articles from the most recent issue of a
+variety of linguistics journals were explored. Of these 348 articles,
+about 65\% of the articles listed at least one of the statistical
+methods coded. Most of the articles that listed a statsitical method
+only listed a single method, but a few articles had up to 10 methods
+listed. The most popular inferential methods found were analysis of
+variance, t-tests, correlations, and Chi-Square.
+
+To our knowledge, no other study has undertaken the synthesis of
+software usage, statistical methods usage, or the interaction between
+the two. This study aims to explore the following research questions.
 
 \hypertarget{research-questions}{%
 \subsection{Research Questions}\label{research-questions}}
@@ -659,6 +721,10 @@ LeBeau, B. (2018). pdfsearch: Search tools for pdf files. \emph{Journal
 of Open Source Software}, \emph{3}(27), 668.
 doi:\href{https://doi.org/10.21105/joss.00668}{10.21105/joss.00668}
 
+\leavevmode\hypertarget{ref-muenchen}{}%
+Muenchen, R. A. (2017). The popularity of data science software.
+Retrieved from \url{http://r4stats.com/articles/popularity/}
+
 \leavevmode\hypertarget{ref-bib2df}{}%
 Ottolinger, P. (2018). \emph{Bib2df: Parse a bibtex file to a
 data.frame}. Retrieved from
@@ -682,6 +748,11 @@ Retrieved from \url{https://www.R-project.org/}
 Stodden, V. (2012). Reproducible research for scientific computing:
 Tools and strategies for changing the culture. \emph{Computing in
 Science \& Engineering}, \emph{14}(4), 13--17.
+
+\leavevmode\hypertarget{ref-tatman2015}{}%
+Tatman, R. (2015). The state of the stats: Current use of statistical
+methods across linguistics subfields. \emph{Linguistics Summer
+Institute}.
 
 \leavevmode\hypertarget{ref-ggplot2}{}%
 Wickham, H. (2016). \emph{Ggplot2: Elegant graphics for data analysis}.
