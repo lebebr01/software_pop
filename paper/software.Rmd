@@ -39,13 +39,14 @@ header-includes:
 ---
 
 ```{r rootdir, echo = FALSE}
+# knitr::opts_knit$set(root.dir = "/Users/brandonlebeau/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
 # knitr::opts_knit$set(root.dir = "C:/Users/bleb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
 knitr::opts_knit$set(root.dir = "C:/Users/lebeb/OneDrive - University of Iowa/JournalArticlesInProgress/software_pop")
 ```
 
-How statitical software is used in primary research studies has important implications for the reproducibility and replicability of the research. Without knowledge of which software and version is used in the analysis, differences in results could be due to different software implementations. However, in the social sciences, to date no research has actively explored which software are commonly used in published research or how often research papers cite the software they use.
+How statitical software is used in primary research studies has important implications for the reproducibility and replicability of the research. Without knowledge of which software and version is used in the analysis, differences in results could be due to different software implementations, maybe not the analysis. However, in the social sciences, to our knowledge, no research has actively explored which software are commonly used in published research or how often research papers cite the software they use.
 
-Software usage is only a part of the puzzle to be able to reproduce or replicate study results. The statistical method(s) used are also important to have a clear distinction about how they are used. Without clear, transparent, and open statistical methods, data processing, and other data management tasks, the ability to reproduce or replicate the study results likely drops significantly. 
+Software usage is only a part of the puzzle to be able to reproduce or replicate study results. The statistical method(s) used are also important to have a clear distinction about how they are used. Without clear, transparent, and open statistical methods, data processing, and other data management tasks, the ability to reproduce or replicate the study drops significantly [@peng2009; @peng2011; @stodden2012]. 
 
 The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage, statistical methods usage, and the interaction between the two over time in the social sciences. Research synthesis methods [@cooper2016] will be used to explore these trends over time in published articles found in twelve social science research journals. Social science journals spanning economics, education, political science, psychology, public policy, and sociology that had strong impact factors were targeted for inclusion.
 
@@ -100,7 +101,6 @@ All journal articles published between 1995 through the middle of 2018 were orga
 
 Additional metadata obtained from journal articles will be obtained and combined with the keyword searching data. This metadata will contain information such as, year of publication, publication keywords, author information, and other article metadata obtained from EndNote. The citation information was converted to a bibtex file and the *bib2df* package was used to parse the bibtex fields to collect the metadata [@bib2df]. These data will be used to further enhance the keyword search data obtained from the *pdfsearch* package and the subsequent analyses discussed in the next section.
 
-\begin{landscape}
 
 \begin{table}
 \captionof{table}{Search keywords used in search of published journal documents.}
@@ -133,8 +133,6 @@ Search & Group & Keywords \\
 
 \end{tabularx}
 \end{table}
-
-\end{landscape}
 
 ## Analysis
 Descriptive analyses will be performed on the research synthesis data obtained from keyword searching performed with the *pdfsearch* package. Initial exploration will focus on software and statistical models separately. Subsequent descriptive analyses will be performed to explore the if there are any intereactions between software and statistical models used in published research. All of these analyses will be performed over time to explore trends in software and statistical model usage and citation rates. Figures will be the primary analysis methods and will be created in R using the ggplot2 package [@ggplot2].
@@ -194,7 +192,7 @@ ggplot(num_year, aes(x = YEAR, y = I(prop_year * 100), color = pdf)) +
   scale_color_grey("PDF?")
 ```
 
-Using the obtained PDFs, keyword searching was performed for the software and model keywords. Figure \@ref(fig:count-software) shows the percentage of articles from each journal with at least one match for software and model keywords. A few trends emerge from this figure. First, software keywords are much less likely to be found within the obtained PDFs. The largest percentage was in JEE with about 50\% of obtained articles reporting at least one of the searched software keywords. Most of the other journals only had 25\% or less of the articles mentioning one of the software keywords, with none of the obtained articles in JPP mentioning a software keyword. Model keywords on the other hand were much better more prevalent and the journals fall into two broad groups. One group, JEE, EEPA, AEJ, AJPS, SE, and EJ have more than 50\% of the obtained articles mentioning at least one of the model keywords and the remaining journals being less than 50\%. The articles in the latter group, with the exception of AERJ, were closer to 25\% or less. 
+Using the obtained PDFs, keyword searching was performed for the software and model keywords. Figure \@ref(fig:count-software) shows the percentage of articles from each journal with at least one match for software and model keywords. The figure shows that software keywords are much less likely to be found within the obtained PDFs compared to the statistical model keywords. The largest percentage was in JEE with about 50\% of obtained articles reporting at least one of the searched software keywords. Most of the other journals had 25\% or less of the articles mentioning one of the software keywords, with none of the obtained articles in JPP mentioning a software keyword. Model keywords on the other hand were much more prevalent and the journals fall into two broad groups. One group, JEE, EEPA, AEJ, AJPS, SE, and EJ have more than 50\% of the obtained articles mentioning at least one of the model keywords and the remaining journals being less than 50\%. The articles in the latter group, with the exception of AERJ, were closer to 25\% or less.
 
 
 ```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Number of articles with at least one model or software keyword match by journals."}
@@ -406,9 +404,9 @@ num_keywords <- keywords_nor %>%
 ```
 
 
-Expanding on the software keywords found within the PDFs, Figure \@ref(fig:software-journal) explores which software keywords were found in each journal. In general, mirroring results from Figure \@ref(fig:count-software), the percetage of articles reporting software keywords was relatively small, most often less than 5\%. R, SAS, SPSS, and STATA were the most commonly found software keywords, with R being the most common in most journals. The one exception to this was in JEE, where SAS was more common (about 20\% of articles) and R and SPSS had a similar percentage (about 15\%) of articles reporting their usage. One interpretation note, articles may mention more than one software keyword and those duplicate results will show up in each category. On average, the average number of software keywords identified in each article was highest for JEE at 1.71 (range: 1 to 5) and a lowest of 1 for PPA (range: 1 to 1).
+Expanding on the software keywords found within the PDFs, Figure \@ref(fig:software-journal) explores which software keywords were found in each journal. In general, mirroring results from Figure \@ref(fig:count-software), the percetage of articles reporting software keywords was relatively small, most often less than 5\%. R, SAS, SPSS, and STATA were the most commonly found software keywords, with R being the most common in most journals. The one exception to this was in JEE, where SAS was more common (about 20\% of articles), with R and SPSS having a similar percentage (about 15\%) of articles reporting their usage. One interpretation note, articles may mention more than one software keyword and those duplicate results will show up in each category. On average, the average number of software keywords identified in each article was highest for JEE at 1.71 (range: 1 to 5) and a lowest of 1 for PPA (range: 1 to 1).
 
-A similar figure for model keywords can be seen in Figure \@ref(fig:model-journal). The x-axis scale here is wider compared to the software keywords showing that the methods are more commonly reported. However, there are still a sizeable number of articles appearing in these journals that do not list one of the model keywords searched. The most commonly used methods are linear model, analysis of variance, meta-analysis, or linear mixed model (i.e. HLM) models. The journals EEPA, JEE, and SE have the widest array of models being picked up through the keyword search. On the opposite side, AEJ, AJPS, and EJ are dominated by linear models. Finally, journals such as AERJ, ER, HE, PPA, and PSQ all have a low prevalence of articles that are using the model keywords.
+A similar figure for model keywords can be seen in Figure \@ref(fig:model-journal). The x-axis scale here is wider compared to the software keywords showing that the methods are more commonly reported. However, there are still a sizeable number of articles appearing in these journals that do not list one of the model keywords searched. The most commonly used methods are linear model, analysis of variance, meta-analysis, or linear mixed model (i.e. HLM or multilevel) models. The journals EEPA, JEE, and SE have the widest array of models identified through the keyword search. On the opposite side, AEJ, AJPS, and EJ are dominated by linear models. Finally, journals such as AERJ, ER, HE, PPA, and PSQ all have a low prevalence of articles that are using the model keywords.
 
 ```{r model-journal, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Statistical Model counts by journal", fig.height = 10}
 ggplot(dplyr::filter(count_keyword, group == 'model'), 
@@ -423,13 +421,15 @@ ggplot(dplyr::filter(count_keyword, group == 'model'),
 ```
 
 ## Impact of publication year on keyword rates
-The impact of publication year on prevalence of software and model keywords was explored in Figures \@ref(fig:software-year-at1) and \@ref(fig:model-year-at1) for common software and model keywords respectively. In general, publication year does not have a strong impact on the software keyword rates with most trajectories being flat across the publication years. The one exception to this is with SAS which on average has declined across the publication years. R has consistently been the most cited software across these publication years for these journals, but overall software was infrequently cited (see Figure \@ref(fig:software-journal)). More discussion on this in the future.
+The impact of publication year on prevalence of software and model keywords was explored in Figures \@ref(fig:software-year-at1) and \@ref(fig:model-year-at1) for common software and model keywords respectively. In general, publication year does not have a strong impact on the software keyword rates with most trajectories being flat across the publication years. The one exception to this is with SAS which on average has declined across the publication years. R has consistently been the most cited software across these publication years for these journals, but overall software was infrequently cited (see Figure \@ref(fig:software-journal)).
+
+Commonly used specialty software, such as AMOS, HLM, LISREL, or Mplus, are shown at the bottom of Figure \@ref(fig:software-year-at1). Not suprisingly, the specialty software on average shows up less frequently compared to the general purpose software shown in the top of Figure \@ref(fig:software-year-at1). Out of these four specialty software, AMOS tends to be used the most frequently, LISREL has decreased in usage since 1995, and Mplus has gained additional usage. However, these programs still only account for around 4\% or less of statistical software used. 
 
 The usage of model keywords occurs more frequently and shows evidence of trends across publication years as shown in Figure \@ref(fig:model-year-at1). For example, the top figure shows a large increase in the prevalence of terms related to linear models (i.e. regression models) or linear mixed models and shows a decline in analysis of variance methods. Logistic regression and the variety of t-tests are rarely mentioned in the articles included. The bottom figure also shows general increases in the four models depicted, particularly the mention of IRT and SEM methods. These gains are more modest compared to the increase in the mention of linear models from the top figure, but the increase has now put IRT and SEM methods about the same percentage as ANOVA from the top figure. 
 
 ## Interaction between software and statistical methods
 
-Figure \@ref(fig:software-statmethods) shows a tile plot of the interaction between software (x-axis) and model (y-axis) keywords. In this figure, the publication year is ignored to identify which methods are most closely paired with specific software. One note, there is a change there are duplicates in the data, for example, an article may cite both R and SAS within the document and mentioned using a linear model. In this case, this article will show up in the R/linear model cell as well as the SAS/linear model cell. This analysis is also limited to articles that have both a software and model keyword returned. On average, only about 20\% of all the PDFs obtained from the study had both a software and model keyword in them. This provides further evidence of the reporting bias, particularly with regard to software.
+Figure \@ref(fig:software-statmethods) shows a tile plot of the interaction between software (x-axis) and model (y-axis) keywords. The darker shaded regions of the figure show more combinations of the software and model keywords. In the figure, publication year is ignored to identify which methods are most closely paired with specific software. There are duplicates in the data for this figure, for example, an article may cite both R and SAS within the document and mentioned using a linear model. In this case, this article will show up in the R/linear model cell as well as the SAS/linear model cell. This analysis is also limited to articles that have both a software and model keyword returned. On average, only about 20\% of all the PDFs obtained from the study had both a software and model keyword in them. This provides further evidence of the reporting bias, particularly with regard to software.
 
 The figure shows that the two most common combinations are R and ANOVA and SAS and linear model. ANOVA is also common with more specialized software such as AMOS, LISREL, or Mplus that may indicate these are being used for nested model comparisons. Linear mixed models were most commonly used in SAS with R and HLM software with slightly smaller percentages. Meta-analysis is most commonly associated with SPSS. Interestingly, IRT models are associated with R more than specialized IRT software, however the number of articles using IRT may be quite small and may not adequately cite the software used.
 
@@ -733,7 +733,7 @@ ggplot(aes(x = keyword2.x, y = keyword2.y)) +
   scale_fill_gradient('Percent', low = 'grey80', high = 'black')
 ```
 
-```{r software-statmethods-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Tile plot showing interaction between software and statistical methods by publication year for primary software.", fig.height = 10, fig.width = 8}
+```{r software-statmethods-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, fig.cap = "Tile plot showing interaction between software and statistical methods by publication year for primary software.", fig.height = 10, fig.width = 10}
 count_keyword <- keyword_fj %>%
   group_by(year, journal2, keyword2.x, keyword2.y) %>%
   summarise(num_ids = length(unique(pdf_name))) %>%
@@ -783,4 +783,3 @@ ggplot(aes(x = keyword2.x, y = keyword2.y)) +
   scale_fill_gradient('Percent', low = 'grey80', high = 'black') + 
   facet_wrap(~ year_missing)
 ```
-
