@@ -57,6 +57,7 @@ num_year <- bib2 %>%
          prop_year = num / num_year,
          pdf = ifelse(pdf, 'yes', 'no')) %>%
   na.omit() %>%
-  left_join(jour_art)
+  left_join(jour_art) %>%
+  ungroup()
 
 
