@@ -1,4 +1,4 @@
-
+.DS_Store
 # Created by https://www.gitignore.io/api/r,latex
 # Edit at https://www.gitignore.io/?templates=r,latex
 
@@ -269,7 +269,7 @@ TSWLatexianTemp*
 
 ### R ###
 # History files
-.Rhistory
+*.Rhistory
 .Rapp.history
 
 # Session Data files
@@ -308,5 +308,7 @@ vignettes/*.pdf
 
 # End of https://www.gitignore.io/api/r,latex
 
+*.pdf
+*.html
 
 /reveal.js/

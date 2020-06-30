@@ -1,0 +1,850 @@
+---
+title: "Evolution of Statistical Software and Quantitative Methods"
+author: "Brandon LeBeau & Ariel M. Aloe"
+date: "April 24, 2020"
+output:
+  revealjs::revealjs_presentation:
+    theme: simple
+    highlight: pygments
+    transition: fade
+    mathjax: null
+    slide_level: 1
+    includes:
+      in_header: custom.css
+    reveal_options:
+      slideNumber: true
+      conrols: false
+---
+
+```{r setup_chunks, echo = FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=6, fig.cap = NULL, dpi = 300) 
+```
+
+# Rationale
+
+- Extension of work done by Robert Muenchen (http://r4stats.com/articles/popularity/). 
+    + Focus is on statistical software
+    + Addition of quantitative methods
+    + Particularly interested in the interaction.
+- Questions of Interest:
+    + Exploring which software is popular in published research. 
+    + How many empirical analyses cite software?
+    + Any patterns in software use with quantitative methods?
+
+# Methods
+- Research synthesis methods were used
+- Web of Knowledge was used to pull in citations for 12 social science journals
+    - 1995 to 2018
+- EndNote's "Find Text" feature was used to pull in PDFs of all articles from the journals
+- `pdfsearch` R package was used to perform keyword searching.
+
+# `pdfsearch`
+- Converts lines of text into sentences
+- Removes multiple columns into a single column
+- Identifies location of keyword found within document.
+
+# `pdfsearch`
+- Short live code demo
+
+# Software Keywords
+
+| Keyword Group | Keywords | 
+|---------------|----------|
+| AMOS          | AMOS     |
+| IRT           | BILOG; BILOG-MG; IRT PRO; MULTILOG; PARSCALE | 
+| R             | CRAN; R-project; R Project; R Core Team; R software; RStudio | 
+| HLM           | HLM [0-9]; HLM[0-9] | 
+| Java          | Java  |
+| SAS           | SAS; SAS Institute; JMP |
+| LISREL        | LISREL |
+| Mplus         | Mplus; M-Plus |
+| Python        | Python |
+| SPSS          | SPSS; SPSS Statistics | 
+| STATA         | STATA |
+| Other         | Matlab; Scala; Systat; Statistica; Tableau; Minitab |
+
+# Method Keywords 
+
+| Keyword Group | Keywords | 
+|---------------|----------|
+| ANOVA         | Analysis of Variance; ANOVA; Analysis of Covariance; ANCOVA; MANOVA; Multivariate Analysis of Variance; Repeated Measures Analysis of Variance; RM-ANOVA | 
+| IRT           | IRT; Item Response Theory |
+| CFA           | CFA; Confirmatory Factor Analysis |
+| Chi-Square    | Chi-square( analysis)?; Nonparametric Analysis | 
+| Cluster Analysis | Cluster Analysis; Hierarchical Cluster Analysis | 
+| t-test        | Dependent Samples t-test; one-sample t-test; two-sample t-test | 
+| EFA           | EFA; Exploratory Factor Analysis | 
+| GAM           | GAM; Generalized additive models | 
+
+
+# Method Keywords Continued
+
+| Keyword Group | Keywords | 
+|---------------|----------|
+| Linear Mixed Model | LMM; HLM; Multilevel Model; Multi-level Model; Hierarchical Linear Model; General(ized)? Linear Mixed Model | 
+| Linear Model | Linear Regression; Multiple Linear Regression; Multiple Regression; General(ized)? Linear Model |
+| Growth       | Growth Model; Latent Growth Model; LGM | 
+| SEM          | Latent Variable Modeling; SEM; Structural Equation Modeling | 
+| Logistic Regression | Logistic Regression; Multinomial Regression; Multinomial Logistic Regression; Ordinal Regression | 
+| meta-analysis | meta-analysis; meta analysis |
+| Non-Linear Regression | Non-Linear Regression; Nonlinear Regression |
+| Propensity Score | Propensity Score Analysis; Propensity score matching |
+
+# Journals Sampled
+* American Economic Journal (AEJ)
+* American Educational Research Journal (AERJ)
+* American Journal of Political Science (AJPS)
+* Economic Journal (EJ)
+* Educational Evaluation and Policy Analysis (EEPA)
+* Educational Researcher (ER)
+* Higher Education (HE)
+* Journal of Experimental Education (JEE)
+* Journal of Public Policy (JPP)
+* Political Science Quarterly (PSQ)
+* Public Policy Administration (PPA)
+* Sociology of Education (SE)
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, results='asis'}
+# number of articles gathered by journal -----
+library(dplyr)
+
+jour_art <- data.frame(
+  discipline = c('Economics', 'Education', 'Political Science', 'Education',
+              'Economics', 'Education', 'Education', 'Education', 
+              'Political Science',
+              'Public Policy', 'Public Policy',
+              'Sociology'),
+  journal = c('aej_ae', 'AERJ', 'am_j_pol_sci', 'EEPA',
+              'ej', 'er', 'he', 'JEE', 'pol_sci_quar',
+              'pub_policy_admin', 'public_policy',
+              'SE'),
+  num_pdfs = c(363, 444, 922, 188, 
+               1829, 742, 1914, 517, 2722,
+               83, 27, 261),
+  total_articles = c(364, 444, 1436, 405,
+                     3376, 794, 1914, 525, 3589,
+                     83, 180, 453),
+  journal2 = c('AEJ', 'AERJ', 'AJPS', 'EEPA',
+               'EJ', 'ER', 'HE',
+               'JEE', 'PSQ', 
+               'PPA', 'JPP', 
+               'SE')
+) %>% 
+  mutate(perc_pdf = round((num_pdfs / total_articles)*100, 1))
+
+# explore number of articles with a match for each journal
+# AERJ: 443 Articles
+# EEPA: 188 Articles
+# JEE: 208 Articles
+library(knitr)
+library(kableExtra)
+
+jour_table <- jour_art %>%
+  select(Discipline = discipline, Journal = journal2, 'Number of PDFs' = num_pdfs, 'Total Possible Articles' = total_articles, 'Percent PDFs Obtained' = perc_pdf) %>%
+  arrange(Discipline) 
+
+jour_table_total <- jour_art %>%
+  summarise(discipline = 'Total', journal2 = '', 
+            num_pdfs = sum(num_pdfs), total_articles = sum(total_articles), 
+            perc_pdf = round((num_pdfs / total_articles)*100, 1)) %>%
+  select(Discipline = discipline, Journal = journal2, 'Number of PDFs' = num_pdfs, 'Total Possible Articles' = total_articles, 'Percent PDFs Obtained' = perc_pdf)
+
+# jour_table %>%
+#   bind_rows(jour_table_total) %>%
+#   kable(booktabs = TRUE, caption = 'EndNote success rate of obtaining article PDf by discipline and journal.') %>%
+#   kable_styling(latex_options = c("hold_position"),
+#                 full_width = FALSE) %>%
+#   row_spec(12, hline_after = TRUE) %>%
+#   footnote(general = "AEJ = American Economic Journal; AERJ = American Educational Research Journal; AJPS = American Journal of Political Science; EJ = Economic Journal; EEPA = Educational Evaluation and Policy Analysis; ER = Educational Researcher; HE = Higher Education; JEE = Journal of Experimental Education; JPP = Journal of Public Policy; PSQ = Political Science Quarterly; PPA = Public Policy Administration; SE = Sociology of Education", threeparttable = TRUE)
+```
+
+# How many articles obtained?
+```{r pdf-time, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+source("code/bibtex_processing.r")
+num_year$pdf <- ifelse(num_year$pdf == 'no', 'No', 'Yes')
+
+theme_set(theme_bw(base_size = 16))
+
+ggplot(num_year, aes(x = YEAR, y = I(prop_year * 100), color = pdf)) + 
+  geom_line(size = 2.5) + 
+  facet_wrap(~ journal2) + 
+  ylab("Percentage") + 
+  scale_x_continuous("Year", breaks = seq(1995, 2018, 10)) + 
+  scale_color_viridis_d("PDF?")
+```
+
+# Software Counts
+```{r count-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+# load in journal keyword data
+# 
+# # Names are: keyword_results_* where * is journal abbreviation
+# 
+# load('data/keyword_aej_ae_v2.rda')
+# load('data/keyword_aerj_v2.rda')
+# load('data/keyword_am_j_pol_sci_v2.rda')
+# load('data/keyword_eepa_v2.rda')
+# load('data/keyword_ej_v2.rda')
+# load('data/keyword_er_v2.rda')
+# load('data/keyword_he_v2.rda')
+# load('data/keyword_jee_v2.rda')
+# load('data/keyword_pol_sci_quar_v2.rda')
+# load('data/keyword_pub_policy_admin_v2.rda')
+# load('data/keyword_public_policy_v2.rda')
+# load('data/keyword_SE_v2.rda')
+# # combine
+# library(dplyr)
+# 
+# software_keywords <- bind_rows(
+#   keyword_results_aej_ae,
+#   keyword_results_aerj, 
+#   keyword_results_am_j_pol_sci,
+#   keyword_results_eepa, 
+#   keyword_results_ej,
+#   keyword_results_er,
+#   keyword_results_he,
+#   keyword_results_jee,
+#   keyword_results_pol_sci_quar,
+#   keyword_results_pub_policy_admin,
+#   keyword_results_public_policy,
+#   keyword_results_SE
+# ) %>%
+#   mutate(group = 'software')
+# 
+# # Model Keywords ----
+# load('data/keyword_aej_ae_model_v2.rda')
+# load('data/keyword_aerj_model_v2.rda')
+# load('data/keyword_am_j_pol_sci_model_v2.rda')
+# load('data/keyword_eepa_model_v2.rda')
+# load('data/keyword_ej_model_v2.rda')
+# load('data/keyword_er_model_v2.rda')
+# load('data/keyword_he_model_v2.rda')
+# load('data/keyword_jee_model_v2.rda')
+# load('data/keyword_pol_sci_quar_model_v2.rda')
+# load('data/keyword_pub_policy_admin_model_v2.rda')
+# load('data/keyword_public_policy_model_v2.rda')
+# load('data/keyword_SE_model_v2.rda')
+# 
+# # combine
+# model_keywords <- bind_rows(
+#   keyword_results_aej_ae,
+#   keyword_results_aerj, 
+#   keyword_results_am_j_pol_sci,
+#   keyword_results_eepa, 
+#   keyword_results_ej,
+#   keyword_results_er,
+#   keyword_results_he,
+#   keyword_results_jee,
+#   keyword_results_pol_sci_quar,
+#   keyword_results_pub_policy_admin,
+#   keyword_results_public_policy,
+#   keyword_results_SE
+# ) %>%
+#   mutate(group = 'model')
+# 
+# # bind rows together ----
+# keywords <- bind_rows(software_keywords, model_keywords) %>%
+#   select(journal, everything()) %>%
+#   arrange(journal, pdf_name)
+# 
+# # extract year from pdf_name
+# mat <- regexpr("-[0-9]{4}-", keywords$pdf_name)
+# 
+# keywords <- keywords %>%
+#   mutate(year2 = regmatches(keywords$pdf_name, mat), 
+#          year = gsub("-", "", year2))
+# 
+# keywords <- keywords %>%
+#   left_join(jour_art, by = 'journal')
+
+# save this
+# save(keywords, file = "data/keywords_intermediate.rda")
+
+load("data/keywords_intermediate.rda")
+
+# Remove ' R ' keyword ----
+keywords_nor <- keywords %>%
+  filter(keyword != ' R ', keyword != '[:alpha:] package',
+         keyword != 'Julia', keyword != 'eta-analysis')
+  
+# Descriptive statistics ----
+# number of artcles with software/model mentioned
+num_articles <- keywords_nor %>%
+  group_by(group, journal) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal') %>%
+  mutate(percent_keyword = num_ids / num_pdfs,
+         group2 = ifelse(group == 'model', 'Model', 'Software'))
+
+library(ggplot2)
+library(forcats)
+
+ggplot(num_articles, aes(x = fct_reorder(journal2, percent_keyword), 
+                         y = I(percent_keyword * 100))) + 
+  geom_bar(stat = 'identity') + 
+  coord_flip() + 
+  xlab("Journals") + 
+  ylab("Percentage") + 
+  facet_wrap(~ group2)
+```
+
+# Software Keywords by Discipline
+```{r discipline-software, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+
+library(forcats)
+keywords_nor <- keywords_nor %>%
+  mutate(keyword2 = fct_recode(keyword,
+            "R" = "R-project" ,
+            "R" = "R project",
+            "R" = "CRAN",
+            "R" = "R core team",
+            "R" = "R software",
+            "R" = "RStudio",
+            "SAS" = "SAS Institute",
+            "SAS" = "JMP",
+            'SPSS' = "SPSS Statistics",
+            'HLM' = 'HLM[0-9]',
+            'HLM' = 'HLM [0-9]',
+            'IRT' = 'BILOG',
+            'IRT' = 'BILOG-MG',
+            'IRT' = 'IRT PRO',
+            'Other' = 'MATLAB',
+            'Mplus' = 'M-Plus',
+            'IRT' = 'Multilog',
+            'IRT' = 'PARSCALE',
+            'Other' = 'Scala',
+            'Other' = 'Statistica ',
+            'Other' = 'Systat',
+            # Model recode
+            'ANOVA' = 'Analysis of Covariance',
+            'ANOVA' = 'Analysis of Variance',
+            'ANOVA' = 'ANCOVA',
+            'ANOVA' = 'repeated measures analysis of variance',
+            'ANOVA' = 'MANOVA',
+            'ANOVA' = 'RM-ANOVA',
+            'ANOVA' = 'multivariate analysis of variance',
+            'CFA' = 'confirmatory factor analysis',
+            'EFA' = 'exploratory factor analysis',
+            'GAM' = 'generalized additive models',
+            'Cluster Analysis' = 'hierarchical cluster analysis',
+            'Cluster Analysis' = 'cluster analysis',
+            'Chi-Square' = 'chi-square( analysis)?',
+            'Chi-Square' = 'nonparametric analysis',
+            't-test' = 'dependent samples t-test',
+            't-test' = 'one-sample t-test',
+            't-test' = 'two-sample t-test',
+            't-test' = 'two sample t-test',
+            'SEM' = 'structural equation modeling',
+            'SEM' = 'latent variable modeling',
+            'Meta-analysis' = 'meta analysis',
+            'Meta-analysis' = 'meta-analysis',
+            'Growth' = 'growth model',
+            'Growth' = 'latent growth model',
+            'Growth' = 'LGM',
+            'Linear Mixed Model' = 'HLM',
+            'Linear Mixed Model' = 'Hierarchical Linear Model',
+            'Linear Mixed Model' = 'LMM',
+            'Linear Mixed Model' = 'Multi-level Model',
+            'Linear Mixed Model' = 'Multilevel Model',
+            'Linear Mixed Model' = 'general(ized)? linear mixed model',
+            'Linear Model' = 'general(ized)? linear model',
+            'Linear Model' = 'linear regression',
+            'Linear Model' = 'Regression',
+            'Linear Model' = 'multiple regression',
+            'Linear Model' = 'multiple linear regression',
+            'IRT' = 'item response theory',
+            'Propensity Score' = 'propensity score analysis',
+            'Propensity Score' = 'propensity score matching',
+            'Logistic Regression' = 'multinomial logistic regression',
+            'Logistic Regression' = 'multinomial regression',
+            'Logistic Regression' = 'ordinal regression',
+            'Logistic Regression' = 'logistic regression',
+            'Non-linear Regression' = 'nonlinear regression',
+            'Non-linear Regression' = 'non-linear regression'
+                               ))
+
+# plot unique keyword counts by journal
+count_keyword <- keywords_nor %>%
+  group_by(group, journal2, keyword2) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  mutate(percent_keyword = num_ids / num_pdfs)
+
+
+num_keywords <- keywords_nor %>%
+  select(group, journal2, ID, keyword2) %>%
+  distinct() %>%
+  group_by(group, journal2, ID) %>%
+  summarise(num = n()) %>%
+  summarise(avg_num = mean(num),
+            min_num = min(num),
+            max_num = max(num))
+
+discipline_art <- jour_art %>% 
+  group_by(discipline) %>% 
+  summarise(num_pdfs = sum(num_pdfs), 
+            total_articles = sum(total_articles))
+
+# plot unique keyword counts by journal
+count_keyword <- keywords_nor %>%
+  group_by(group, journal2, keyword2) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  ungroup() %>%
+  left_join(discipline_art, by = 'discipline') %>%
+  group_by(group, discipline, keyword2) %>%
+  summarise(num_ids_disc = sum(num_ids)) %>%
+  left_join(discipline_art, by = 'discipline') %>%
+  mutate(percent_keyword_disc = num_ids_disc / num_pdfs) %>%
+  filter(discipline %in% c('Economics', 'Education', 'Sociology'))
+
+ggplot(dplyr::filter(count_keyword, group == 'software', (keyword2 != 'Tableau' | keyword2 != 'Minitab')), 
+       aes(x = fct_reorder(keyword2, percent_keyword_disc), 
+           y = I(percent_keyword_disc*100))) + 
+  geom_bar(stat = 'identity') +
+  xlab("Keyword") + 
+  ylab("Percentage") + 
+  coord_flip() + 
+  facet_wrap(~ discipline)
+
+
+num_keywords <- keywords_nor %>%
+  left_join(jour_art, by = 'journal2') %>%
+  select(group, discipline, ID, keyword2) %>%
+  distinct() %>%
+  group_by(group, discipline, ID) %>%
+  summarise(num = n()) %>%
+  summarise(avg_num = mean(num),
+            min_num = min(num),
+            max_num = max(num))
+
+prop_unique <- keywords_nor %>%
+  left_join(jour_art, by = 'journal2') %>%
+  select(group, discipline, ID,num_pdfs.x) %>%
+  distinct() %>%
+  group_by(group, discipline) %>%
+  summarise(num_uniq = length(unique(ID)),
+            uniq_pdfs = sum(unique(num_pdfs.x)),
+            prop_uniq = num_uniq / uniq_pdfs)
+```
+
+# Number of software keywords
+
+```{r tab-numkeywords, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+library(kableExtra)
+
+filter(num_keywords, group == 'software') %>%
+  ungroup() %>%
+  select(discipline, avg_num, min_num, max_num) %>%
+  left_join(filter(prop_unique, group == 'software') %>% ungroup() %>% select(discipline, prop_uniq)) %>%
+  kable(digits = 2,
+        col.names = c('Discipline', 'Avg Keywords', 'Min Keywords', 'Max Keywords', 'Prop. Uniq'))
+```
+
+
+# Analysis keywords
+
+```{r model-discipline, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+ggplot(dplyr::filter(count_keyword, group == 'model'), 
+       aes(x = fct_reorder(keyword2, percent_keyword_disc), 
+           y = I(percent_keyword_disc*100))) + 
+  geom_bar(stat = 'identity') + 
+  xlab("Keyword") + 
+  ylab("Percentage") + 
+  coord_flip() + 
+  facet_wrap(~ discipline)
+```
+
+# Number of analysis keywords
+
+```{r tab-numkeywords-analysis, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+
+filter(num_keywords, group == 'model') %>%
+  ungroup() %>%
+  select(discipline, avg_num, min_num, max_num) %>%
+  left_join(filter(prop_unique, group == 'model') %>% ungroup() %>% select(discipline, prop_uniq)) %>%
+  #select(discipline, avg_num, min_num, max_num, prop_uniq) %>%
+  kable(digits = 2,
+        col.names = c('Discipline', 'Avg Keywords', 'Min Keywords', 'Max Keywords', 'Prop. Uniq'))
+```
+
+# General Software Keyword Percentages by Year - Education
+```{r software-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+num_articles <- keywords_nor %>%
+  group_by(group, year, journal, keyword2) %>%
+  filter(journal %in% c('AERJ', 'EEPA', 'er', 'he', 'JEE')) %>%
+  summarise(num_ids = length(unique(ID))) %>%
+  distinct() %>%
+  ungroup() %>%
+  mutate(year = as.numeric(year)) %>%
+  left_join(filter(num_year, pdf == 'Yes'), by = c('journal', 'year' = 'YEAR')) %>%
+  mutate(prop_keyword = num_ids / num,
+         perc_keyword = round(prop_keyword * 100, 1)) %>%
+  select(group, year, keyword2, perc_keyword) %>%
+  group_by(group, year, keyword2) %>%
+  summarise(perc_keyword = mean(perc_keyword))
+
+software_keywords <- filter(num_articles, group == 'software', 
+                            keyword2 %in% c('R', 'SAS', 'SPSS', 'STATA')) %>%
+  mutate(prop_keyword = perc_keyword / 100)
+
+library(patchwork)
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+prim <- ggplot(software_keywords, aes(x = year, y = perc_keyword, color = keyword2,
+                                      linetype = keyword2)) + 
+    geom_line(aes(group = keyword2), size = 1.75, alpha = 0.6) + 
+    #theme_bw() + 
+    #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 30, 3), limits = c(0, 28), expand = c(0,0)) +
+    scale_x_continuous("Year", breaks = c(seq(1995, 2018, 5), 2018)) +
+    scale_color_viridis_d('') + 
+  scale_linetype_discrete('') +
+    # geom_text(data = filter(software_keywords, year == 1995), 
+    #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
+    # geom_text(data = filter(software_keywords, year == 2018), 
+    #           aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
+  NULL #ggtitle('Software citation percentages across all journals over time')
+
+software_keywords <- filter(num_articles, group == 'software', 
+                            keyword2 %in% c('AMOS', 'HLM', 'LISREL', 'Mplus')) %>%
+  mutate(prop_keyword = perc_keyword / 100)
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+spec <- ggplot(software_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2, linetype = keyword2), size = 1.75, alpha = 0.6) + 
+    #theme_bw() + 
+    #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 20, 2), limits = c(0, 20), expand = c(0,0)) +
+    scale_x_continuous("Year", breaks = c(seq(1995, 2018, 5), 2018)) +
+    scale_color_viridis_d('') + 
+  scale_linetype_discrete('') +
+    # geom_text(data = filter(software_keywords, year == 1995), 
+    #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
+    # geom_text(data = filter(software_keywords, year == 2018), 
+    #           aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
+  NULL #ggtitle('Specialty software citation percentages across all journals over time')
+
+prim
+```
+
+# Specialty Software Keyword Percentages by Year - Education
+```{r software-year-spec, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+spec
+```
+
+# Analysis Keyword Percentages by Year - Education
+
+```{r model-year-at1, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+model_keywords <- filter(num_articles, group == 'model', 
+                         keyword2 %in% c('ANOVA', 'Linear Model', 'Linear Mixed Model', 'Logistic Regression', 't-test')) #%>%
+  # mutate(keyword3 = ifelse(keyword2 == 'Linear Model', 'LM', ifelse(keyword2 == 'Linear Mixed Model', "LMM", ifelse(keyword2 == 'Logistic Regression', 'LR', keyword2)))) %>%
+  # mutate(prop_keyword = perc_keyword / 100)
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+mod1 <- ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2, linetype = keyword2), size = 1.75, alpha = 0.6) + 
+    #theme_bw() + 
+    #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 60, 5), limits = c(0, 60), expand = c(0,0)) +
+    scale_x_continuous("Year", c(seq(1995, 2018, 5), 2018)) +
+    scale_color_viridis_d('') + 
+  scale_linetype_discrete('') +
+    # geom_text(data = filter(model_keywords, year == 1995), 
+    #           aes(x = year - 2, y = perc_keyword, label = keyword3))  + 
+    # geom_text(data = filter(model_keywords, year == 2018), 
+    #           aes(x = year + 2, y = perc_keyword, label = keyword3)) + 
+  NULL #ggtitle('Model citation percentages across all journals over time')
+
+model_keywords <- filter(num_articles, group == 'model', 
+                         keyword2 %in% c('IRT', 'CFA', 'EFA', 'SEM'))  %>%
+  mutate(prop_keyword = perc_keyword / 100)
+
+# The years need to be represented as columns.
+# Need to also find the total number of articles by year for each journal.
+mod2 <- ggplot(model_keywords, aes(x = year, y = perc_keyword)) + 
+    geom_line(aes(group = keyword2, color = keyword2, linetype = keyword2), size = 1.75, alpha = 0.6) + 
+    #theme_bw() + 
+    #geom_text(aes(x = year, y = perc_keyword, label = round(perc_keyword, 0)), size = 5) + 
+    scale_y_continuous('Percentage', breaks = seq(0, 25, 5), limits = c(0, 22), expand = c(0,0)) +
+    scale_x_continuous("Year",  breaks = c(seq(1995, 2018, 5), 2018)) +
+    scale_color_viridis_d('') + 
+  scale_linetype_discrete('') +
+    # geom_text(data = filter(model_keywords, year == 1995), 
+    #           aes(x = year - 1, y = perc_keyword, label = keyword2))  + 
+    # geom_text(data = filter(model_keywords, year == 2018), 
+    #           aes(x = year + 1, y = perc_keyword, label = keyword2)) + 
+  NULL #ggtitle('Latent variable model citation percentages across all journals over time')
+
+mod1
+```
+
+# Analysis Keyword Percentages by Year - Education
+
+```{r model-year-other, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+mod2
+```
+
+
+# Interaction between Software and Analysis - Education
+
+```{r software-statmethods, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+
+load('data/keyword_aej_ae_v2.rda')
+load('data/keyword_aerj_v2.rda')
+load('data/keyword_am_j_pol_sci_v2.rda')
+load('data/keyword_eepa_v2.rda')
+load('data/keyword_ej_v2.rda')
+load('data/keyword_er_v2.rda')
+load('data/keyword_he_v2.rda')
+load('data/keyword_jee_v2.rda')
+load('data/keyword_pol_sci_quar_v2.rda')
+load('data/keyword_pub_policy_admin_v2.rda')
+load('data/keyword_public_policy_v2.rda')
+load('data/keyword_SE_v2.rda')
+# combine
+library(dplyr)
+
+software_keywords <- bind_rows(
+  keyword_results_aej_ae,
+  keyword_results_aerj, 
+  keyword_results_am_j_pol_sci,
+  keyword_results_eepa, 
+  keyword_results_ej,
+  keyword_results_er,
+  keyword_results_he,
+  keyword_results_jee,
+  keyword_results_pol_sci_quar,
+  keyword_results_pub_policy_admin,
+  keyword_results_public_policy,
+  keyword_results_SE
+) %>%
+  mutate(group = 'software')
+
+# Model Keywords ----
+load('data/keyword_aej_ae_model_v2.rda')
+load('data/keyword_aerj_model_v2.rda')
+load('data/keyword_am_j_pol_sci_model_v2.rda')
+load('data/keyword_eepa_model_v2.rda')
+load('data/keyword_ej_model_v2.rda')
+load('data/keyword_er_model_v2.rda')
+load('data/keyword_he_model_v2.rda')
+load('data/keyword_jee_model_v2.rda')
+load('data/keyword_pol_sci_quar_model_v2.rda')
+load('data/keyword_pub_policy_admin_model_v2.rda')
+load('data/keyword_public_policy_model_v2.rda')
+load('data/keyword_SE_model_v2.rda')
+
+# combine
+model_keywords <- bind_rows(
+  keyword_results_aej_ae,
+  keyword_results_aerj, 
+  keyword_results_am_j_pol_sci,
+  keyword_results_eepa, 
+  keyword_results_ej,
+  keyword_results_er,
+  keyword_results_he,
+  keyword_results_jee,
+  keyword_results_pol_sci_quar,
+  keyword_results_pub_policy_admin,
+  keyword_results_public_policy,
+  keyword_results_SE
+) %>%
+  mutate(group = 'model')
+
+# spread data to wide for tile plot
+keyword_fj <- full_join(software_keywords,
+                        model_keywords,
+                        by = c('pdf_name', 'journal')) %>%
+  left_join(jour_art) %>%
+  filter(keyword.x != ' R ', keyword.x != '[:alpha:] package',
+         keyword.x != 'Julia', keyword.x != 'eta-analysis') %>%
+  mutate(keyword2.x = fct_recode(keyword.x,
+                               "R" = "R-project" ,
+                               "R" = "R project",
+                               "R" = "CRAN",
+                               "R" = "R core team",
+                               "R" = "R software",
+                               "R" = "RStudio",
+                               "SAS" = "SAS Institute",
+                               "SAS" = "JMP",
+                               'SPSS' = "SPSS Statistics",
+                               'HLM' = 'HLM[0-9]',
+                               'HLM' = 'HLM [0-9]',
+                               'IRT' = 'BILOG',
+                               'IRT' = 'BILOG-MG',
+                               'IRT' = 'IRT PRO',
+                               'Other' = 'MATLAB',
+                               'Mplus' = 'M-Plus',
+                               'IRT' = 'Multilog',
+                               'IRT' = 'PARSCALE',
+                               'Other' = 'Scala',
+                               'Other' = 'Statistica ',
+                               'Other' = 'Systat'),
+         keyword2.y = fct_recode(keyword.y,
+                               # Model recode
+                               'ANOVA' = 'Analysis of Covariance',
+                               'ANOVA' = 'Analysis of Variance',
+                               'ANOVA' = 'ANCOVA',
+                               'ANOVA' = 'repeated measures analysis of variance',
+                               'ANOVA' = 'MANOVA',
+                               'ANOVA' = 'RM-ANOVA',
+                               'ANOVA' = 'multivariate analysis of variance',
+                               'CFA' = 'confirmatory factor analysis',
+                               'EFA' = 'exploratory factor analysis',
+                               'GAM' = 'generalized additive models',
+                               'Cluster Analysis' = 'hierarchical cluster analysis',
+                               'Cluster Analysis' = 'cluster analysis',
+                               'Chi-Square' = 'chi-square( analysis)?',
+                               'Chi-Square' = 'nonparametric analysis',
+                               't-test' = 'dependent samples t-test',
+                               't-test' = 'one-sample t-test',
+                               't-test' = 'two-sample t-test',
+                               't-test' = 'two sample t-test',
+                               'SEM' = 'structural equation modeling',
+                               'SEM' = 'latent variable modeling',
+                               'Meta-analysis' = 'meta analysis',
+                               'Meta-analysis' = 'meta-analysis',
+                               'Growth' = 'growth model',
+                               'Growth' = 'latent growth model',
+                               'Growth' = 'LGM',
+                               'Linear Mixed Model' = 'HLM',
+                               'Linear Mixed Model' = 'Hierarchical Linear Model',
+                               'Linear Mixed Model' = 'LMM',
+                               'Linear Mixed Model' = 'Multi-level Model',
+                               'Linear Mixed Model' = 'Multilevel Model',
+                               'Linear Mixed Model' = 'general(ized)? linear mixed model',
+                               'Linear Model' = 'general(ized)? linear model',
+                               'Linear Model' = 'linear regression',
+                               'Linear Model' = 'Regression',
+                               'Linear Model' = 'multiple regression',
+                               'Linear Model' = 'multiple linear regression',
+                               'IRT' = 'item response theory',
+                               'Propensity Score' = 'propensity score analysis',
+                               'Propensity Score' = 'propensity score matching',
+                               'Logistic Regression' = 'multinomial logistic regression',
+                               'Logistic Regression' = 'multinomial regression',
+                               'Logistic Regression' = 'ordinal regression',
+                               'Logistic Regression' = 'logistic regression',
+                               'Non-linear Regression' = 'non-linear regression',
+                               'Non-linear Regression' = 'nonlinear regression'
+  ))
+
+# extract year from pdf_name
+mat <- regexpr("-[0-9]{4}-", keyword_fj$pdf_name)
+
+keyword_fj <- keyword_fj %>%
+  mutate(year2 = regmatches(keyword_fj$pdf_name, mat), 
+         year = gsub("-", "", year2))
+
+count_keyword <- keyword_fj %>%
+  group_by(journal2, keyword2.x, keyword2.y) %>%
+  summarise(num_ids = length(unique(pdf_name))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  filter(journal %in% c('AERJ', 'EEPA', 'er', 'he', 'JEE')) %>%
+  group_by(keyword2.x, keyword2.y) %>%
+  mutate(prop_keyword = num_ids / num_pdfs,
+         percent_keyword = prop_keyword * 100)
+
+# library(gganimate)
+# library(viridis)
+count_keyword %>% 
+  filter(keyword2.x != 'Minitab', keyword2.x != 'Tableau', keyword2.x != 'Java',
+         keyword2.x != 'Python', keyword2.x != 'Other',
+         keyword2.y != 'NA', keyword2.y != 'Cluster Analysis',
+         keyword2.y != 'Non-linear Regression', keyword2.y != 'GAM') %>%
+ggplot(aes(x = keyword2.x, y = keyword2.y)) + 
+  geom_raster(aes(fill = percent_keyword)) + 
+  xlab("Software") +
+  ylab("Models") +
+ # theme_bw() + 
+  scale_fill_viridis_c('Percent', direction = 1)
+```
+
+# Interaction between Software and Analysis by Year - Education
+```{r software-statmethods-year, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+count_keyword <- keyword_fj %>%
+  group_by(year, journal2, keyword2.x, keyword2.y) %>%
+  summarise(num_ids = length(unique(pdf_name))) %>%
+  left_join(jour_art, by = 'journal2') %>%
+  filter(journal %in% c('AERJ', 'EEPA', 'er', 'he', 'JEE')) %>%
+  mutate(prop_keyword = num_ids / num_pdfs,
+         percent_keyword = prop_keyword * 100)
+
+num_articles <- filter(num_year, pdf == 'Yes')
+
+num_art <- keyword_fj %>%
+  mutate(year = as.numeric(year)) %>%
+  filter(journal %in% c('AERJ', 'EEPA', 'er', 'he', 'JEE')) %>%
+  group_by(year, journal) %>%
+  summarise(num_ids = length(unique(pdf_name))) %>%
+  full_join(filter(num_year, pdf == 'Yes'), by = c('journal', 'year' = 'YEAR')) %>%
+  group_by(year) %>%
+  mutate(num_ids = ifelse(is.na(num_ids), 0, num_ids), 
+         num_ids_year = sum(num_ids),
+         num_year = sum(num),
+         prop_keyword = num_ids_year / num_year,
+         perc_keyword = round(prop_keyword * 100, 1),
+         perc_missing = 100 - perc_keyword) %>%
+  select(year, num_ids_year, num_year, prop_keyword, perc_keyword, 
+         perc_missing) %>%
+  distinct()
+
+count_keyword <- count_keyword %>%
+  ungroup() %>%
+  mutate(year = as.numeric(year)) %>%
+  left_join(num_art, by = 'year')
+
+# library(gganimate)
+# library(viridis)
+count_keyword %>% 
+  filter(keyword2.x != 'Minitab', keyword2.x != 'Tableau', keyword2.x != 'Java',
+         keyword2.x != 'Python', keyword2.x != 'Other', keyword2.x != 'IRT',
+         keyword2.x != 'HLM', keyword2.x != 'LISREL', keyword2.x != 'AMOS', keyword2.x != 'STATA',
+         keyword2.x != 'Mplus',
+         keyword2.y != 'NA', keyword2.y != 'Cluster Analysis',
+         keyword2.y != 'Propensity Score', keyword2.y != 'IRT', keyword2.y != 't-test',
+         keyword2.y != 'Non-linear Regression', keyword2.y != 'GAM') %>%
+  filter(year %in% 1995:2006) %>%
+  tidyr::unite(year_missing, year, perc_missing, sep = " - ") %>%
+ggplot(aes(x = keyword2.x, y = keyword2.y)) + 
+  geom_raster(aes(fill = percent_keyword)) + 
+  xlab("Software") +
+  ylab("Models") +
+ # theme_bw() + 
+  scale_fill_viridis_c('Percent', direction = 1) + 
+  facet_wrap(~ year_missing)
+```
+
+# Interaction between Software and Analysis by Year - Education
+```{r software-statmethods-year2, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+count_keyword %>% 
+  filter(keyword2.x != 'Minitab', keyword2.x != 'Tableau', keyword2.x != 'Java',
+         keyword2.x != 'Python', keyword2.x != 'Other', keyword2.x != 'IRT',
+         keyword2.x != 'HLM', keyword2.x != 'LISREL', keyword2.x != 'AMOS', keyword2.x != 'STATA',
+         keyword2.x != 'Mplus',
+         keyword2.y != 'NA', keyword2.y != 'Cluster Analysis',
+         keyword2.y != 'Propensity Score', keyword2.y != 'IRT', keyword2.y != 't-test',
+         keyword2.y != 'Non-linear Regression', keyword2.y != 'GAM') %>%
+  filter(year %in% 2007:2018) %>%
+  tidyr::unite(year_missing, year, perc_missing, sep = " - ") %>%
+ggplot(aes(x = keyword2.x, y = keyword2.y)) + 
+  geom_raster(aes(fill = percent_keyword)) + 
+  xlab("Software") +
+  ylab("Models") +
+ # theme_bw() + 
+  scale_fill_viridis_c('Percent', direction = 1) + 
+  facet_wrap(~ year_missing)
+```
+
+# Conclusions
+- Cite the software you use!
+    + It benefits the software developer
+    + It benefits the reproducibility
+    + It benefits the replicability
+- There are discipline/journal differences in methods and software used.
+
+# Connect
+- slides: https://brandonlebeau.org/slides/canam2020/
+- twitter: blebeau11
