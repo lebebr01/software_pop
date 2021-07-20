@@ -5,7 +5,7 @@
 %
 \documentclass[
   english,
-  ,man]{apa6}
+  ,man]{apa7}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -38,10 +38,10 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Evolution of Statistical Software and Quantitative Methods},
-  pdfauthor={Brandon LeBeau~\& Ariel M. Aloe},
+  pdftitle={Evolution of Statistical Software Citations and Quantitative Methods},
+  pdfauthor={Brandon LeBeau1 \& Ariel M. Aloe1},
   pdflang={en-EN},
-  pdfkeywords={Research Synthesis, Statistical Software, Quantitative Methods},
+  pdfkeywords={Research Synthesis, Statistical Software Citations, Quantitative Methods},
   colorlinks=true,
   linkcolor=blue,
   filecolor=Maroon,
@@ -75,37 +75,65 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\shorttitle{Evolution Software and Methods}
-\affiliation{
-\vspace{0.5cm}
-\textsuperscript{1} University of Iowa}
-\keywords{Research Synthesis, Statistical Software, Quantitative Methods}
-\usepackage{csquotes}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+% Manuscript styling
 \usepackage{upgreek}
 \captionsetup{font=singlespacing,justification=justified}
 
+% Table formatting
 \usepackage{longtable}
 \usepackage{lscape}
-\usepackage{multirow}
-\usepackage{tabularx}
-\usepackage[flushleft]{threeparttable}
-\usepackage{threeparttablex}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
 
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\begin{center}\begin{threeparttable}}
+%   {\end{threeparttable}\end{center}\end{landscape}}
 \newenvironment{lltable}{\begin{landscape}\begin{center}\begin{ThreePartTable}}{\end{ThreePartTable}\end{center}\end{landscape}}
 
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
 \makeatletter
 \newcommand\LastLTentrywidth{1em}
 \newlength\longtablewidth
 \setlength{\longtablewidth}{1in}
 \newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
 
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
 
+% \usepackage{etoolbox}
+\makeatletter
+\patchcmd{\HyOrg@maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\HyOrg@maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+\shorttitle{Evolution Software Citations and Methods}
+\keywords{Research Synthesis, Statistical Software Citations, Quantitative Methods}
 \DeclareDelayedFloatFlavor{ThreePartTable}{table}
 \DeclareDelayedFloatFlavor{lltable}{table}
 \DeclareDelayedFloatFlavor*{longtable}{table}
 \makeatletter
 \renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
 \makeatother
+\usepackage{csquotes}
 \usepackage{tabularx}
 \usepackage{pdflscape}
 \ifxetex
@@ -115,6 +143,9 @@
 \else
   \usepackage[shorthands=off,main=english]{babel}
 \fi
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newenvironment{cslreferences}%
@@ -122,19 +153,18 @@
   \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
   {\par}
 
-\title{Evolution of Statistical Software and Quantitative Methods}
-\author{Brandon LeBeau\textsuperscript{1}~\& Ariel M. Aloe\textsuperscript{1}}
+\title{Evolution of Statistical Software Citations and Quantitative Methods}
+\author{Brandon LeBeau\textsuperscript{1} \& Ariel M. Aloe\textsuperscript{1}}
 \date{}
 
-\authornote{
 
-Correspondence concerning this article should be addressed to Brandon LeBeau, Psychological and Quantitative Foundations, University of Iowa, Iowa City, IA 52245. E-mail: \href{mailto:brandon-lebeau@uiowa.edu}{\nolinkurl{brandon-lebeau@uiowa.edu}}}
+\affiliation{\vspace{0.5cm}\textsuperscript{1} University of Iowa}
 
 \abstract{
-Statistical software is the enabling tool of quantitative research and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g.~R), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. This manuscript explores the evolution of statistical software within social science research using a research synthesis to establish the state of affairs. Software and statistical analysis keywords were searched in published manuscripts from high impact journals in five disciplines, Economics, Education, Political Science, Public Policy, and Sociology. Analysis was based on research synthesis methods. Implications for open science and reproducibilty are discussed.
-
-
+Statistical software is the enabling tool of quantitative research and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g.~R, Python), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. This manuscript explores the evolution of statistical software citations within social science research using research synthesis to establish the state of affairs. Software and statistical analysis keywords were searched in published manuscripts from high impact journals in five disciplines, Economics, Education, Political Science, Public Policy, and Sociology. Analysis was based on research synthesis methods. Implications for open science and reproducibility are discussed.
 }
+
+
 
 \begin{document}
 \maketitle
@@ -143,20 +173,20 @@ How statistical software is used in primary research studies has important impli
 
 Software usage is only a part of the puzzle to be able to reproduce or replicate study results and has been discussed as an issue for whether studies are reproducible or not (Peng, 2009). The statistical method(s) need to be clearly articulated in how they are used, particularly in the absence of the statistical code for the analysis. Information about algorithms used for estimation (e.g.~maximum likelihood, least squares, weighted least squares, etc.), which variables are included in statistical analyses, algorithm convergence criteria, and many others are needed to ensure that reviewers and readers of the research are able to discern how the analysis proceeded. Without clear, transparent, and open statistical methods, data processing, and other data management tasks, the ability to reproduce or replicate the study drops significantly (Peng, 2009, 2011; Stodden, 2012). Concerns about fraudulent analyses and conclusions in research may also arise if the statistical code is not submitted as part of the research (Peng, 2009).
 
-The purpose of this paper is to explore the evolution (or lack thereof) of statistical software usage, statistical methods usage, and the interaction between the two over time in the field of education. Research synthesis methods (Cooper, 2016) will be used to explore these trends over time in published articles found in five educational research journals and a total of twelve social science research journals. Social science journals outside of education spanning economics, political science, public policy, and sociology were included in the review. Journals were selected for inclusion from those in the disciplines that had strong impact factors.
+The purpose of this paper is to explore the evolution (or lack thereof) of statistical software citation, statistical methods usage, and the interaction between the two over time in the field of education. Research synthesis methods (Cooper, 2016) will be used to explore these trends over time in published articles found in five educational research journals and a total of twelve social science research journals. Social science journals outside of education spanning economics, political science, public policy, and sociology were included in the review. Journals were selected for inclusion from those in the disciplines that had strong impact factors.
 
 \hypertarget{statistical-software-and-reproducibility}{%
 \section{Statistical Software and Reproducibility}\label{statistical-software-and-reproducibility}}
 
-Statistical software is an enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. Moreover, casual users of statistics software may not distinguish between the limitations of the models and the limitations of the software. However, the user-friendly nature of software (i.e., point and click graphical interfaces, ability to manipulate data by hand) can also severely limit the ability for research to be reproducible; a recent topic of discussion in biostatistics, medicine, and psychology (Asendorpf et al., 2013; Ioannidis, 2014; Iqbal, Wallach, Khoury, Schully, \& Ioannidis, 2016; Peng, 2009, 2011; Stodden, 2012). The replicability and reproducibility crisis has pointed the finger at statistical software more directly with a strong emphasis in some disciplines for analyses to be script (i.e., source code) based and posted with the published journal article, often described as the gold standard (Miguel et al., 2014; Peng, 2009, 2011; Stodden et al., 2013).
+Statistical software is an enabling tool to performing applied data analysis. Statistical methods that are implemented within software will increase their usage (particularly if the software is also user-friendly) by applied analysts and are likely taught more frequently in methodology courses at universities. Moreover, casual users of statistics software may not distinguish between the limitations of the models and the limitations of the software. However, the user-friendly nature of software (i.e., point and click graphical interfaces, ability to manipulate data by hand) can also severely limit the ability for research to be reproducible; a recent topic of discussion in biostatistics, medicine, and psychology (Asendorpf et al., 2013; Ioannidis, 2014; Iqbal et al., 2016; Peng, 2009, 2011; Stodden, 2012). The replicability and reproducibility crisis has pointed the finger at statistical software more directly with a strong emphasis in some disciplines for analyses to be script (i.e., source code) based and posted with the published journal article, often described as the gold standard (Miguel et al., 2014; Peng, 2009, 2011; Stodden et al., 2013).
 
-This idea of reproducibility has not fully entered the social science research domain, where replication has seen more focus in the literature (Asendorpf et al., 2013; Hedges \& Schauer, 2019; Hendrick, 1990; Insitute of Education Sciences (IES), U.S. Department of Education, 2018; Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF), 2018; Makel \& Plucker, 2014; Makel, Plucker, \& Hegarty, 2012; Schmidt, 2009). There are discussions within the social science literature about ways to enhance replication which include aspects of reproducibility (Asendorpf et al., 2013; Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF), 2018), however the focus is on enhancing replicability in which reproducibility is helpful in this regard. Reproducibility in the Educational literature is found referring to open science practices which advocate for the releasing statistical code, data, and ensuring manuscripts are able to be read openly instead of being behind paywalls (Makel, Smith, McBee, Peters, \& Miller, 2019; McBee, Makel, Peters, \& Matthews, 2018).
+This idea of reproducibility has not fully entered the social science research domain, where replication has seen more focus in the literature (Asendorpf et al., 2013; Hedges \& Schauer, 2019; Hendrick, 1990; Insitute of Education Sciences (IES), U.S. Department of Education, 2018; Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF), 2018; Makel et al., 2012; Makel \& Plucker, 2014; Schmidt, 2009). There are discussions within the social science literature about ways to enhance replication which include aspects of reproducibility (Asendorpf et al., 2013; Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF), 2018), however the focus is on enhancing replicability in which reproducibility is helpful in this regard. Reproducibility in the Educational literature is found referring to open science practices which advocate for the releasing statistical code, data, and ensuring manuscripts are able to be read openly instead of being behind paywalls (Makel et al., 2019; McBee et al., 2018).
 
 SPSS (IBM Corp, 2019) is likely the most common statistical software program used in many social science research domains, particularly education. Although SPSS has many common and advanced statistical techniques and it is possible to have a reproducible analysis, the default behavior within SPSS is not script based and can create bad habits. For example, editing raw data directly in the graphical user interface, running analyses without saving a script, creation of variables without syntax, or marking values as missing or not possible in the variable view window. Statistical software that is primarily command line, programs such as R (R Core Team, 2019), Python (Van Rossum \& Drake Jr, 1995), SAS (SAS Institute, 2017), or Stata (StataCorp, 2019), offer easier reproducible frameworks as all data manipulations or analyses are saved in scripts that can be re-ran in the future. A data script can be thought of as a cockpit flight recorder in which every single step that was done to the original data going from data collection to final tables and figures were script based. Under a reproducible framework, the raw data are never altered directly, they should always be altered programmatically through a script. This keeps a log of the data manipulations that happened in the data analysis cycle. For example, R, Python, and Stata have packages or functionality that aid in the ability to create living data documents that contain text and analysis code within a single document (see Allaire et al., 2017; Kluyver et al., 2016; StataCorp, 2019; Xie, 2015, 2017).
 
 The reproducible analysis framework has many advantages, including a transparent analysis process that could be validated (i.e.~reproduced) by others, including reviewers, journal editors, students etc. Unfortunately, the current publishing environment has many barriers that limit the reproducibility of research. First, applied researchers may not be users of primarily command line or script based statistical software. This limits the ability to create a reproducible analysis from the start. Secondly, researchers are not incentivized to conduct a reproducible analysis. In particular, the publish or perish aspect of tenure track positions limits the sharing of statistical code partly due to the increased chance of criticism upon evaluation of the code used for the analysis. Finally, many journals and even the American Psychological Association (APA) publication manual (American Psychological Association, 2010, p. 210) states that common software or programming languages need not be cited. This could even be interpreted by some as not needing to mention the software used in the analysis. Unfortunately, if the software used for a data analysis is not reported, the ability to recreate the analysis may decrease due to differences in estimation, handling of missing data, or other software specific default settings.
 
-This paper aims to explore the state of affairs in statistical software usage in education and the social sciences. Particular attention will be made to which software is currently being used in published educational research as well as how this has changed over the last twenty years. Secondly, this paper also aims to explore how frequently open-source software tools are used and to explore evidence of reproducible analysis framework being implemented. Finally, comparisons of educational research journal trends to other social science disciplines will be explored. These aims will be explored using research synthesis methods.
+This paper aims to explore the state of affairs in statistical software citation within the primary manuscript in education and the social sciences. Particular attention will be made to which software is being cited in published educational research as well as how this has changed over the last twenty years. Secondly, this paper also aims to explore how frequently open-source software tools are used and to explore evidence of reproducible analysis framework being implemented. Finally, comparisons of educational research journal trends to other social science disciplines will be explored. These aims will be explored using research synthesis methods.
 
 \hypertarget{statistical-software-usage}{%
 \section{Statistical Software Usage}\label{statistical-software-usage}}
@@ -170,7 +200,7 @@ The current study differs from the analysis conducted by Muenchen (2017) in key 
 
 Exploration of which statistical methods are being used in published research has also rarely been explored. One study by Tatman (2015) explored the usage of statistical methods in linguistics. A total of 348 articles were extracted from the most recent issue of a variety of linguistics journals. Of these 348 articles, about 65\% of the articles listed at least one of the statistical methods coded. Most of the articles that listed a statistical method only listed a single method, but a few articles had up to 10 methods listed. The most popular inferential methods found were analysis of variance, t-tests, correlations, and Chi-Square analyses.
 
-To our knowledge, no other study has undertaken the synthesis of software usage, statistical methods usage, or the interaction between the two. This study aims to fill this gap and explore the following research questions.
+To our knowledge, no other study has undertaken the synthesis of software citations, statistical methods usage, or the interaction between the two. This study aims to fill this gap and explore the following research questions.
 
 \hypertarget{research-questions}{%
 \subsection{Research Questions}\label{research-questions}}
@@ -179,20 +209,12 @@ To our knowledge, no other study has undertaken the synthesis of software usage,
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Has statistical software usage shifted over time in published educational and social science research?
+  How often does published research cite statistical software in the primary manuscript?
 
   \begin{itemize}
   \tightlist
   \item
-    If there is evidence of a shift, is there evidence this shift differs based on quantitative method or journal?
-  \end{itemize}
-\item
-  How often does published research cite statistical software?
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Has this changed over time and across journals?
+    Has this changed over time, across journals, or by statistical method?
   \end{itemize}
 \item
   How often are open-source statistical software tools used?
@@ -200,18 +222,18 @@ To our knowledge, no other study has undertaken the synthesis of software usage,
   \begin{itemize}
   \tightlist
   \item
-    Is there evidence of reproducible analyses being employed?
+    Has this changed over time, across journals, or by statistical method?
   \end{itemize}
 \item
-  Does the research journal discipline impact the trends explored in the first three research questions?
+  Does the research journal discipline impact the trends explored in the first two research questions?
 \end{enumerate}
 
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
 
-Research synthesis methods (Cooper, 2016) will be used to explore the evolution of statistical software and quantitative methods in social science research. More specifically, the statistical software used for the analysis will be coded as well as the quantitative method(s) used (i.e.~linear regression, hierarchical linear model, etc.). Additional meta data will also be coded including, journal, article title, author information, article keywords, year published, and any mention of supplementary materials. This information will be used to explore descriptive trends in the data over time, by journals, and methods.
+Research synthesis methods (Cooper, 2016) will be used to explore the evolution of statistical software citation and quantitative methods in social science research. More specifically, the statistical software cited as used for the analysis will be coded as well as the quantitative method(s) used (i.e.~linear regression, hierarchical linear model, etc.). Additional meta data will also be coded including, journal, article title, author information, article keywords, year published, and any mention of supplementary materials. This information will be used to explore descriptive trends in the data over time, by journals, and methods.
 
-The research synthesis will gather data from a handful of education journals that primarily publish empirical data analysis. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Table \ref{tab:journals} shows the journals selected for inclusion by discipline and including the journal abbreviation that will be used primarily in reporting the study results.
+The research synthesis will gather data from education and social science journals that primarily publish empirical data analysis and have high impact factors. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Table \ref{tab:journals} shows the journals selected for inclusion by discipline and including the journal abbreviation that will be used primarily in reporting the study results.
 
 \begin{table}[!h]
 
@@ -247,7 +269,7 @@ All journal articles published between 1995 through the middle of 2018 were orga
 Additional metadata obtained from journal articles will be obtained and combined with the keyword searching data. This metadata will contain information such as, year of publication, publication keywords, author information, and other article metadata obtained from EndNote. The citation information was converted to a bibtex file and the \emph{bib2df} package (Ottolinger, 2018) was used to parse the bibtex fields to collect the metadata. These data will be used to further enhance the keyword search data obtained from the \emph{pdfsearch} package and the subsequent analyses discussed in the next section.
 
 \begin{table}
-\captionof{table}{Search keywords used in search of published journal documents.}
+\captionof{table}{Software search keywords used in search of published journal documents.}
 \label{tab:searchwords}
 \begin{tabularx}{\linewidth}{llX}
 
@@ -264,7 +286,19 @@ Search & Group & Keywords \\
                           & HLM             & HLM[0-9], HLM [0-9]                            \\
                           & IRT             & BILOG, BILOG-MG, Multilog, PARSCALE, IRT Pro        \\
                           & Latent Variable & Mplus, LISREL, AMOS   \\
-\midrule
+\bottomrule
+
+\end{tabularx}
+\end{table}
+
+\begin{table}
+\captionof{table}{Statistical analysis search keywords used in search of published journal documents.}
+\label{tab:searchwords}
+\begin{tabularx}{\linewidth}{llX}
+
+\toprule
+Search & Group & Keywords \\
+\midrule 
 
 \multirow{7}{*}{Statistical analyses} & ANOVA           & Analysis of Variance, ANOVA, ANCOVA, Analysis of Covariance, multivariate analysis of variance, MANOVA, repeated measures analysis of variance, RMANOVA, RM-ANOVA                                                                                                                                                               \\
                                     & HLM             & HLM, Hierarchical Linear Model, Linear Mixed Model, LMM, Multilevel Model, Multi-level Model                                                                                                                                                                                                                                    \\
@@ -281,14 +315,14 @@ Search & Group & Keywords \\
 \hypertarget{analysis}{%
 \subsection{Analysis}\label{analysis}}
 
-Descriptive analyses will be performed on the research synthesis data obtained from keyword searching performed with the \emph{pdfsearch} package. Initial exploration will focus on software and statistical analyses separately. Subsequent descriptive analyses will be performed to explore if there are any interactions between software and statistical analyses used in published research. All of these analyses will be performed over time to explore trends in software and statistical analysis usage and citation rates. Figures will be the primary analysis methods and will be created in R using the ggplot2 package (Wickham, 2016).
+Descriptive analyses will be performed on the research synthesis data obtained from keyword searching from the \emph{pdfsearch} package. Initial exploration will focus on software and statistical analyses separately. Subsequent descriptive analyses will be performed to explore if there are any interactions between software and statistical analyses used in published research. All of these analyses will be performed over time to explore trends in software and statistical analysis usage and citation rates. Figures will be the primary analysis methods and will be created in R using the ggplot2 package (Wickham, 2016).
 
 The journal and the discipline of the journal will be used to explore differences across journals and disciplines. An in depth exploration of the education domain will be pursued to see how software and statistical methods have evolved within published research in education.
 
 \hypertarget{limitations}{%
 \subsubsection{Limitations}\label{limitations}}
 
-The sample of journals obtained for inclusion may bias the results. The focus on this search was journals that are known broadly by each field and had strong impact factors. Impact factors are only one of many potential metrics that could have been explored. In addition, we did not consider open access journals which have become more prevalent and have become a larger part of the publishing landscape. The analysis also relies on keyword searching and the keywords searched need to match in the document exactly. This may result in the under-representing of terms when different spellings were used that were not included in the keyword search. The software keyword searches may also be biased by two factors. First, the American Psychological Association (APA) publication manual specifically mentions that common statistical software does not need to be cited. Secondly, those who are open-source software developers or use open-source software regularly may be more likely to cite the open-source software (e.g., R). The impacts of these factors are unknown however in the current literature.
+The sample of journals obtained for inclusion may not fully represent the population of journals for which empirical research is conducted. The focus of this search was journals that are known broadly by each field and had strong impact factors. Impact factors are only one of many potential metrics that could have been explored. In addition, we did not consider open access journals which have become more prevalent and have become a larger part of the publishing landscape. The analysis also relies on keyword searching and the keywords searched need to match in the document exactly. This may result in the under-representing of terms when different spellings were used that were not included in the keyword search. The software keyword searches may also be biased by two factors. First, the American Psychological Association (APA) publication manual specifically mentions that common statistical software does not need to be cited. Secondly, those who are open-source software developers or use open-source software regularly may be more likely to cite the open-source software (e.g., R). The impacts of these factors are unknown however in the current literature.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -377,7 +411,7 @@ Exploring the proportion of articles that cited at least one of the analysis key
 \hypertarget{impact-of-publication-year-on-keyword-rates}{%
 \subsection{Impact of publication year on keyword rates}\label{impact-of-publication-year-on-keyword-rates}}
 
-The impact of publication year on prevalence of software and analysis keywords within education were explored in Figures \ref{fig:software-year-at1} and \ref{fig:model-year-at1} for common software and analysis keywords respectively. In general, publication year does not have a strong impact on the software keyword rates with most trajectories being flat, on average, across the publication years. There was evidence that the percentage of articles having matching software keywords was unstable across years. R was consistently the most found software keyword and STATA was found the least across these publication years for education, but overall software was infrequently cited (see Figure \ref{fig:software-discipline}).
+The impact of publication year on prevalence of software and analysis keywords within education were explored in Figures \ref{fig:software-year-at1} and \ref{fig:model-year-at1} for common software and analysis keywords respectively. In general, publication year does not have a strong impact on the software keyword rates with most trajectories being flat, on average, across the publication years. There was evidence that the percentage of articles having matching software keywords was unstable across years. R was consistently the most found software keyword and STATA was found the least across these publication years for education, but overall software was infrequently cited (see Figure \ref{fig:discipline-software}).
 
 Commonly used specialty software in education, such as AMOS, HLM, LISREL, or Mplus, are shown in the bottom-most plot of Figure \ref{fig:software-year-at1}. Not surprisingly, the specialty software on average shows up less frequently compared to the general purpose software shown in the top-most plot of Figure \ref{fig:software-year-at1}. Out of these four specialty software, AMOS and LISREL showed up more frequently early in the published research obtained and have stayed relatively stable in the percentage of matches found. Mplus has gained additional usage over time and HLM software tended to show up infrequently, but has had a few years that the software showed up more than 15\%. However, these programs still only account for around 10\% or less of statistical software used in most years.
 
@@ -397,11 +431,11 @@ The tile plot shown in Figure \ref{fig:software-statmethods-year} shows an incre
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
-This study explored the usage of statistical software and statistical analysis in published research from 1995 to 2018 across five education and a total of 12 social science journals. The journals that were selected were identified as journals within sub-fields of social science that were focused on publishing applied research spanning economics, education, political science, public policy, and sociology. After obtaining PDF documents from these journals, keyword searching was performed to extract keywords associated with statistical software and statistical methods (see Table \ref{tab:searchwords} for a list of search words that were used).
+This study explored the prevalence of statistical software citation rates and statistical analysis in published research from 1995 to 2018 across five education and a total of 12 social science journals. The journals that were selected were identified as journals within sub-fields of social science that were focused on publishing applied research spanning economics, education, political science, public policy, and sociology. After obtaining PDF documents from these journals, keyword searching was performed to extract keywords associated with statistical software and statistical methods (see Table \ref{tab:searchwords} for a list of search words that were used).
 
 The results showed that statistical software keywords were not found as frequently as the statistical methods that are used to analyze the data. This has important implications for the reproducibility and replicability of the research that is being performed (Peng, 2009; Stodden et al., 2013). There has been an increase in the prevalence of software citations in published research, however the percentage of studies that cite software is still only about 20\% as of 2018. Evidence support differential software citations rates by journal and there was also evidence of specific statistical methods being used within journals. For example, JEE had evidence of stronger citation rates of statistical software and statistical methods keywords searched for.
 
-There was also evidence of differences across disciplines. Sociology had the highest percentage of studies citing statistical software and methods keywords searched for in this study. Education had the second highest rate of software keywords found (21\%), but was not nearly as strong in the statistical methods keywords found with only about 27\% of studies containing a statistical method. Economics had evidence of more statistical methods found than education and education was similar to political science and public policy. It is unclear the exact reason why education has lower statistical method keywords found and would warrant more research. This small difference may be a reflection of the journals we chose, as there was evidence of JEE having more mention of statistical methods than any other journal included in the sample (see Figure \ref{fig:count-software}). Two education journals, Educational Researcher and Higher Education, have evidence of not publishing as much quantitative research (or at least these articles tend not to discuss the statistical method used), which is decreasing the education percentages reported. It may also be that education has more qualitative studies which was not searched for in the current study.
+There was also evidence of differences across disciplines. Sociology had the highest percentage of studies citing statistical software and methods keywords searched for in this study. Education had the second highest rate of software keywords found (21\%), but was not nearly as strong in the statistical methods keywords found with only about 27\% of studies containing a statistical method. Economics had evidence of more statistical methods found than education and education was similar to political science and public policy. It is unclear the exact reason why education has lower statistical method keywords found and would warrant more research. This small difference may be a reflection of the journals we chose, as there was evidence of JEE mentioning more statistical method keywords than any other journal included in the sample (see Figure \ref{fig:count-software}). Two education journals, Educational Researcher and Higher Education, have evidence of not publishing as much quantitative research (or at least these articles tend not to discuss the statistical method used), which is decreasing the education percentages reported. It may also be that education has more qualitative studies which was not searched for in the current study.
 
 Publication year did not have a large impact on which software is being used in published research and there is evidence that the software is highly variable across years. This may be due to the small sample of studies that actually do include information about the statistical software used. With only a small number of studies in a publication year, the percentage citing software can vary widely with only a few additional mentions in a single year. More stable estimates across a wider variety of journals would be a natural extension to this research, including the exploration of open-access and other education or social science journals that do not have as large of an impact factor.
 
@@ -456,13 +490,13 @@ This study explored, through extraction of text from within the published resear
 \hypertarget{refs}{}
 \begin{cslreferences}
 \leavevmode\hypertarget{ref-rmarkdown}{}%
-Allaire, J., Cheng, J., Xie, Y., McPherson, J., Chang, W., Allen, J., \ldots{} Arslan, R. (2017). \emph{Rmarkdown: Dynamic documents for r}. Retrieved from \url{https://CRAN.R-project.org/package=rmarkdown}
+Allaire, J., Cheng, J., Xie, Y., McPherson, J., Chang, W., Allen, J., Wickham, H., Atkins, A., Hyndman, R., \& Arslan, R. (2017). \emph{Rmarkdown: Dynamic documents for r}. \url{https://CRAN.R-project.org/package=rmarkdown}
 
 \leavevmode\hypertarget{ref-apa}{}%
-American Psychological Association. (2010). \emph{Publication manual of the american psychological association}. Washington, D.C.: American Psychological Association.
+American Psychological Association. (2010). \emph{Publication manual of the american psychological association}. American Psychological Association.
 
 \leavevmode\hypertarget{ref-asendorpf2013}{}%
-Asendorpf, J. B., Conner, M., De Fruyt, F., De Houwer, J., Denissen, J. J., Fiedler, K., \ldots{} others. (2013). Recommendations for increasing replicability in psychology. \emph{European Journal of Personality}, \emph{27}(2), 108--119.
+Asendorpf, J. B., Conner, M., De Fruyt, F., De Houwer, J., Denissen, J. J., Fiedler, K., Fiedler, S., Funder, D. C., Kliegl, R., Nosek, B. A., \& others. (2013). Recommendations for increasing replicability in psychology. \emph{European Journal of Personality}, \emph{27}(2), 108--119.
 
 \leavevmode\hypertarget{ref-cooper2016}{}%
 Cooper, H. (2016). \emph{Research synthesis and meta-analysis: A step-by-step approach} (Vol. 2). Sage publications.
@@ -474,13 +508,13 @@ Hedges, L. V., \& Schauer, J. M. (2019). More than one replication study is need
 Hendrick, C. (1990). Replications, strict replications, and conceptual replications: Are they important? \emph{Journal of Social Behavior and Personality}, \emph{5}(4), 41.
 
 \leavevmode\hypertarget{ref-spss}{}%
-IBM Corp. (2019). \emph{IBM SPSS Statistics}. Armonk, NY: IBM Corp.
+IBM Corp. (2019). \emph{IBM SPSS Statistics}.
 
 \leavevmode\hypertarget{ref-iesdata}{}%
-Insitute of Education Sciences (IES), U.S. Department of Education. (2018). Resources for researchers: Policy statement on public access to data resulting from ies funded grants. Retrieved from \url{https://ies.ed.gov/funding/datasharing_policy.asp}
+Insitute of Education Sciences (IES), U.S. Department of Education. (2018). \emph{Resources for researchers: Policy statement on public access to data resulting from ies funded grants}. \url{https://ies.ed.gov/funding/datasharing_policy.asp}
 
 \leavevmode\hypertarget{ref-iesrepro}{}%
-Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF). (2018). Companion guidelines on replication \& reproducibility in education research: A supplement to the common guidelines for education reserach and development. Retrieved from \url{https://ies.ed.gov/pdf/CompanionGuidelinesReplicationReproducibility.pdf}
+Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF). (2018). \emph{Companion guidelines on replication \& reproducibility in education research: A supplement to the common guidelines for education reserach and development}. \url{https://ies.ed.gov/pdf/CompanionGuidelinesReplicationReproducibility.pdf}
 
 \leavevmode\hypertarget{ref-ioannidis2014}{}%
 Ioannidis, J. P. (2014). How to make more published research true. \emph{PLoS Medicine}, \emph{11}(10), e1001747.
@@ -489,10 +523,10 @@ Ioannidis, J. P. (2014). How to make more published research true. \emph{PLoS Me
 Iqbal, S. A., Wallach, J. D., Khoury, M. J., Schully, S. D., \& Ioannidis, J. P. (2016). Reproducible research practices and transparency across the biomedical literature. \emph{PLoS Biology}, \emph{14}(1), e1002333.
 
 \leavevmode\hypertarget{ref-kluyver2016}{}%
-Kluyver, T., Ragan-Kelley, B., Pérez, F., Granger, B., Bussonnier, M., Frederic, J., \ldots{} Willing, C. (2016). Jupyter notebooks -- a publishing format for reproducible computational workflows. (F. Loizides \& B. Schmidt, Eds.). IOS Press.
+Kluyver, T., Ragan-Kelley, B., Pérez, F., Granger, B., Bussonnier, M., Frederic, J., Kelley, K., Hamrick, J., Grout, J., Corlay, S., Ivanov, P., Avila, D., Abdalla, S., \& Willing, C. (2016). \emph{Jupyter notebooks -- a publishing format for reproducible computational workflows} (F. Loizides \& B. Schmidt, Eds.; pp. 87--90). IOS Press.
 
 \leavevmode\hypertarget{ref-pdfsearch}{}%
-LeBeau, B. (2018). pdfsearch: Search tools for pdf files. \emph{Journal of Open Source Software}, \emph{3}(27), 668. doi:\href{https://doi.org/10.21105/joss.00668}{10.21105/joss.00668}
+LeBeau, B. (2018). pdfsearch: Search tools for pdf files. \emph{Journal of Open Source Software}, \emph{3}(27), 668. \url{https://doi.org/10.21105/joss.00668}
 
 \leavevmode\hypertarget{ref-makel2014}{}%
 Makel, M. C., \& Plucker, J. A. (2014). Facts are more important than novelty: Replication in the education sciences. \emph{Educational Researcher}, \emph{43}(6), 304--316.
@@ -507,22 +541,22 @@ Makel, M. C., Smith, K. N., McBee, M. T., Peters, S. J., \& Miller, E. M. (2019)
 McBee, M. T., Makel, M. C., Peters, S. J., \& Matthews, M. S. (2018). A call for open science in giftedness research. \emph{Gifted Child Quarterly}, \emph{62}(4), 374--388.
 
 \leavevmode\hypertarget{ref-miguel2014}{}%
-Miguel, E., Camerer, C., Casey, K., Cohen, J., Esterling, K. M., Gerber, A., \ldots{} others. (2014). Promoting transparency in social science research. \emph{Science}, \emph{343}(6166), 30--31.
+Miguel, E., Camerer, C., Casey, K., Cohen, J., Esterling, K. M., Gerber, A., Glennerster, R., Green, D. P., Humphreys, M., Imbens, G., \& others. (2014). Promoting transparency in social science research. \emph{Science}, \emph{343}(6166), 30--31.
 
 \leavevmode\hypertarget{ref-muenchen}{}%
-Muenchen, R. A. (2017). The popularity of data science software. Retrieved from \url{http://r4stats.com/articles/popularity/}
+Muenchen, R. A. (2017). \emph{The popularity of data science software}. \url{http://r4stats.com/articles/popularity/}
 
 \leavevmode\hypertarget{ref-bib2df}{}%
-Ottolinger, P. (2018). \emph{Bib2df: Parse a bibtex file to a data.frame}. Retrieved from \url{https://CRAN.R-project.org/package=bib2df}
+Ottolinger, P. (2018). \emph{Bib2df: Parse a bibtex file to a data.frame}. \url{https://CRAN.R-project.org/package=bib2df}
 
 \leavevmode\hypertarget{ref-peng2009}{}%
-Peng, R. D. (2009). Reproducible research and biostatistics. \emph{Biostatistics}, \emph{10}(3), 405--408. doi:\href{https://doi.org/10.1093/biostatistics/kxp014}{10.1093/biostatistics/kxp014}
+Peng, R. D. (2009). Reproducible research and biostatistics. \emph{Biostatistics}, \emph{10}(3), 405--408. \url{https://doi.org/10.1093/biostatistics/kxp014}
 
 \leavevmode\hypertarget{ref-peng2011}{}%
 Peng, R. D. (2011). Reproducible research in computational science. \emph{Science}, \emph{334}(6060), 1226--1227.
 
 \leavevmode\hypertarget{ref-rpro}{}%
-R Core Team. (2019). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
+R Core Team. (2019). \emph{R: A language and environment for statistical computing}. R Foundation for Statistical Computing. \url{https://www.R-project.org/}
 
 \leavevmode\hypertarget{ref-sas2017base}{}%
 SAS Institute. (2017). \emph{Base sas 9.4 procedures guide: Statistical procedures}. SAS Institute.
@@ -531,7 +565,7 @@ SAS Institute. (2017). \emph{Base sas 9.4 procedures guide: Statistical procedur
 Schmidt, S. (2009). Shall we really do it again? The powerful concept of replication is neglected in the social sciences. \emph{Review of General Psychology}, \emph{13}(2), 90.
 
 \leavevmode\hypertarget{ref-stata}{}%
-StataCorp. (2019). \emph{Stata statistical software: Release 16}. College Station, TX: StataCrop LLC.
+StataCorp. (2019). \emph{Stata statistical software: Release 16}.
 
 \leavevmode\hypertarget{ref-stodden2012}{}%
 Stodden, V. (2012). Reproducible research for scientific computing: Tools and strategies for changing the culture. \emph{Computing in Science \& Engineering}, \emph{14}(4), 13--17.
@@ -546,112 +580,14 @@ Tatman, R. (2015). The state of the stats: Current use of statistical methods ac
 Van Rossum, G., \& Drake Jr, F. L. (1995). \emph{Python tutorial}. Centrum voor Wiskunde en Informatica Amsterdam, The Netherlands.
 
 \leavevmode\hypertarget{ref-ggplot2}{}%
-Wickham, H. (2016). \emph{Ggplot2: Elegant graphics for data analysis}. Springer-Verlag New York. Retrieved from \url{http://ggplot2.org}
+Wickham, H. (2016). \emph{Ggplot2: Elegant graphics for data analysis}. Springer-Verlag New York. \url{http://ggplot2.org}
 
 \leavevmode\hypertarget{ref-knitr}{}%
-Xie, Y. (2015). \emph{Dynamic documents with R and knitr} (2nd ed.). Boca Raton, Florida: Chapman; Hall/CRC. Retrieved from \url{http://yihui.name/knitr/}
+Xie, Y. (2015). \emph{Dynamic documents with R and knitr} (2nd ed.). Chapman; Hall/CRC. \url{http://yihui.name/knitr/}
 
 \leavevmode\hypertarget{ref-knitrmanual}{}%
-Xie, Y. (2017). \emph{Knitr: A general-purpose package for dynamic report generation in r}. Retrieved from \url{http://yihui.name/knitr/}
-
-\leavevmode\hypertarget{ref-rmarkdown}{}%
-Allaire, J., Cheng, J., Xie, Y., McPherson, J., Chang, W., Allen, J., \ldots{} Arslan, R. (2017). \emph{Rmarkdown: Dynamic documents for r}. Retrieved from \url{https://CRAN.R-project.org/package=rmarkdown}
-
-\leavevmode\hypertarget{ref-apa}{}%
-American Psychological Association. (2010). \emph{Publication manual of the american psychological association}. Washington, D.C.: American Psychological Association.
-
-\leavevmode\hypertarget{ref-asendorpf2013}{}%
-Asendorpf, J. B., Conner, M., De Fruyt, F., De Houwer, J., Denissen, J. J., Fiedler, K., \ldots{} others. (2013). Recommendations for increasing replicability in psychology. \emph{European Journal of Personality}, \emph{27}(2), 108--119.
-
-\leavevmode\hypertarget{ref-cooper2016}{}%
-Cooper, H. (2016). \emph{Research synthesis and meta-analysis: A step-by-step approach} (Vol. 2). Sage publications.
-
-\leavevmode\hypertarget{ref-hedges2019}{}%
-Hedges, L. V., \& Schauer, J. M. (2019). More than one replication study is needed for unambiguous tests of replication. \emph{Journal of Educational and Behavioral Statistics}, 1076998619852953.
-
-\leavevmode\hypertarget{ref-hendrick1990}{}%
-Hendrick, C. (1990). Replications, strict replications, and conceptual replications: Are they important? \emph{Journal of Social Behavior and Personality}, \emph{5}(4), 41.
-
-\leavevmode\hypertarget{ref-spss}{}%
-IBM Corp. (2019). \emph{IBM SPSS Statistics}. Armonk, NY: IBM Corp.
-
-\leavevmode\hypertarget{ref-iesdata}{}%
-Insitute of Education Sciences (IES), U.S. Department of Education. (2018). Resources for researchers: Policy statement on public access to data resulting from ies funded grants. Retrieved from \url{https://ies.ed.gov/funding/datasharing_policy.asp}
-
-\leavevmode\hypertarget{ref-iesrepro}{}%
-Insitute of Education Sciences (IES), U.S. Department of Education and National Science Foundation (NSF). (2018). Companion guidelines on replication \& reproducibility in education research: A supplement to the common guidelines for education reserach and development. Retrieved from \url{https://ies.ed.gov/pdf/CompanionGuidelinesReplicationReproducibility.pdf}
-
-\leavevmode\hypertarget{ref-ioannidis2014}{}%
-Ioannidis, J. P. (2014). How to make more published research true. \emph{PLoS Medicine}, \emph{11}(10), e1001747.
-
-\leavevmode\hypertarget{ref-iqbal2016}{}%
-Iqbal, S. A., Wallach, J. D., Khoury, M. J., Schully, S. D., \& Ioannidis, J. P. (2016). Reproducible research practices and transparency across the biomedical literature. \emph{PLoS Biology}, \emph{14}(1), e1002333.
-
-\leavevmode\hypertarget{ref-kluyver2016}{}%
-Kluyver, T., Ragan-Kelley, B., Pérez, F., Granger, B., Bussonnier, M., Frederic, J., \ldots{} Willing, C. (2016). Jupyter notebooks -- a publishing format for reproducible computational workflows. (F. Loizides \& B. Schmidt, Eds.). IOS Press.
-
-\leavevmode\hypertarget{ref-pdfsearch}{}%
-LeBeau, B. (2018). pdfsearch: Search tools for pdf files. \emph{Journal of Open Source Software}, \emph{3}(27), 668. doi:\href{https://doi.org/10.21105/joss.00668}{10.21105/joss.00668}
-
-\leavevmode\hypertarget{ref-makel2014}{}%
-Makel, M. C., \& Plucker, J. A. (2014). Facts are more important than novelty: Replication in the education sciences. \emph{Educational Researcher}, \emph{43}(6), 304--316.
-
-\leavevmode\hypertarget{ref-makel2012}{}%
-Makel, M. C., Plucker, J. A., \& Hegarty, B. (2012). Replications in psychology research: How often do they really occur? \emph{Perspectives on Psychological Science}, \emph{7}(6), 537--542.
-
-\leavevmode\hypertarget{ref-makel2019path}{}%
-Makel, M. C., Smith, K. N., McBee, M. T., Peters, S. J., \& Miller, E. M. (2019). A path to greater credibility: Large-scale collaborative education research. \emph{AERA Open}, \emph{5}(4), 2332858419891963.
-
-\leavevmode\hypertarget{ref-mcbee2018call}{}%
-McBee, M. T., Makel, M. C., Peters, S. J., \& Matthews, M. S. (2018). A call for open science in giftedness research. \emph{Gifted Child Quarterly}, \emph{62}(4), 374--388.
-
-\leavevmode\hypertarget{ref-miguel2014}{}%
-Miguel, E., Camerer, C., Casey, K., Cohen, J., Esterling, K. M., Gerber, A., \ldots{} others. (2014). Promoting transparency in social science research. \emph{Science}, \emph{343}(6166), 30--31.
-
-\leavevmode\hypertarget{ref-muenchen}{}%
-Muenchen, R. A. (2017). The popularity of data science software. Retrieved from \url{http://r4stats.com/articles/popularity/}
-
-\leavevmode\hypertarget{ref-bib2df}{}%
-Ottolinger, P. (2018). \emph{Bib2df: Parse a bibtex file to a data.frame}. Retrieved from \url{https://CRAN.R-project.org/package=bib2df}
-
-\leavevmode\hypertarget{ref-peng2009}{}%
-Peng, R. D. (2009). Reproducible research and biostatistics. \emph{Biostatistics}, \emph{10}(3), 405--408. doi:\href{https://doi.org/10.1093/biostatistics/kxp014}{10.1093/biostatistics/kxp014}
-
-\leavevmode\hypertarget{ref-peng2011}{}%
-Peng, R. D. (2011). Reproducible research in computational science. \emph{Science}, \emph{334}(6060), 1226--1227.
-
-\leavevmode\hypertarget{ref-rpro}{}%
-R Core Team. (2019). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
-
-\leavevmode\hypertarget{ref-sas2017base}{}%
-SAS Institute. (2017). \emph{Base sas 9.4 procedures guide: Statistical procedures}. SAS Institute.
-
-\leavevmode\hypertarget{ref-schmidt2009}{}%
-Schmidt, S. (2009). Shall we really do it again? The powerful concept of replication is neglected in the social sciences. \emph{Review of General Psychology}, \emph{13}(2), 90.
-
-\leavevmode\hypertarget{ref-stata}{}%
-StataCorp. (2019). \emph{Stata statistical software: Release 16}. College Station, TX: StataCrop LLC.
-
-\leavevmode\hypertarget{ref-stodden2012}{}%
-Stodden, V. (2012). Reproducible research for scientific computing: Tools and strategies for changing the culture. \emph{Computing in Science \& Engineering}, \emph{14}(4), 13--17.
-
-\leavevmode\hypertarget{ref-stodden2013}{}%
-Stodden, V., Miguez, S., LeVeque, R., Malm, H., Novitzky, P., \& Gordijn, B. (2013). Resolving irreproducibility in empirical and computational research. \emph{IMS Bulletin}, \emph{14}(4).
-
-\leavevmode\hypertarget{ref-tatman2015}{}%
-Tatman, R. (2015). The state of the stats: Current use of statistical methods across linguistics subfields. \emph{Linguistics Summer Institute}.
-
-\leavevmode\hypertarget{ref-van1995python}{}%
-Van Rossum, G., \& Drake Jr, F. L. (1995). \emph{Python tutorial}. Centrum voor Wiskunde en Informatica Amsterdam, The Netherlands.
-
-\leavevmode\hypertarget{ref-ggplot2}{}%
-Wickham, H. (2016). \emph{Ggplot2: Elegant graphics for data analysis}. Springer-Verlag New York. Retrieved from \url{http://ggplot2.org}
-
-\leavevmode\hypertarget{ref-knitr}{}%
-Xie, Y. (2015). \emph{Dynamic documents with R and knitr} (2nd ed.). Boca Raton, Florida: Chapman; Hall/CRC. Retrieved from \url{http://yihui.name/knitr/}
-
-\leavevmode\hypertarget{ref-knitrmanual}{}%
-Xie, Y. (2017). \emph{Knitr: A general-purpose package for dynamic report generation in r}. Retrieved from \url{http://yihui.name/knitr/}
+Xie, Y. (2017). \emph{Knitr: A general-purpose package for dynamic report generation in r}. \url{http://yihui.name/knitr/}
 \end{cslreferences}
+
 
 \end{document}

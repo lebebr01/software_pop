@@ -1,6 +1,6 @@
 ---
-title         : "Evolution of Statistical Software and Quantitative Methods"
-shorttitle    : "Evolution Software and Methods"
+title         : "Evolution of Statistical Software Citations and Quantitative Methods"
+shorttitle    : "Evolution Software Citations and Methods"
 author: 
   - name      : "Brandon LeBeau"
     affiliation   : "1"
@@ -13,8 +13,8 @@ affiliation       :
   - id            : "1"
     institution   : "University of Iowa"
 abstract: > 
-  Statistical software is the enabling tool of quantitative research and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g. R, Python), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. This manuscript explores the evolution of statistical software citations within social science research using a research synthesis to establish the state of affairs. Software and statistical analysis keywords were searched in published manuscripts from high impact journals in five disciplines, Economics, Education, Political Science, Public Policy, and Sociology. Analysis was based on research synthesis methods. Implications for open science and reproducibility are discussed.
-keywords: "Research Synthesis, Statistical Software, Quantitative Methods"
+  Statistical software is the enabling tool of quantitative research and the availability and use of the software can greatly shape which methods are used by researchers. Software that is more accessible is likely to have more users and the methods implemented within the software limits the methods accessible to researchers. Open source software, (e.g. R, Python), has reduced these barriers by making cutting edge statistical methods available to researchers through add-on packages. This manuscript explores the evolution of statistical software citations within social science research using research synthesis to establish the state of affairs. Software and statistical analysis keywords were searched in published manuscripts from high impact journals in five disciplines, Economics, Education, Political Science, Public Policy, and Sociology. Analysis was based on research synthesis methods. Implications for open science and reproducibility are discussed.
+keywords: "Research Synthesis, Statistical Software Citations, Quantitative Methods"
 wordcount: 
   
 bibliography      : ["master.bib"]
@@ -25,8 +25,9 @@ footnotelist      : no
 lineno            : no
 linkcolor         : "blue"
 tables            : yes
-lang              : "english"
 class             : "man"
+csl : "apa.csl"
+documentclass : "apa7"
 output            : papaja::apa6_pdf
 header-includes: 
 - \usepackage{tabularx}
@@ -78,7 +79,7 @@ To our knowledge, no other study has undertaken the synthesis of software citati
 # Methods
 Research synthesis methods [@cooper2016] will be used to explore the evolution of statistical software citation and quantitative methods in social science research. More specifically, the statistical software cited as used for the analysis will be coded as well as the quantitative method(s) used (i.e. linear regression, hierarchical linear model, etc.). Additional meta data will also be coded including, journal, article title, author information, article keywords, year published, and any mention of supplementary materials. This information will be used to explore descriptive trends in the data over time, by journals, and methods.
 
-The research synthesis will gather data from a handful of education journals that primarily publish empirical data analysis. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Table \@ref(tab:journals) shows the journals selected for inclusion by discipline and including the journal abbreviation that will be used primarily in reporting the study results.
+The research synthesis will gather data from education and social science journals that primarily publish empirical data analysis and have high impact factors. The search will not include journals that the primary focus is methodological, the use of software in these journals would likely be a different population than those that are data analytic in nature. Table \@ref(tab:journals) shows the journals selected for inclusion by discipline and including the journal abbreviation that will be used primarily in reporting the study results.
 
 
 ```{r journals, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE, results='asis'}
@@ -176,7 +177,7 @@ Descriptive analyses will be performed on the research synthesis data obtained f
 The journal and the discipline of the journal will be used to explore differences across journals and disciplines. An in depth exploration of the education domain will be pursued to see how software and statistical methods have evolved within published research in education.
 
 ### Limitations
-The sample of journals obtained for inclusion may bias the results. The focus on this search was journals that are known broadly by each field and had strong impact factors. Impact factors are only one of many potential metrics that could have been explored. In addition, we did not consider open access journals which have become more prevalent and have become a larger part of the publishing landscape. The analysis also relies on keyword searching and the keywords searched need to match in the document exactly. This may result in the under-representing of terms when different spellings were used that were not included in the keyword search. The software keyword searches may also be biased by two factors. First, the American Psychological Association (APA) publication manual specifically mentions that common statistical software does not need to be cited. Secondly, those who are open-source software developers or use open-source software regularly may be more likely to cite the open-source software (e.g., R). The impacts of these factors are unknown however in the current literature. 
+The sample of journals obtained for inclusion may not fully represent the population of journals for which empirical research is conducted. The focus of this search was journals that are known broadly by each field and had strong impact factors. Impact factors are only one of many potential metrics that could have been explored. In addition, we did not consider open access journals which have become more prevalent and have become a larger part of the publishing landscape. The analysis also relies on keyword searching and the keywords searched need to match in the document exactly. This may result in the under-representing of terms when different spellings were used that were not included in the keyword search. The software keyword searches may also be biased by two factors. First, the American Psychological Association (APA) publication manual specifically mentions that common statistical software does not need to be cited. Secondly, those who are open-source software developers or use open-source software regularly may be more likely to cite the open-source software (e.g., R). The impacts of these factors are unknown however in the current literature. 
 
 # Results
 The number and percentage of PDFs obtained from EndNote is shown in Table \@ref(tab:setup). Overall, just over 10,012 journal articles were obtained out of 13,563, about a 74% obtained article rate. These rates differed across journals however. Many of the journals had a high success rate of obtaining the PDF for the published studies, however some were problematic. For example, JPP and EEPA were both under 50\% of PDFs obtained and AJPS, EJ, and SE were all just over 50\%. The PDFs that were not obtained were attempted to be obtained over multiple occasions over a six month period, with no additional PDFs obtained between the last two attempts. There were also differences across disciplines, with education having higher success rates compared to political science or sociology. 
@@ -833,6 +834,10 @@ keyword_fj <- full_join(software_keywords,
 
 # extract year from pdf_name
 mat <- regexpr("-[0-9]{4}-", keyword_fj$pdf_name)
+
+keyword_fj <- keyword_fj %>%
+  mutate(pdf_name = enc2utf8(as.character(pdf_name)),
+    pdf_name = gsub("<ed>|<2d>", "", pdf_name))
 
 keyword_fj <- keyword_fj %>%
   mutate(year2 = regmatches(keyword_fj$pdf_name, mat), 
